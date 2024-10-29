@@ -1,0 +1,31 @@
+.contact_title {
+    position: absolute;
+    top: 222px;
+    width: 100%;
+    font-family: white MiSans;
+    color: white;
+    margin: 0 auto;
+}
+
+.contact__container{
+    top: 324px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contact__form {
+    position: absolute;
+    top: 324px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.contact__form > form {
+    width: 740px;
+    height: 433px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}

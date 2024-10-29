@@ -1,0 +1,92 @@
+.header {
+    background-color: transparent;
+    position: fixed;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; */
+    background-color: linear-gradient(#000000 70%, #000000 0%);
+}
+
+.container {
+    height: 100%;
+}
+
+/* .header  .header__left {
+    position: absolute;
+    left: 60px; 
+    top: 40px;
+    transform: translateY(-50%);
+    background-color: lightblue;
+    padding: 10px;
+}
+
+.header .header__btn--group {
+    width: 312px;
+    height: 70px;
+    border-radius: 99px;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+} */
+
+.header {
+    position: fixed;
+    width: 100%;
+    height: 150px;
+}
+
+.header__left {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 60px;
+    background-image: url("../resources/logo.png")
+  }
+  
+  /* header__btn--group 水平、垂直居中 */
+  .header__btn--group {
+    /* position: absolute;
+    background: white;
+    height: 60px;
+    border-radius: 88px;
+    left: 50%;
+    top: 40px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;  */
+    position: absolute;
+    background: white;
+    height: 60px;
+    border-radius: 88px;
+    left: 50%;
+    top: 40px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+  }
+
+.header__btn--group >.selected {
+    font-family: #8C68FF MiSans;
+    margin: 20px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 31.82px;
+}
+.header__btn--group >.selected:hover {
+    cursor: pointer;
+}
+
+.header__btn--group >.remain {
+    font-family: #999999 MiSans;
+    margin: 20px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 31.82px;
+}
+.header__btn--group >.remain:hover {
+    cursor: pointer;
+}
