@@ -27,7 +27,8 @@
   .header__btn--group {
     position: absolute;
     background: white;
-    height: 60px;
+    width: 312px;
+    height: 70px;
     border-radius: 88px;
     left: 50%;
     top: 40px;
@@ -38,7 +39,7 @@
 
 .header__btn--group >.selected {
     font-family: #8C68FF MiSans;
-    margin: 20px;
+    margin-left: 40px;
     font-weight: 700;
     font-size: 24px;
     line-height: 31.82px;
@@ -49,7 +50,7 @@
 
 .header__btn--group >.remain {
     font-family: #999999 MiSans;
-    margin: 20px;
+    margin-left: 30px;
     font-weight: 500;
     font-size: 24px;
     line-height: 31.82px;
