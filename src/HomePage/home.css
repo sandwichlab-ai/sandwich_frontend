@@ -1,4 +1,4 @@
 .home {
     height: 100%;
-    background-image: url("../resources/bgImage.jpeg");
+    background-image: url("/public/images/bgImage.jpeg");
 }

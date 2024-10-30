@@ -21,7 +21,7 @@
     transform: translateY(-50%);
     width: 80px;
     height: 60px;
-    background-image: url("../resources/logo.png")
+    background-image: url("/public/images/logo.png")
   }
   
   .header__btn--group {

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import Contact from './Contact';
 import Home from './Home';
-import './index.css';
-import bgImage from '../resources/bgImage.jpeg'; 
+import './index.css'; 
 
 function HomePage() {
 
