@@ -4,40 +4,46 @@ import './contact.css';
 function Contact() {
 
     const [testData, setTestData] = useState([["First name", "Last name"], ["Country"], ["Occupation"], ["Email Address"]]);
+    const [formData, setFormData] = useState([["", ""], [""], [""], [""]]);
  
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Submitted", formData);
+    }
+
+    const handleFormChange = (rowIndex, index, value) => {
+        console.log(rowIndex, index);
+        const newFormData = [...formData];
+        newFormData[rowIndex][index] = value;
+        setFormData(newFormData);
+    }
+
     return (
         <div className="contact__container">
-            {/* <h1>Contact</h1> */}
             <h2 className="contact_title">Lets Have a Chat</h2>
-       
-            {/* div.contact__form
-            form
-                input(type="text", placeholder="Your Name")
-                input(type="email", placeholder="Your Email")
-                textarea(placeholder="Your Message")
-                button(type="submit") Submit */}
-
+            <div className='content__container'>        
             <div className="contact__form">
                 <form>
-                    {testData.map((row) => {
+                    {testData.map((row, rowIndex) => {
                         return(
-                            <div className="row">
-                                {row.map((col) => {
+                            <div className="row" key={rowIndex}>
+                                {row.map((col, index) => {
                                     return(
-                                        // <div className="col">
-                                        <span>
-                                        <label style={{color:"white"}}>{col}</label>
-                                        <input type="text" placeholder={col}/>
-                                         </span>
+
+                                        <div className="form-item" key={index}>
+                                            <label style={{ color: "white" }}>{col}</label>
+                                            <input type="text" placeholder={col} onChange={(e) =>handleFormChange(rowIndex, index, e.target.value)}/>
+                                        </div>
                                     )
                                 })}
                             </div>
                         )
                     })}
-                    <div>
-                        <button type="submit">Submit</button>
+                    <div className="btn__group">
+                        <button type="submit" onClick={handleSubmit}>Submit</button>
                     </div>
                 </form>
+            </div>
             </div>
         </div>
     );

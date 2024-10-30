@@ -7,6 +7,13 @@
     margin: 0 auto;
 }
 
+.content__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .contact__container{
     top: 324px;
     display: flex;
@@ -17,15 +24,60 @@
 .contact__form {
     position: absolute;
     top: 324px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    width: 740px;
+    /*width: 100%;*/
+    /* display: flex;
+    justify-content: center; */
+    display: grid;
+    gap: 20px;
 }
 
-.contact__form > form {
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-item >input {
+    background-color: #333333;
+    border-radius: 6px;
+    color: #FFFFFF;
+    height: 40px;
+}
+
+label {
+    text-align: start;
+    margin-bottom: 3px;
+    margin-top: 10px;
+}
+
+.btn__group {
+    /* margin-top: 48px; */
+}
+
+.btn__group button {
+    width: 740px;
+    height: 57px;
+    background-color: #8C68FF;
+    border-radius: 6px;
+    font-family:white MiSans;
+    color: white;
+    margin-top: 20px;
+    font-weight: 330;
+    font-size: 22px;
+    line-height: 31.82px;
+}
+
+/* .contact__form > form {
     width: 740px;
     height: 433px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-}
+} */

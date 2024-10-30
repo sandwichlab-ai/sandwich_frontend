@@ -15,15 +15,8 @@ function HomePage() {
     return (
         <div className = "container">
             <div className = "header">
-                {/* <div className="header__left">
-                    <image src={bgImage} style={{width:"80px", height:"80px"}}/>
-                </div> */}
 
                 <div className = "header__left">
-                {/* <image src="/logo192" style={{width:"80px", height:"80px",
-
-backgroundImage: "../resources/logo.png"
-}}/> */}
                 </div>
 
 
@@ -45,9 +38,6 @@ backgroundImage: "../resources/logo.png"
                         >Contact Us</span>
                 </div>
             </div>
-            {/* <h1>Home Page</h1>
-            <p>Welcome to the home page!</p>
-            <button onClick={() => setIsHome(!isHome)}>Toggle Home</button> */}
             {isHome? <Home /> : <Contact />}
         </div>
     );
