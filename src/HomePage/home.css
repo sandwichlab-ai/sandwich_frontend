@@ -1,4 +1,5 @@
 .home {
+    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -7,4 +8,54 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.home div {
+    top: 75% !important;
+    left: 77.8%;
+    position: absolute;
+    top: 324px;
+    width: 740px;
+    display: grid;
+    gap: 20px;
+}
+
+.home div >.home__join--us {
+    background-color: #FFFFFF;
+    border-radius: 79px;
+    color: #000000;
+    width: 176px;
+    height: 78px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family:#000000  MiSans;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 31.82px;
+}
+
+.home div >.home__go {
+    position: relative;
+    background-color: #8C68FF;
+    width: 78px;
+    height: 78px;
+    border-radius: 78px;
+    top: 0;
+    left: 0;
+    transform: translate(208%, -126%);
+    cursor: pointer;
+}
+
+.home div >.home__go img {
+    margin-top: 25px;
+}
+
+.home__image--bg {
+    position: absolute;
+    width: 78px; 
+    height: 78px;
+    border-radius: 79px;
+    background-color: #8C68FF;
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './contact.css';
 
 function Contact() {
-
+    // eslint-disable-next-line
     const [testData, setTestData] = useState([["First name", "Last name"], ["Country"], ["Occupation"], ["Email Address"]]);
     const [formData, setFormData] = useState([["", ""], [""], [""], [""]]);
  
@@ -29,7 +29,6 @@ function Contact() {
                             <div className="row" key={rowIndex}>
                                 {row.map((col, index) => {
                                     return(
-
                                         <div className="form-item" key={index}>
                                             <label style={{ color: "white" }}>{col}</label>
                                             <input type="text" placeholder={col} onChange={(e) =>handleFormChange(rowIndex, index, e.target.value)}/>

@@ -2,6 +2,7 @@
     background-color: transparent;
     position: fixed;
     background-color: linear-gradient(#000000 70%, #000000 0%);
+    z-index: 100;
 }
 
 .container {
