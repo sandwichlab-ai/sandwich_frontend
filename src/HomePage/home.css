@@ -1,4 +1,10 @@
 .home {
+    width: 100%;
     height: 100%;
-    background-image: url("/public/images/bgImage.png");
+}
+
+.home .image__home {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
