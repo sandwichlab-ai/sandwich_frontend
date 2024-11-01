@@ -42,7 +42,7 @@ function Contact() {
             "occupation": data[2][0],
             "email": data[3][0]
         }
-        axios.post("http://172.31.10.25:8080/submit", inputData).then((res) => {
+        axios.post("http://service1.my-namespace:8080/submit", inputData).then((res) => {
             console.log("request result",res);
         }).catch((err) => {
             console.log("request error",err);
