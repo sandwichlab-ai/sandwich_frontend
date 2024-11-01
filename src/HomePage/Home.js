@@ -8,7 +8,7 @@ function Home() {
     return (
         <div className="home">
             <img src={bgImage} alt="bg_image" className="image__home"/>
-            <div>
+            {/* <div>
                 <span className="home__join--us">Join US</span>
                 <span 
                     className="home__go"
@@ -18,7 +18,7 @@ function Home() {
                 >
                     <img src={goTarget} alt="goto_target"/>
                 </span>
-            </div>
+            </div> */}
         </div>
     );
 }
