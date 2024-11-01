@@ -8,7 +8,7 @@ function HomePage() {
     const [isHome, setIsHome] = useState(true);
 
     useEffect(() => {
-      
+      console.log("window size", window.innerWidth, window.innerHeight)
     }, [isHome])
 
     return (
