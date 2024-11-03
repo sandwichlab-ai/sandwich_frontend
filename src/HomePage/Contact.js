@@ -131,7 +131,7 @@ function Contact() {
                                                 type="text" 
                                                 placeholder={col} 
                                                 style={
-                                                    ( errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
+                                                    (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
                                                     selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
                                                 }
                                                 onChange={(e) => handleFormChange(rowIndex, index, e.target)}
@@ -143,7 +143,7 @@ function Contact() {
                                                 type="text" 
                                                 placeholder={col} 
                                                 style={
-                                                    errorData[rowIndex][index].length > 0 ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
+                                                    (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
                                                     selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
                                                 }
 
@@ -168,8 +168,11 @@ function Contact() {
                                                 </select>
                                             }
 
-                                            <label style={{ color: "red", minHeight: "20px", 
-    display: "inline-block" }}>{errorData[rowIndex][index]}</label>    
+                                           {sumbitBtnPressed && <label style={{ color: "red", minHeight: "20px", 
+    display: "inline-block" }}>{errorData[rowIndex][index]}</label>  } 
+
+    {!sumbitBtnPressed && <label style={{ color: "red", minHeight: "20px", 
+    display: "inline-block" }}></label> }
                                         </div>
                                     )
                                 })}
