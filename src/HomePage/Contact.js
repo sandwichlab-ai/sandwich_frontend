@@ -11,6 +11,7 @@ function Contact() {
     const [errorData, setErrorData] = useState([["First name is required", "Last name is required"], [""], [""], ["Email Address is required"]])
     const [selectedInput, setSelectedInput] = useState([0, 0])
     const [submitEnable, setSubmitEnable] = useState(false)
+    const [sumbitBtnPressed, setSubmitBtnPrssed] = useState(false)
     const countryOpts = [
         ["China", "China"],
         ["United States", "United States"],
@@ -52,11 +53,19 @@ function Contact() {
  
     const handleSubmit = (e) => {
         e.preventDefault();
+        setSubmitBtnPrssed(true)
+        if(!submitEnable) {
+            return;
+        }
         console.log("Submitted", formData);
         const newErrorData = [...errorData];
         for(let i = 0; i < formData.length; ++i) {
            for(let j = 0; j < formData[i].length; ++j) {
             newErrorData[i][j] = formData[i][j] === "" ? `'${testData[i][j]}' is required` : "";
+            if(i === 3 && j === 0) {
+                console.log("check email format", validateEmail(formData[i][j]))
+                newErrorData[i][j] = formData[i][j].length === 0 ? `'${testData[i][j]}' is required` : validateEmail(formData[i][j])? "" : `'${testData[i][j]}' is invalid`;
+            }
            }
         }
         console.log("error", newErrorData)
@@ -88,9 +97,10 @@ function Contact() {
         }
         setErrorData(newErrorData)
 
-        for(let el of newFormData) {
-            for(let element of el) {
-                if(element.length === 0) {
+        // check if all input is valid
+        for(let i = 0; i < newFormData.length; ++i) {
+            for(let j = 0; j < newFormData[i].length; ++j) {
+                if(newFormData[i][j].length === 0 || (i === 3 && j === 0 && validateEmail(newFormData[i][j]) === false)) {
                     setSubmitEnable(false);
                     return;
                 }
@@ -121,7 +131,7 @@ function Contact() {
                                                 type="text" 
                                                 placeholder={col} 
                                                 style={
-                                                    errorData[rowIndex][index].length > 0 ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
+                                                    ( errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
                                                     selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
                                                 }
                                                 onChange={(e) => handleFormChange(rowIndex, index, e.target)}
@@ -169,9 +179,8 @@ function Contact() {
                     <div className="btn__group">
                         <button 
                             type="submit" 
-                            disabled={!submitEnable} 
                             onClick={handleSubmit}
-                            style={{cursor: submitEnable? "pointer" : "not-allowed"}}
+                            style={{cursor: "pointer"}}
                             >Submit</button>
                     </div>
                 </form>
