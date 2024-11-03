@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import image from '../assets/images/image.png';
+import Navigate from '../components/Navigate.js';
 import axios from 'axios';
 import './contact.css';
 
-function Contact() {
+function Contact(props) {
     // eslint-disable-next-line
     const [testData, setTestData] = useState([["First name", "Last name"], ["Country"], ["Occupation"], ["Email Address"]]);
     const [formDataType, setFormDataType] = useState([["input", "input"], ["select"], ["select"], ["input"]])
@@ -44,6 +45,7 @@ function Contact() {
             "email": data[3][0]
         }
         axios.post("https://api.sandwichlab.ai/submit", inputData).then((res) => {
+        //    axios.get("http://jsonplaceholder.typicode.com/posts").then((res) => {
             console.log("request result",res);
         }).catch((err) => {
             console.log("request error",err);
@@ -111,7 +113,12 @@ function Contact() {
     }
 
     return (
+
         <div className="contact__container">
+             <Navigate 
+        isHome = {props.isHome}
+        setIsHome = {props.setIsHome}
+    />
             <h2 className="contact_title">
                 <span>Lets Have a Chat</span>
                 <img src={image} alt="contact_image" className="contact__chat" width={54} height={54}/>

@@ -1,3 +1,7 @@
+.home__container{
+   height: 100%;
+}
+
 .home {
     position: relative;
     width: 100%;

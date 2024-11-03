@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Contact from './Contact';
 import Home from './Home';
+import Navigate from '../components/Navigate.js';
 import './index.css'; 
 
 function HomePage() {
@@ -12,8 +13,8 @@ function HomePage() {
     }, [isHome])
 
     return (
-        <div className = "container">
-            <div className = "header">
+        <div className="wrapper">
+            {/* <div className = "header">
 
                 <div className = "header__left">
                 </div>
@@ -36,8 +37,9 @@ function HomePage() {
                         className = {isHome? 'remain' : 'selected'}
                         >Contact Us</span>
                 </div>
-            </div>
-            {isHome? <Home /> : <Contact />}
+              
+            </div> */}
+            {isHome? <Home isHome = {isHome} setIsHome = {setIsHome}/> : <Contact isHome = {isHome} setIsHome = {setIsHome}/>}
         </div>
     );
 }
