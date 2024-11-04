@@ -45,7 +45,6 @@ function Contact(props) {
             "email": data[3][0]
         }
         axios.post("https://api.sandwichlab.ai/submit", inputData).then((res) => {
-        //    axios.get("http://jsonplaceholder.typicode.com/posts").then((res) => {
             console.log("request result",res);
         }).catch((err) => {
             console.log("request error",err);
