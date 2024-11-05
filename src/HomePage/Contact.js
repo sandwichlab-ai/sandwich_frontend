@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import image from '../assets/images/image.png';
 import Navigate from '../components/Navigate.js';
 import axios from 'axios';
+// import { Auth } from 'aws-amplify';
 import './contact.css';
 
 function Contact(props) {
@@ -44,7 +45,7 @@ function Contact(props) {
             "occupation": data[2][0],
             "email": data[3][0]
         }
-        axios.post("https://api.sandwichlab.ai/submit", inputData).then((res) => {
+        axios.post("https://api.sandwichlab.ai/submit", inputData).then((res) => {   
             console.log("request result",res);
         }).catch((err) => {
             console.log("request error",err);
