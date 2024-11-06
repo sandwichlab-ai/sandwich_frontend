@@ -2,7 +2,7 @@ const aws_sandwich = {
     "aws_project_region": "sp_southeast-1",  // 替换为你的 Region
     "aws_cognito_region": "sp_southeast-1",  // 同样替换为你的 Region
     "aws_user_pools_id": "ap-southeast-1_IjaKNHN5k",  // 替换为你的 User Pool ID
-    "aws_user_pools_web_client_id": "6fq4fehkakj1fvm8jocji3prdi",  // 替换为你的 App Client ID
+    "aws_user_pools_web_client_id": "6cc58a4esgfbhngiq8437afip1",// "6fq4fehkakj1fvm8jocji3prdi",  // 替换为你的 App Client ID
     // 用户池属性 email , username
     "aws_user_attributes": [
         "email",
@@ -18,8 +18,8 @@ const aws_sandwich = {
             "preferred_username",
             "username"
         ],
-        "redirectSignIn": "http://localhost:3000/",
-        "redirectSignOut": "http://localhost:3000/",
+        "redirectSignIn": "https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse",
+        "redirectSignOut": "http://localhost:https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse/",
         "responseType": "code"
     }
 };
