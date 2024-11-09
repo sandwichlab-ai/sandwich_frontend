@@ -1,0 +1,78 @@
+.content__btn--group {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+}
+
+.content__btn--group :nth-child(1) {
+    width: 196px;
+    height: 56px;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+    font: "Roboto";
+    font-size: 20px;
+    margin-left: 35px;
+}
+
+.content__btn--group :nth-child(2) {
+    width: 196px;
+    height: 56px;
+    border: none;
+    background-color: #8C68FF;
+    color: #FFFFFF;
+    font: "Roboto";
+    font-size: 20px;
+    margin-left: 35px;
+}
+
+.addtional__information {
+    height: 20%;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    background-color: #FFFFFF;
+    min-height: 205px;
+}
+
+.addtional__information >label {
+    position: absolute;
+    left: 32px;
+    top: 40%;
+}
+
+.addtional__information >input {
+    position: absolute;
+    border: 1px solid #C4C4C4;
+    left: 32px;
+    top: 60%;
+    width: 50%;
+}
+
+.addtional__information--title{
+    position: absolute;
+    top: 21.5px;
+    left: 32px;
+    font-family: Poppins;
+    font-size: 20px;
+}
+
+.content__bussiness{
+    height: 40%;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    min-height: 409px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.account__connection {
+    background: white;
+    height: 16%;
+    margin-bottom: 15%;
+    min-height: 165px;
+}
