@@ -94,18 +94,26 @@ function AuthComponent(props) {
 
   const handleSubmit = () => {
     console.log("sign request")
-    window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
-    // axios.get("https://auth0.sandwichlab.ai/oauth2/authorize?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback").then(
-    //   res => {
-    //     console.log("res is: ", res)
-    //   // debugger
-    // }
-    // ).catch(
-    //   error => {
-    //     console.log("error is: ", error)
-    //     // debugger
-    //   }
-    // ) 
+    // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
+    axios.get("https://auth0.sandwichlab.ai/oauth2/login").then(
+      res => {
+        console.log("res is: ", res)
+      // debugger
+    }).catch(error => {
+      console.log("error is: ",error)
+    })
+    
+    axios.get("https://auth0.sandwichlab.ai/oauth2/authorize?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback").then(
+      res => {
+        console.log("res is: ", res)
+      // debugger
+    }
+    ).catch(
+      error => {
+        console.log("error is: ", error)
+        // debugger
+      }
+    ) 
     // navigate('/profile')
   }  
   const handleFormChange = () => {}

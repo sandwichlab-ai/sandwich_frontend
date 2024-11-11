@@ -12,6 +12,7 @@
     font: "Roboto";
     font-size: 20px;
     margin-left: 35px;
+    cursor: pointer;
 }
 
 .content__btn--group :nth-child(2) {
@@ -23,6 +24,7 @@
     font: "Roboto";
     font-size: 20px;
     margin-left: 35px;
+    cursor: pointer;
 }
 
 .addtional__information {
@@ -46,6 +48,8 @@
     left: 32px;
     top: 60%;
     width: 50%;
+    height: 50px;
+    border-radius: 12px;
 }
 
 .addtional__information--title{
@@ -64,6 +68,18 @@
     min-height: 409px;
 }
 
+.bussiness__content {
+    margin-top: 5%;
+    margin-left: 3%;
+    display: flex;
+}
+
+.bussiness__title {
+    text-align: start;
+    padding-left: 32px;
+    padding-top: 21.5px;
+}
+
 .content {
     display: flex;
     flex-direction: column;
@@ -71,8 +87,135 @@
 }
 
 .account__connection {
+    position: relative;
     background: white;
     height: 16%;
     margin-bottom: 15%;
     min-height: 165px;
+}
+
+.account__connection--wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    top: 35%;
+}
+
+.account__connection--wrapper >input {
+    width: 100%;
+    padding-left: calc(5% + 22px); 
+    height: 36px
+}
+
+.account__connection--wrapper button{
+    position: absolute;
+    z-index: 10000000;
+    left: 36%;
+    top: 50%;
+    transform: translateY(40%);
+    width: 40px;
+    height: 40px;
+    width: 20%;
+    text-align: left;
+    background-color: #8C68FF;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.account__connection--title {
+    position: absolute;
+    top: 21.5px;
+    left: 32px;
+    font-family: Poppins;
+    font-size: 20px;
+}
+
+.account__connection input {
+    position: absolute;
+    border: 1px solid #C4C4C4;
+    left: 32px;
+    top: 44%;
+    width: 50%;
+    height: 66px;
+    border-radius: 12px;
+}
+
+.ant-input-data-count{
+    padding-bottom: 80px;
+    padding-right: 15px;
+}
+
+.bussiness__inspire--btn {
+   z-index: 1000;
+   border: 1px #8C68FF solid;
+   color: #8C68FF;
+   position: absolute;
+   right: 6px;
+   bottom: 14px;
+   width: 157px;
+   height: 40px;
+   cursor: pointer;
+}
+
+.bussiness__btn--group {
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-around; */
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex: 1;
+    bottom: 10%;
+    width: 100%;
+    
+}
+
+.bussiness__btn {
+    z-index: 1000;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+}
+
+.textarea__wrapper{
+    position: relative;
+    width: 48%;
+}
+
+.textarea__display {
+    width: 48%;
+    position: relative;
+}
+
+.bussiness__btn--close 
+{
+    z-index: 1000;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+    cursor: pointer;
+}
+
+.bussiness__btn--accept {
+    z-index: 1000;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+    cursor: pointer;
+}
+
+.bussiness__btn--regenerate {
+    z-index: 1000;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+    cursor: pointer;
+}
+
+.meta__icon {
+    position: absolute;
+    z-index: 10000000;
+    left: 6%;
+    top: 50%;
+    transform: translateY(40%);
+    width: 40px;
+    height: 40px;
 }
