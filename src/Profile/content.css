@@ -109,7 +109,6 @@
 
 .account__connection--wrapper button{
     position: absolute;
-    z-index: 10000000;
     left: 36%;
     top: 50%;
     transform: translateY(40%);

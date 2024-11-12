@@ -30,7 +30,8 @@ function AuthComponent(props) {
    console.log("redirect uri is: ", redirectUri)
 
       // window.location.href = "https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=6cc58a4esgfbhngiq8437afip1&redirect_uri=https://openidconnect.net/callback";
-      window.open(`https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`)  
+      // window.open(`https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`)  
+      window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
       //   const inputData = {
       //     // "client_id": "6fq4fehkakj1fvm8jocji3prdi",
       //     // "redirect_uri": "https://openidconnect.net/callback",
@@ -45,36 +46,27 @@ function AuthComponent(props) {
     };  
 
     useEffect(() => {
-      if(localStorage.getItem("token_obj") != "[object Object]") {
-          console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj")))
+      // console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj")))
+      console.log("start time ", JSON.parse(localStorage.getItem("token_obj_header")))
+      debugger
+      if(localStorage.getItem("token_obj") != null && localStorage.getItem("token_obj") != "[object Object]" && localStorage.getItem("token_obj_header")!= null) {
+          console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj"),"start time ", JSON.parse(localStorage.getItem("token_obj_header"))))
+          const dateHeader = JSON.parse(localStorage.getItem("token_obj_header"))['date'];
+          console.log("date header: ", dateHeader, JSON.parse(localStorage.getItem("token_obj_header")))
+          const dateObject = new Date(dateHeader);
+          console.log("create time: ", dateObject)
+          const expireData = JSON.parse(localStorage.getItem("token_obj"))['expires_in']
+          const expirationTime = new Date(dateObject.getTime() + 3600 * 1000);
+          console.log("date data: ", expirationTime, dateObject.getTime() + expireData * 1000,"current time", Date.now())
+         
+
+      
       }
     })
 
-    // useEffect(() => {
-    //   const queryParams = new URLSearchParams(location.search);
-    //   const code = queryParams.get("code");
-  
-    //  console.log("code is: ", code);
-     
-    //   if (code) {
-    //     // 发送 code 到服务器或进行后续处理
-    //     console.log("Authorization code:", code);
-    //     axios.post('http://localhost:5000/auth/contact', { code })
-    // .then(response => {
-    //   const { user, token } = response.data;
-    //   // 持久化到 localStorage 或者更新到应用状态
-    //   localStorage.setItem('user', JSON.stringify(user));
-    //   localStorage.setItem('access_token', token);
-    // })
-    // .catch(error => {
-    //   console.error('Error during login:', error);
-    // });
-
-     //  }
-    // }, [location]);
-
   const handleSubmit = () => {
     console.log("sign request")
+    // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
     window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/profile")
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
 
@@ -87,33 +79,10 @@ function AuthComponent(props) {
       // 确保获取到token并保存
       const receivedToken = event.data.token;
       if (receivedToken) {
-          // setToken(receivedToken);
-          // authWindow.close();  // 成功获取后关闭弹窗
+       
       }
   }, { once: true });
-
-  // axios.get("https://auth0.sandwichlab.ai/oauth2/callback?code=7924c92d-ec69-492c-995b-03000e62c7fb").then(res => console.log("res is: ", res)).catch(error => console.log("error is: ", error))
-    
-    // axios.get("https://auth0.sandwichlab.ai/oauth2/login").then(
-    //   res => {
-    //     console.log("res is: ", res)
-    //   // debugger
-    // }).catch(error => {
-    //   console.log("error is: ",error)
-    // })
-    
-    // axios.get("https://auth0.sandwichlab.ai/oauth2/authorize?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback").then(
-    //   res => {
-    //     console.log("res is: ", res)
-    //   // debugger
-    // }
-    // ).catch(
-    //   error => {
-    //     console.log("error is: ", error)
-    //     // debugger
-    //   }
-    // ) 
-    // navigate('/profile')
+  
   }  
   const handleFormChange = () => {}
   const handleSelect = () => {}
@@ -178,10 +147,6 @@ function AuthComponent(props) {
                 </form>
             </div>
         </div>
-
-
-      {/* <button onClick = {() => handleFacebookLogin()}>auth</button> */}
-      
     </div>
   );
 }
