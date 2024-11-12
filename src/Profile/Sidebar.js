@@ -1,27 +1,21 @@
 import React, {useState} from 'react';
 import image from '../assets/images/logosandwich.png';
-import Profile from '../assets/images/user.png';
 import { ReactComponent as Icon } from "../assets/images/Icon.svg";
 import { ReactComponent as Ads } from "../assets/images/ads.svg";
 import { ReactComponent as Creative } from "../assets/images/creative.svg";
 import { ReactComponent as Setting } from "../assets/images/setting.svg";
 
-// import Ads from "../assets/images/ads.png"
-// import Creative from "../assets/images/creative.png"
-// import Setting from "../assets/images/setting.png"
 import './sidebar.css'
 
 function Sidebar() {
 
     const [options, setOptions] = useState(["Profile", "Ad Projects", "Creatives", "Settings"])
-    // const [optslogo, setOptslogo] = useState([Profile, Ads, Creative, Setting]) 
     const [iconColor, setIconColor] = useState(["black", "black",  "black", "black"])  
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     return (
         <div className="profile__sidebar--container">
-            <img src={image}/>
-           
+            <img src={image} alt=""/>
             <div className="profile__sidebar--content">
                 <div 
                    key="0"
@@ -88,16 +82,6 @@ function Sidebar() {
                     color: selectedIndex === 3 ? "#8C68FF" : "black"
                 }}>{options[3]}</span></div>
 
-                {
-                    // options.map((el, index) => {
-                    //     return (
-                    //     <div> 
-                    //        <img src={optslogo[index]}/>  <span>{el}</span>
-                    //        {/* {optslogo[index]}  <span>{el}</span> */}
-                    //     </div>
-                    //    )
-                    // })
-                }
             </div>
         </div>
     )

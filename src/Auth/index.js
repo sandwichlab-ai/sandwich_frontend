@@ -45,75 +45,74 @@ function AuthComponent(props) {
     };  
 
     useEffect(() => {
-      // axios.post('http://localhost:5000/auth/login', { code:"123" })
-      // .then(response => {}).catch(error => {
-      // console.error('Error during login:', error);
-      // });
-    })
-
-    useEffect(() => {
-      const queryParams = new URLSearchParams(location.search);
-      const code = queryParams.get("code");
-  
-     
-      if (code) {
-        // 发送 code 到服务器或进行后续处理
-        console.log("Authorization code:", code);
-        axios.post('http://localhost:5000/auth/contact', { code })
-    .then(response => {
-      const { user, token } = response.data;
-      // 持久化到 localStorage 或者更新到应用状态
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('access_token', token);
-    })
-    .catch(error => {
-      console.error('Error during login:', error);
-    });
-
-
-      //   // 在此处调用你的后端服务，交换该 code 换取用户访问令牌
-      //   fetch("https://your-backend.com/auth/facebook", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ code }),
-      //   })
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       console.log("Token data:", data);
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error fetching token:", error);
-      //     });
-      // } else {
-      //   console.error("Authorization code not found.");
-      // }
+      if(localStorage.getItem("token_obj") != "[object Object]") {
+          console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj")))
       }
-    }, [location]);
+    })
+
+    // useEffect(() => {
+    //   const queryParams = new URLSearchParams(location.search);
+    //   const code = queryParams.get("code");
+  
+    //  console.log("code is: ", code);
+     
+    //   if (code) {
+    //     // 发送 code 到服务器或进行后续处理
+    //     console.log("Authorization code:", code);
+    //     axios.post('http://localhost:5000/auth/contact', { code })
+    // .then(response => {
+    //   const { user, token } = response.data;
+    //   // 持久化到 localStorage 或者更新到应用状态
+    //   localStorage.setItem('user', JSON.stringify(user));
+    //   localStorage.setItem('access_token', token);
+    // })
+    // .catch(error => {
+    //   console.error('Error during login:', error);
+    // });
+
+     //  }
+    // }, [location]);
 
   const handleSubmit = () => {
     console.log("sign request")
+    window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/profile")
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
-    axios.get("https://auth0.sandwichlab.ai/oauth2/login").then(
-      res => {
-        console.log("res is: ", res)
+
+
+    window.addEventListener("message", (event) => {
+      console.log("event is: ", event)
       // debugger
-    }).catch(error => {
-      console.log("error is: ",error)
-    })
-    
-    axios.get("https://auth0.sandwichlab.ai/oauth2/authorize?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback").then(
-      res => {
-        console.log("res is: ", res)
-      // debugger
-    }
-    ).catch(
-      error => {
-        console.log("error is: ", error)
-        // debugger
+      if (event.origin !== "https://auth0.sandwichlab.ai") return;
+
+      // 确保获取到token并保存
+      const receivedToken = event.data.token;
+      if (receivedToken) {
+          // setToken(receivedToken);
+          // authWindow.close();  // 成功获取后关闭弹窗
       }
-    ) 
+  }, { once: true });
+
+  // axios.get("https://auth0.sandwichlab.ai/oauth2/callback?code=7924c92d-ec69-492c-995b-03000e62c7fb").then(res => console.log("res is: ", res)).catch(error => console.log("error is: ", error))
+    
+    // axios.get("https://auth0.sandwichlab.ai/oauth2/login").then(
+    //   res => {
+    //     console.log("res is: ", res)
+    //   // debugger
+    // }).catch(error => {
+    //   console.log("error is: ",error)
+    // })
+    
+    // axios.get("https://auth0.sandwichlab.ai/oauth2/authorize?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback").then(
+    //   res => {
+    //     console.log("res is: ", res)
+    //   // debugger
+    // }
+    // ).catch(
+    //   error => {
+    //     console.log("error is: ", error)
+    //     // debugger
+    //   }
+    // ) 
     // navigate('/profile')
   }  
   const handleFormChange = () => {}
