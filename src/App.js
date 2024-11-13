@@ -13,23 +13,12 @@ Amplify.configure(aws_exports);
 function App() {
   return (
     <div className="App">
-        {/* <HomePage /> */}
-       
-        {/* <Router> */}
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/profile" element={<Profile />} />
-                {/* <Route path="/" element={<HomePage />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/login" element={<LoginPage />} /> */}
             </Routes>
-        {/* </Router> */}
-       
-        {/* <HomePage /> */}
-        {/* <Auth /> */}
-        {/* <LoginPage /> */}
     </div>
   );
 }

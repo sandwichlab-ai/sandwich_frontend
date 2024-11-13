@@ -10,7 +10,7 @@ import axios from 'axios';
 function Profile() {
     const navigate = useNavigate();
 
-    useEffect(async () => {
+    useEffect( () => {
         // const user = await signIn({"username": "admin", "password": "admin123"});
         // console.log("user is: ", user);
 
@@ -47,6 +47,31 @@ function Profile() {
             console.error("Authorization code not found in URL.");
         }
     }, []);
+
+    useEffect(() => {
+            console.log("66 token interval")
+            const checkTokenExpiration = setInterval(() => {
+                console.log("68 inside interval")
+                const tokenObj = JSON.parse(localStorage.getItem("token_obj"));
+                const tokenObjHeader = JSON.parse(localStorage.getItem("token_obj_header"));
+                if (tokenObj && tokenObj.expires_in && tokenObjHeader && tokenObjHeader.date) { 
+                    // const expirationTime = new Date(tokenObjHeader.date).getTime() + tokenObj.expires_in * 1000;
+                    const expirationTime = new Date(tokenObjHeader.date).getTime() + tokenObj.expires_in * 1000;
+                console.log("cur time", Date.now(), "expire time:", expirationTime)
+                if (Date.now() > expirationTime) {
+                    console.log("token expired");
+                    localStorage.removeItem("token_obj");
+                    localStorage.removeItem("token_obj_header");
+                    navigate("/auth");
+                }
+                }
+            }, 1000)
+
+
+            return () => {
+                clearInterval(checkTokenExpiration)
+            }
+    }, [navigate])
     
    return(
     <div className="profile__container">

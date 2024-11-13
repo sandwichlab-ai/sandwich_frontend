@@ -48,7 +48,6 @@ function AuthComponent(props) {
     useEffect(() => {
       // console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj")))
       console.log("start time ", JSON.parse(localStorage.getItem("token_obj_header")))
-      debugger
       if(localStorage.getItem("token_obj") != null && localStorage.getItem("token_obj") != "[object Object]" && localStorage.getItem("token_obj_header")!= null) {
           console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj"),"start time ", JSON.parse(localStorage.getItem("token_obj_header"))))
           const dateHeader = JSON.parse(localStorage.getItem("token_obj_header"))['date'];

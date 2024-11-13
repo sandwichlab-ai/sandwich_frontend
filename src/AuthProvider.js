@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkTokenExpiry = () => {
-    if(localStorage.getItem("token_obj") != null && localStorage.getItem("token_obj") != "[object Object]" && localStorage.getItem("token_obj_header")!= null) {
+    if(localStorage.getItem("token_obj") !== null && localStorage.getItem("token_obj") != "[object Object]" && localStorage.getItem("token_obj_header")!= null) {
         console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj"),"start time ", JSON.parse(localStorage.getItem("token_obj_header"))))
         const dateHeader = JSON.parse(localStorage.getItem("token_obj_header"))['date'];
         console.log("date header: ", dateHeader, JSON.parse(localStorage.getItem("token_obj_header")))
