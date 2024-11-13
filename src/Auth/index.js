@@ -66,7 +66,7 @@ function AuthComponent(props) {
   const handleSubmit = () => {
     console.log("sign request")
     // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
-    window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/profile")
+    window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://test.sandwichlab.ai/profile")
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
 
 
