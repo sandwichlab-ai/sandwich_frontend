@@ -18,7 +18,9 @@ function Home(props) {
         </div>
         </div>
         <div className="home__footer">
-            <h1>Footer</h1>
+            <h1>Company</h1>
+            <h1>Contact us</h1>
+            <h1>Join us</h1>
         </div>
         </div>
     );

@@ -4,6 +4,7 @@
     background-color: gray;
     display: flex;
     flex-direction: row;
+    overflow: hidden;
     /* justify-content: flex-start; */
 }
 
@@ -11,6 +12,12 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+.profile__right--container > .content {
+    /* overflow: auto; */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .title {

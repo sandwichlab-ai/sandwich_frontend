@@ -75,6 +75,7 @@ function Content() {
                     </div>
             </div>
 
+            <div className="content__profile--footer">
             <div className="content__btn--group">
                 <button className="content__btn">
                     cancel
@@ -82,6 +83,7 @@ function Content() {
                 <button className="content__btn">
                     save
                 </button>
+            </div>
             </div>
         </div>
     )

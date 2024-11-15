@@ -1,7 +1,16 @@
+.content__profile--footer{
+   height: 16%;  
+   background: transparent; 
+   position: relative;
+   bottom: 30px;
+}
+
 .content__btn--group {
-    position: fixed;
+    /* position: fixed;
     right: 30px;
-    bottom: 30px;
+    bottom: 30px; */
+    display: flex;
+    justify-content: flex-end;
 }
 
 .content__btn--group :nth-child(1) {
@@ -90,7 +99,7 @@
     position: relative;
     background: white;
     height: 16%;
-    margin-bottom: 15%;
+    margin-bottom: 6%;
     min-height: 165px;
 }
 
