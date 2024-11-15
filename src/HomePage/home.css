@@ -1,4 +1,5 @@
 .home__container{
+   min-width: 810px; 
    height: 100%;
    overflow: auto;
    background-color: black;
@@ -75,7 +76,16 @@
   display: none;
 }
 
+.home__logo {
+    display: flex;
+    margin-left: 30px;
+    margin-top: 80px;
+}
+
 @media (min-width: 810px) {
+    .home__container{
+        min-width: 810px;
+    }
    .home__footer h1 {
     color: white;
     display: block;

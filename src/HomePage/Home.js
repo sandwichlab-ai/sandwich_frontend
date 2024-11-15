@@ -1,6 +1,7 @@
 import React from 'react';
 import bgImage from '../assets/images/bgImage.png';
 import goTarget from '../assets/images/Union.png'
+import footer from '../assets/images/footer.png'
 import Navigate from '../components/Navigate.js';
 import './home.css';
 
@@ -17,8 +18,9 @@ function Home(props) {
           
         </div>
         </div>
-        <div className="home__footer">
-        </div>
+        {/* <div className="home__footer"> */}
+            <img src={footer} className="home__logo"/>
+        {/* </div> */}
         </div>
     );
 }
