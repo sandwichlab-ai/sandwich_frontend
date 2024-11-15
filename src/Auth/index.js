@@ -91,8 +91,13 @@ function AuthComponent(props) {
     <div className="auth__container">
       <img src={image} alt="logo" className="auth_logo" />
 
-      <div className='ontent__container--auth'>        
+      <div className='content__container--auth'> 
+            <div>
+                <div className="auth__title">Create an account</div>
+                <div className="auth__title--note">Already have an account? <a style={{textDecoration:'underline'}}>Log in</a> </div>
+            </div>       
             <div className="contact__form--auth">
+                <div>Enter your email address to create an account</div>
                 <form>
                     {testData.map((row, rowIndex) => {
                         return(
@@ -102,12 +107,8 @@ function AuthComponent(props) {
                                         <div className="auth__form--item" key={index}>
                                             <label style={{ color: "#666666" }}>{col}</label>
                                             {formDataType[rowIndex][index] === 'input' && <input 
-                                                type="text" 
+                                                type="text"
                                                 placeholder={col} 
-                                                style={
-                                                    (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
-                                                    selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
-                                                }
                                                 onChange={(e) => handleFormChange(rowIndex, index, e.target)}
                                                 onSelect={(e) => handleSelect(rowIndex, index, e.target.value)} 
                                                 />
@@ -144,6 +145,9 @@ function AuthComponent(props) {
                             </button>
                     </div>
                 </form>
+            </div>
+            <div className="contact__form--notes">
+               By signing up you agree to the <a style={{textDecoration:'underline', fontWeight: "bold"}}>Term of use </a> and  <a style={{textDecoration:'underline', fontWeight: "bold"}}>Privacy Policy. </a>
             </div>
         </div>
     </div>

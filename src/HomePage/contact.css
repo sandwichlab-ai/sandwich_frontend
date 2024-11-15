@@ -56,6 +56,7 @@
     background-color: #333333;
     border-color: rgba(140, 104, 255, 0.2);
     border-radius: 6px;
+    padding-left: 16px;
     color: #FFFFFF;
     height: 40px;
 }
@@ -72,6 +73,10 @@
 .contact__select .ant-select-selector{
     border-color: rgba(140, 104, 255, 0.2) !important;
     background-color: #333333 !important;
+}
+
+.contact__select .ant-select-selector > .ant-select-selection-item {
+    padding: 0px 5px;
 }
 
 .contact__select .ant-select-selector > .ant-select-selection-item{
