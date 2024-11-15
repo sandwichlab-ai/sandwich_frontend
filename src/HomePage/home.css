@@ -1,5 +1,7 @@
 .home__container{
    height: 100%;
+   overflow: auto;
+   background-color: black;
 }
 
 .home {
@@ -62,4 +64,22 @@
     height: 78px;
     border-radius: 79px;
     background-color: #8C68FF;
+}
+
+.home__footer {
+    /* height: 100%; */
+    background-color: black;
+}
+
+.home__footer h1 {
+  display: none;
+}
+
+@media (min-width: 810px) {
+   .home__footer h1 {
+    color: white;
+    display: block;
+    /* height:500px; */
+    background-color: black;
+  }
 }

@@ -1,6 +1,7 @@
 .contact_title {
     position: absolute;
-    top: 222px;
+    /* top: 222px; */
+    top: 25%;
     width: 100%;
     font-family: white MiSans;
     color: white;
@@ -23,7 +24,8 @@
 
 .contact__container{
     height: 100%;
-    top: 324px;
+    /* top: 324px; */
+    top: 35%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -63,7 +65,35 @@
     border-color: rgba(140, 104, 255, 0.2);
     border-radius: 6px;
     color: #FFFFFF;
-    height: 40px;
+    height: 240px;
+
+}
+
+.contact__select .ant-select-selector{
+    border-color: rgba(140, 104, 255, 0.2) !important;
+    background-color: #333333 !important;
+}
+
+.contact__select .ant-select-selector > .ant-select-selection-item{
+    color: white;
+    text-align: start;
+}
+
+.contact__select .ant-select-selector > .ant-select-item-option-selected {
+    background-color: #F1F1F1 !important;
+}
+
+.form-item > select option {
+    /* display: none; */
+        background-color: red; /* 未选中时背景颜色 */
+        padding-top: 3px;  /* 控制选项上下距离 */
+        padding-bottom: 3px; /* 控制选项上下距离 */
+        height: 37px; /* 每个选项的高度 */
+        font-family: 'MiSans', sans-serif;
+        font-weight: 330;
+        font-size: 16px;
+        line-height: 21.22px; /* 行高 */
+      
 }
 
 label {
@@ -86,4 +116,39 @@ label {
     font-weight: 330;
     font-size: 22px;
     line-height: 31.82px;
+}
+
+.select__option {
+    background-color: red;
+}
+
+@media (max-width: 810px) {
+    .contact__form {
+        width: 80vw; 
+        top: 224px;
+        margin: 0 auto; 
+        
+    }
+    .contact__form >form {
+        width: 80vw;
+    }
+    .btn__group button { 
+        width: 80vw;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+        grid-template-rows: repeat(auto-fit, minmax(20px, 80px));
+        gap: 20px;
+    }
+
+   .contact_title {
+    position: absolute;
+    top: 140px;
+    width: 100%;
+    font-family: white MiSans;
+    color: white;
+    margin: 0 auto;
+   }
 }

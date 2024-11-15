@@ -1,9 +1,45 @@
 import { useEffect, useState } from 'react';
 import image from '../assets/images/image.png';
+import vector from '../assets/images/Vector.png'
 import Navigate from '../components/Navigate.js';
 import axios from 'axios';
+import { Dropdown, Menu, Button, Select } from 'antd';
 // import { Auth } from 'aws-amplify';
 import './contact.css';
+
+const items = [
+  {
+    key: '1',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        1st menu item
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+        2nd menu item
+      </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+        3rd menu item
+      </a>
+    ),
+  },
+];
+
+const menu = (
+    <Menu>
+      <Menu.Item key="1">Option 1</Menu.Item>
+      <Menu.Item key="2">Option 2</Menu.Item>
+    </Menu>
+  );
 
 function Contact(props) {
     // eslint-disable-next-line
@@ -14,26 +50,48 @@ function Contact(props) {
     const [selectedInput, setSelectedInput] = useState([0, 0])
     const [submitEnable, setSubmitEnable] = useState(false)
     const [sumbitBtnPressed, setSubmitBtnPrssed] = useState(false)
+    // const countryOpts = [
+    //     ["China", "China"],
+    //     ["United States", "United States"],
+    //     ["United Kingdom", "United Kingdom"],
+    //     ["Japan", "Japan"],
+    //     ["Australia", "Australia"],
+    //     ["Canada", "Canada"],
+    //     ["Germany", "Germany"],
+    //     ["France", "France"],
+    //     ["Italy", "Italy"],
+    //     ["Spain", "Spain"]
+    // ]
+
     const countryOpts = [
-        ["China", "China"],
-        ["United States", "United States"],
-        ["United Kingdom", "United Kingdom"],
-        ["Japan", "Japan"],
-        ["Australia", "Australia"],
-        ["Canada", "Canada"],
-        ["Germany", "Germany"],
-        ["France", "France"],
-        ["Italy", "Italy"],
-        ["Spain", "Spain"]
+        { label: "China", value: "China"},
+        { label: "United States", value:"United States"},
+        { label:"United Kingdom", value:"United Kingdom"},
+        { label:"Japan", value:"Japan"},
+        { label:"Australia", value:"Australia"},
+        { label:"Canada", value:"Canada"},
+        { label:"Germany", value:"Germany"},
+        { label:"France", value:"France"},
+        { label:"Italy", value:"Italy"},
+        { label:"Spain", value:"Spain"}
     ]
 
+    // const occupationOpts = [
+    //     ["Student", "Student"],
+    //     ["Engineer", "Engineer"],
+    //     ["Doctor", "Doctor"],
+    //     ["Teacher", "Teacher"],
+    //     ["Lawyer", "Lawyer"],
+    //     ["Other", "Other"]
+    // ]
+
     const occupationOpts = [
-        ["Student", "Student"],
-        ["Engineer", "Engineer"],
-        ["Doctor", "Doctor"],
-        ["Teacher", "Teacher"],
-        ["Lawyer", "Lawyer"],
-        ["Other", "Other"]
+        { label: "Student", value: "Student"},
+        { label: "Engineer", value: "Engineer"},
+        { label: "Doctor", value: "Doctor"},
+        { label: "Teacher", value: "Teacher"},
+        { label: "Lawyer", value: "Lawyer"},
+        { label: "Other", value: "Other"}
     ]
 
     const postData = (data) => {
@@ -80,22 +138,28 @@ function Contact(props) {
         setSelectedInput([rowIndex, index]);
     }
 
+    const handleSelectChange = (value, rowIndex, index) => {
+       console.log("value is: ",rowIndex, index, value)
+       setSelectedInput([rowIndex, index])
+       handleFormChange(rowIndex, index, value)
+    }
+
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
-    const handleFormChange = (rowIndex, index, target) => {
-        console.log("target name", target.style)
-        console.log(rowIndex, index);
+    const handleFormChange = (rowIndex, index, value) => {
+        console.log("target name", value)
+        console.log(rowIndex, index, value);
         const newFormData = [...formData];
-        newFormData[rowIndex][index] = target.value;
+        newFormData[rowIndex][index] = value;
         setFormData(newFormData);
         const newErrorData = [...errorData];
-        newErrorData[rowIndex][index] = target.value === "" ? `'${testData[rowIndex][index]}' is required` : "";
+        newErrorData[rowIndex][index] = value === "" ? `'${testData[rowIndex][index]}' is required` : "";
         if(rowIndex === 3 && index === 0) {
-            console.log("check email format", validateEmail(target.value))
-            newErrorData[rowIndex][index] = target.value.length === 0 ? `'${testData[rowIndex][index]}' is required` : validateEmail(target.value)? "" : `'${testData[rowIndex][index]}' is invalid`;
+            console.log("check email format", validateEmail(value))
+            newErrorData[rowIndex][index] = value.length === 0 ? `'${testData[rowIndex][index]}' is required` : validateEmail(value)? "" : `'${testData[rowIndex][index]}' is invalid`;
         }
         setErrorData(newErrorData)
 
@@ -133,7 +197,8 @@ function Contact(props) {
                                 {row.map((col, index) => {
                                     return(
                                         <div className="form-item" key={index}>
-                                            <label style={{ color: "white" }}>{col}</label>
+                                            <label style={{ color :  (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? "red" : "white" }}>{col}</label>
+                                    
                                             {formDataType[rowIndex][index] === 'input' && <input 
                                                 type="text" 
                                                 placeholder={col} 
@@ -141,42 +206,67 @@ function Contact(props) {
                                                     (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
                                                     selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
                                                 }
-                                                onChange={(e) => handleFormChange(rowIndex, index, e.target)}
+                                                onChange={(e) => handleFormChange(rowIndex, index, e.target.value)}
                                                 onSelect={(e) => handleSelect(rowIndex, index, e.target.value)} 
                                                 />
                                                 }
 
-                                            {formDataType[rowIndex][index] === 'select' && <select 
-                                                type="text" 
-                                                placeholder={col} 
-                                                style={
-                                                    (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
-                                                    selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
-                                                }
+                                            {(formDataType[rowIndex][index] === 'select' && rowIndex === 1) && 
 
-                                                onChange={(e) => handleFormChange(rowIndex, index, e.target)}
-                                                onSelect={(e) => handleSelect(rowIndex, index, e.target.value)} 
-                                                >
-                                                    {
-                                                        rowIndex === 1 && countryOpts.map((country, index) => {
-                                                            return(
-                                                                <option key={index} value={country[1]}>{country[0]}</option>
-                                                            )
-                                                        })
-                                                    }
+                                            <Select 
+                                               className="contact__select"
+                                               options = {countryOpts}
+                                               defaultValue={countryOpts[0].value}
+                                               onChange={(value) => handleSelectChange(value, rowIndex, index)}
+                                               />
 
-                                                    {
-                                                        rowIndex === 2 && occupationOpts.map((occupation, index) => {
-                                                            return(
-                                                                <option key={index} value={occupation[1]}>{occupation[0]}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
-                                            }
+                                              
+
+                                             
+
+                                            // <select 
+                                            //     type="text" 
+                                            //     placeholder={col} 
+                                            //     style={
+                                            //         (sumbitBtnPressed && errorData[rowIndex][index].length > 0) ? {borderColor:'rgba(255, 0, 0, 0.8)'} :
+                                            //         selectedInput[0] === rowIndex && selectedInput[1] === index? {borderColor: 'rgba(140, 104, 255, 0.8)'} : {borderColor: 'rgba(140, 104, 255, 0.2)'}
+                                            //     }
+
+                                            //     onChange={(e) => handleFormChange(rowIndex, index, e.target)}
+                                            //     onSelect={(e) => handleSelect(rowIndex, index, e.target.value)} 
+                                            //     >
+                                            //         {
+                                            //             rowIndex === 1 && countryOpts.map((country, index) => {
+                                            //                 return(
+                                            //                     <option key={index} value={country[1]}>{country[0]}</option>
+                                            //                 )
+                                            //             })
+                                                      
+                                            //         }
+
+                                            //         {
+                                            //             rowIndex === 2 && occupationOpts.map((occupation, index) => {
+                                            //                 return(
+                                            //                     <option key={index} value={occupation[1]}>{occupation[0]}</option>
+                                            //                 )
+                                            //             })
+                                            //         }
+                                            //     </select>      
+                                             
+                                           }
+
+                                           {
+                                            (formDataType[rowIndex][index] === 'select' && rowIndex === 2) && 
+                                             <Select 
+                                             className="contact__select"
+                                             options = {occupationOpts}
+                                             defaultValue={occupationOpts[0].value}
+                                             onChange={(value) => handleSelectChange(value, rowIndex, index)}
+                                             /> 
+                                           }
 
                                            {sumbitBtnPressed && <label style={{ color: "red", minHeight: "20px", 
-    display: "inline-block" }}>{errorData[rowIndex][index]}</label>  } 
+    display: "inline-block", lineHeight:"20px" }}>{errorData[rowIndex][index].length > 0 && <img src={vector} width="19" height="19"/>} <span>{errorData[rowIndex][index]}</span> </label>  } 
 
     {!sumbitBtnPressed && <label style={{ color: "red", minHeight: "20px", 
     display: "inline-block" }}></label> }

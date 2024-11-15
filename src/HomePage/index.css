@@ -9,24 +9,24 @@
 }
 
 .container {
-    height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
+    /* overflow: hidden; */
     background-color: black;
+    overflow: auto;
 }
 
 .header {
     position: fixed;
     width: 100%;
-    height: 150px;
+    height: 136px;
 }
 
 .header__left {
     position: absolute;
-    top: 40px;
-    left: 30px;
+    top: 38px;
+    left: 100px;
     /* transform: translateY(-50%); */
     width: 80px;
     height: 60px;
@@ -36,19 +36,20 @@
   .header__btn--group {
     position: absolute;
     background: white;
-    width: 312px;
-    height: 70px;
+    width: 360px;
+    height: 64px;
     border-radius: 88px;
     left: 50%;
-    top: 40px;
+    top: 38px;
     transform: translate(-50%);
     display: flex;
+    justify-content: center;
     align-items: center;
   }
 
 .header__btn--group >.selected {
     font-family: #8C68FF MiSans;
-    margin-left: 40px;
+    width: 50%;
     font-weight: 700;
     font-size: 24px;
     line-height: 31.82px;
@@ -57,13 +58,71 @@
     cursor: pointer;
 }
 
+.header__btn--group >.selected::after {
+    content: '';            
+    position: absolute;     
+    bottom: 3px;           
+    transform: translateX(850%); 
+    width: 10px;             
+    height: 10px;           
+    background-color: #8C68FF; 
+    border-radius: 50%;        
+    display: block;            
+  
+}
+
+/* .header__btn--group >.selected.active::after {
+    display: block;
+}  */
+
 .header__btn--group >.remain {
     font-family: #999999 MiSans;
-    margin-left: 30px;
+    width: 50%;
     font-weight: 500;
     font-size: 24px;
     line-height: 31.82px;
 }
 .header__btn--group >.remain:hover {
     cursor: pointer;
+}
+
+@media (max-width: 810px) {
+   .header__btn--group {
+        width: 289px;
+        height: 58px;
+    }
+
+    .header__btn--group >.remain {
+        
+        /* padding-left: 19px; */
+        width: 50%;
+    }
+
+    .header__btn--group >.selected {
+        width: 50%;
+        /* padding-right: 27px; */
+    }
+
+    .header__btn--group >.selected::after {
+        content: '';            
+        position: absolute;     
+        bottom: 3px;           
+        transform: translateX(700%); 
+        width: 10px;             
+        height: 10px;           
+        background-color: #8C68FF; 
+        border-radius: 50%;        
+        display: block;            
+      
+    }
+
+    .header__left {
+        position: absolute;
+        top: 38px;
+        left: 32px;
+        /* transform: translateY(-50%); */
+        width: 80px;
+        height: 60px;
+        background-image: url("/public/images/logo.png")
+      }
 }

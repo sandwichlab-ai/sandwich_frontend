@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function Navigate(props) {
+
+    useEffect(() => {
+      console.log("666 is small window changed")
+    }, [props.isSamllWindow])
+
     return (
 <div className = "header">
 
