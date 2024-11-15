@@ -6,6 +6,8 @@ function Navigate(props) {
       console.log("666 is small window changed")
     }, [props.isSamllWindow])
 
+    const renderText = "Home"
+
     return (
 <div className = "header">
 
@@ -19,7 +21,8 @@ function Navigate(props) {
                             
                         }}
                         className = {props.isHome? 'selected' : 'remain'}
-                        >Home</span>
+                        >{renderText}</span>
+                        <span className="gap"></span>
                     <span 
                         onClick={() => props.setIsHome(false)}
                         style={{ 
