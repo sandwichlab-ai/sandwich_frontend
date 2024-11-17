@@ -145,6 +145,9 @@
     .header__btn--group {
         transform: translate(-50%, 110%);
     }
+    html {
+        background-color: black;
+    }
 }
 
 
