@@ -1,5 +1,6 @@
 .wrapper {
     height: 100%;
+    background-color: black;
 }
 .header {
     background-color: transparent;
@@ -139,3 +140,16 @@
         background-image: url("/public/images/logo.png")
       }
 }
+
+@media (max-width: 450px) {
+    .header__btn--group {
+        transform: translate(-50%, 110%);
+    }
+}
+
+
+/* @media (max-width: 520px) {
+    .header__btn--group {
+        transform: translate(-115%,-52%);
+    }
+} */
