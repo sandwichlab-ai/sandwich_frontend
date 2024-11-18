@@ -139,9 +139,53 @@
         height: 60px;
         background-image: url("/public/images/logo.png")
       }
+
+
+      .home div {
+        display: none;
+        top: 75% !important;
+        right: 64px;
+        position: absolute;
+        width: 260px;
+        display: grid;
+        gap: 20px;
+      }
+    
+      .home__join--us {
+        background-color: #FFFFFF;
+        border-radius: 79px;
+        color: #000000;
+        width: 126px;
+        height: 51px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: #000000 MiSans;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        line-height: 31.82px;
+      }
+    
+      .home__go { 
+        position: relative;
+        /* background-color: #8C68FF; */
+        background-color: red;
+        width: 51px;
+        height: 51px;
+        border-radius: 51px;
+        top: 0;
+        left: 0;
+        transform: translate(211%, -137%);
+        cursor: pointer;
+      }
+    
+      .home div .home__go img {
+        margin-top: 13px;
+      }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 240px) {
     .header__btn--group {
         transform: translate(-50%, 110%);
     }

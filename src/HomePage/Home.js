@@ -13,6 +13,17 @@ function Home(props) {
         <div >
         <div className="home">
             <img src={bgImage} alt="bg_image" className="image__home"/>
+            <div>
+                <span className="home__join--us">Join US</span>
+                <span 
+                    className="home__go"
+                    onClick={() => {
+                        window.open('https://app.mokahr.com/social-recruitment/sandwichlab/140350', '_blank');
+                    }}
+                >
+                    <img src={goTarget} alt="goto_target"/>
+                </span>
+            </div>
         </div>
 
           
