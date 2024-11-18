@@ -185,7 +185,7 @@
       }
 }
 
-@media (max-width: 240px) {
+@media (max-width: 450px) {
     .header__btn--group {
         transform: translate(-50%, 110%);
     }
