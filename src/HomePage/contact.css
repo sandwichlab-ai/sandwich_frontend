@@ -59,6 +59,7 @@
     padding-left: 16px;
     color: #FFFFFF;
     height: 40px;
+    box-sizing: border-box;
 }
 
 .form-item >select {
@@ -103,7 +104,7 @@
 
 label {
     text-align: start;
-    margin-bottom: 3px;
+    /* margin-bottom: 3px; */
 }
 
 .btn__group {

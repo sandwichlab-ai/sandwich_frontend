@@ -17,11 +17,36 @@ function Home(props) {
         console.log("el is: ",image, item)
         if(!image ||!item) return;
 
-         
+        const imageRect = image.getBoundingClientRect();
+        const itemWidth = item.clientWidth;
+        const itemHeight = item.clientHeight;
+
+        let left = imageRect.right - itemWidth - 64;
+        let top = imageRect.top + imageRect.height * 0.75 - itemHeight / 2;
+
+        console.log("left top: ", left, top);
+        const maxRight = window.innerWidth - itemWidth - 5;
+        if (left > maxRight) {
+            left = maxRight;
+        }
+
+        left = Math.max(left, imageRect.left);
+
+        console.log("current left top: ", left, top, window.innerWidth);
+        if(window.innerWidth < 450) {
+            left = left + 64
+        }
+        item.style.left = `${left}px`;
+        item.style.top = `${top}px`;
     }
 
     useEffect(() => {
-        
+        updatePosition();
+        window.addEventListener('resize', updatePosition);
+
+        return () => {
+            window.removeEventListener('resize', updatePosition);
+        }
     }, [])
 
     return (

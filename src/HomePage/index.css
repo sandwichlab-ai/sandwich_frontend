@@ -70,6 +70,7 @@
     position: absolute;     
     bottom: 10px;           
     transform: translateX(1129%); 
+    /* transform: translate(529%, 250%); */
     width: 6px;             
     height: 6px;           
     background-color: #8C68FF; 
