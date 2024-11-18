@@ -95,7 +95,6 @@
   }
 
   .home div {
-    display: none !important;
     top: 75% !important;
     right: 64px !important;
     position: absolute !important;

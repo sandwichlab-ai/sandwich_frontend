@@ -130,13 +130,24 @@ label {
 @media (max-width: 810px) {
     .contact__form {
         width: 80vw; 
-        top: 224px;
+        top: 320px;
         margin: 0 auto; 
         
     }
     .contact__form >form {
         width: 80vw;
+        /* display: flex;
+        flex-wrap: wrap; */
     }
+
+    /* .contact__form .row:nth-of-type(1) .form-item:nth-child(2) {
+        margin-top: -20px;
+    } */
+
+    /* .contact__form >form:nth-child(2) {
+        display: none;
+    } */
+
     .btn__group button { 
         width: 80vw;
     }
@@ -145,15 +156,21 @@ label {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
         grid-template-rows: repeat(auto-fit, minmax(20px, 80px));
-        gap: 20px;
+        /* gap: 20px; */
     }
 
    .contact_title {
     position: absolute;
-    top: 140px;
+    /* top: 140px; */
+    top: 247px;
     width: 100%;
     font-family: white MiSans;
     color: white;
+    font-size: 30px;
     margin: 0 auto;
+   }
+
+   .contact_title span {
+    
    }
 }

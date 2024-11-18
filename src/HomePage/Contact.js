@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import image from '../assets/images/image.png';
 import vector from '../assets/images/Vector.png'
 import Navigate from '../components/Navigate.js';
@@ -34,12 +34,12 @@ const items = [
   },
 ];
 
-const menu = (
-    <Menu>
-      <Menu.Item key="1">Option 1</Menu.Item>
-      <Menu.Item key="2">Option 2</Menu.Item>
-    </Menu>
-  );
+// const menu = (
+//     <Menu>
+//       <Menu.Item key="1">Option 1</Menu.Item>
+//       <Menu.Item key="2">Option 2</Menu.Item>
+//     </Menu>
+//   );
 
 function Contact(props) {
     // eslint-disable-next-line
@@ -62,6 +62,42 @@ function Contact(props) {
     //     ["Italy", "Italy"],
     //     ["Spain", "Spain"]
     // ]
+
+    // const itemRef = useRef();
+
+    const handleResize = () => {
+        // const item = itemRef.current;
+        // const container = item.parentElement;
+        // const containerWidth = container.clientWidth;
+        // const itemWidth = item.clientWidth;
+
+        // // 计算新位置，使元素与窗口右边界保持 5px 距离
+        // const newRight = Math.max(containerWidth - itemWidth - 5, 0);
+        // item.style.right = `${newRight}px`;
+    };
+
+    useEffect(() => {
+        // window.addEventListener('resize', handleResize);
+        //    () => {
+            
+
+
+            // const item = document.getElementById('home__joinus--container');
+            // const container = item.parentElement;
+            // const containerWidth = container.clientWidth;
+            // const itemWidth = item.clientWidth;
+        
+            // // 确保元素距离右边界 5px
+            // const newRight = Math.max(containerWidth - itemWidth - 5, 0);
+            // item.style.right = `${newRight}px`;
+       // }
+       //);
+
+       // handleResize();
+       // return () => {
+       //     window.removeEventListener('resize', handleResize);
+       // };
+    }, [])
 
     const countryOpts = [
         { label: "China", value: "China"},
