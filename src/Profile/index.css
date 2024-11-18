@@ -35,3 +35,7 @@
     padding: 20px;
     gap: 3%;
 }
+
+html {
+    background-color: black;
+}
