@@ -1,5 +1,6 @@
 .profile__sidebar--container {
-    width: 360px;
+    /* width: 360px; */
+    width: 18.75%;
     height: 100%;
     background-color: #FFFFFF;
 }

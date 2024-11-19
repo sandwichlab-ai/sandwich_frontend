@@ -14,9 +14,9 @@
     width: 100%;
     justify-content: center;
     align-items: flex-start;
-    /* overflow: hidden; */
+    overflow: hidden;
     background-color: black;
-    overflow: auto;
+    /* overflow-x: auto; */
 }
 
 .container >div{

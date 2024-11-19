@@ -78,7 +78,8 @@
 }
 
 .bussiness__content {
-    margin-top: 5%;
+    /* margin-top: 5%; */
+    margin-top: 2%;
     margin-left: 3%;
     display: flex;
 }
