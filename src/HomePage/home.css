@@ -18,6 +18,7 @@
 }
 
 .home__joinus--container {
+    display: none !important; 
     position: absolute;
     right: 64px;
     width: 260px;
