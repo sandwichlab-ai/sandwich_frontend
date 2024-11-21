@@ -1,0 +1,19 @@
+.lexi__container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    &__right {
+        float: left;
+        padding: 0 40px;
+        width: calc(100vw - 240px);
+        height: 100%;
+    }
+
+    &__pages {
+        padding: 40px 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 100%;
+    }
+}
