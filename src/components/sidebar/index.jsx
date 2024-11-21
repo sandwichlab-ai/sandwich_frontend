@@ -37,8 +37,7 @@ const items = [
   },
 ];
 
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = ({ collapsed, setCollapsed }) => {
   const navigate = useNavigate(); // 获取 navigate 函数
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -47,11 +46,7 @@ const Sidebar = () => {
     navigate(key); // 跳转到对应的路由
   };
   return (
-    <div
-      className={`lexi__sidebar lexi__sidebar--${
-        collapsed ? 'shrink' : 'expand'
-      }`}
-    >
+    <div className='lexi__sidebar'>
       <div className='brand__logo'>
         <img src={collapsed ? logoShrink : logo} alt='logo' />
         <Button
