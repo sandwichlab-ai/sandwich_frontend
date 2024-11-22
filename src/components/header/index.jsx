@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const menuMap = {
   projects: 'Ad Projects',
+  brands: 'Brands',
 };
 
 function Header() {

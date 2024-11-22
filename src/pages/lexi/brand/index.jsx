@@ -81,14 +81,14 @@ function Content(props) {
 
   useEffect(() => {
     console.log("brand list is: ", brandList)
-    //brandList.init();
-    //console.log("brand list is: ", brandList.list.map((el) => el.name))
+    brandList.init();
+    console.log("brand list is: ", brandList.list.map((el) => el.name))
     // useEffect(() => {
     //   projectList.init();
     // }, []);
   }, [])
 
-  // const list = brandList.list.slice(0);
+  const list = brandList.list;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -216,10 +216,11 @@ function Content(props) {
     //     <AccountContent accountData={data}/>
     //   </Modal>
     // </div>
-    <Detail brandList={brandList}/>
+
+    // <Detail brandList={brandList}/>
 
 
-    // <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' operationOptions={operationOptions}></CardList>
+    <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' operationOptions={operationOptions}></CardList>
     
   );
 }

@@ -24,16 +24,16 @@ const BrandListModel = types
         },
       ];
     },
-    addProject(projectData) {
-      self.list.push(projectData); // 添加新项目
+    addBrand(brandData) {
+      self.list.push(brandData); // 添加新项目
     },
-    removeProject(id) {
-      self.list = self.list.filter((project) => project.id !== id); // 删除项目
+    removeBrand(id) {
+      self.list = self.list.filter((brand) => brand.id !== id); // 删除项目
     },
-    updateProject(id, updates) {
-      const project = self.list.find((project) => project.id === id);
-      if (project) {
-        Object.assign(project, updates); // 更新项目属性
+    updateBrand(id, updates) {
+      const brand = self.list.find((brand) => brand.id === id);
+      if (brand) {
+        Object.assign(brand, updates); // 更新项目属性
       }
     },
   }));
