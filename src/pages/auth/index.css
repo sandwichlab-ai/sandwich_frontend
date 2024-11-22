@@ -8,8 +8,8 @@
 
 .auth_logo {
     position: fixed;
-    top: 0;
-    left: 22px;
+    top: 20px;
+    left: 24px;
 }
 
 
@@ -195,6 +195,7 @@
   }
 
   .contact__form--notes {
+    display: none;
     font-size: 16px;
     color: #66666633;
   }

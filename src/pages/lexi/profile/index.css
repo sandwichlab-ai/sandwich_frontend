@@ -10,22 +10,22 @@
     right: 30px;
     bottom: 30px; */
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .content__btn--group :nth-child(1) {
-    width: 196px;
+    /* width: 196px;
     height: 56px;
     border: 1px #8C68FF solid;
     color: #8C68FF;
     font: "Roboto";
     font-size: 20px;
     margin-left: 35px;
-    cursor: pointer;
+    cursor: pointer; */
 }
 
 .content__btn--group :nth-child(2) {
-    width: 196px;
+    /* width: 196px;
     height: 56px;
     border: none;
     background-color: #8C68FF;
@@ -33,16 +33,16 @@
     font: "Roboto";
     font-size: 20px;
     margin-left: 35px;
-    cursor: pointer;
+    cursor: pointer; */
 }
 
 .addtional__information {
-    height: 20%;
+    height: 156px;
     width: 100%;
     margin: 0 auto;
     position: relative;
     background-color: #FFFFFF;
-    min-height: 205px;
+    /* min-height: 205px; */
 }
 
 .addtional__information >label {
@@ -75,6 +75,14 @@
     margin: 0 auto;
     background-color: #FFFFFF;
     min-height: 409px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.content__bussiness .ant-row {
+    flex: 1;
+    margin-left: 2%;
 }
 
 .bussiness__content {
@@ -119,17 +127,24 @@
 
 .account__connection--wrapper button{
     position: absolute;
-    left: 36%;
+    left: 67%;
     top: 50%;
     transform: translateY(40%);
-    width: 40px;
+    width: 245px;
     height: 40px;
-    width: 20%;
     text-align: left;
     background-color: #8C68FF;
     border: none;
     color: white;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.account__connection--wrapper button >span {
+    margin-right: 4%;
+    font-weight: bold;
 }
 
 .account__connection--title {
@@ -145,13 +160,13 @@
     border: 1px solid #C4C4C4;
     left: 32px;
     top: 44%;
-    width: 50%;
+    width: 85%;
     height: 66px;
     border-radius: 12px;
 }
 
 .ant-input-data-count{
-    padding-bottom: 80px;
+    padding-bottom: 38px;
     padding-right: 15px;
 }
 
@@ -227,4 +242,75 @@
     transform: translateY(40%);
     width: 40px;
     height: 40px;
+}
+
+.ant-input-textarea-show-count {
+   /* margin-top: 13% */
+}
+
+.ant-input-textarea {
+    position: relative; 
+}
+
+.brand__container {
+    height: 92px;
+    margin-left: 3%;
+}
+
+.brand__container  .ant-form-item-control-input-content{
+    display: flex !important;
+}
+
+.custom-button {
+    width: 412px;    
+    height: 56px;   
+    font-size: 20; 
+    color: white;
+    border-radius: 8px;
+  }
+
+.content__btn--group .ant-btn {
+    width: 412px;    
+    height: 56px ; 
+    background-color: #C1C7CD !important;  
+    color: white;
+    border-radius: 8px; 
+}  
+
+.content__btn--group .ant-btn >span {
+    color: white;
+    font-size: 20px;
+}
+
+.content__bussiness  .ant-col-12 {
+    /* margin: 2% !important; */
+    margin-top: 2% !important;
+}
+
+.content__bussiness .ant-col-8 {
+    height: 310px;
+    margin: 5% 2% 2% 2%;
+}
+
+.content__bussiness .ant-col-8 span {
+    color: purple;
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
+
+
+
+.content__bussiness .ant-col-8 span::after {
+    content: '';
+    position: absolute;
+    left: 41%;
+    bottom: 93%; 
+    width: 18%; 
+    height: 2px; 
+    background-color: purple; 
+}
+
+
+.content__bussiness .ant-col-8 .ant-carousel {
+    margin-top: 10px;
 }

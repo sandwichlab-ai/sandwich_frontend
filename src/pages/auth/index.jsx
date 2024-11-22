@@ -7,7 +7,7 @@ import {
 // import { Auth } from 'aws-amplify';
 import { signIn } from 'aws-amplify/auth';
 import axios from 'axios';
-import image from '../../assets/images/loginlogo.png';
+import image from '../../assets/images/logosandwich.png';
 import fblogo from '../../assets/images/fblogo.png';
 import './index.css';
 
