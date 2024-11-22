@@ -5,16 +5,18 @@
 import React, { useState, useMemo } from 'react';
 import { Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import LexiModal from '../lexi-modal';
 
 import './index.scss';
 
-function CardList({ list, handleAddItem, addUrl }) {
+function CardList({ list, handleAddItem, addUrl, operationOptions, editUrl }) {
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
-        <CardItem key={item.id} data={item}></CardItem>
+        <Link to={editUrl}>
+          <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
+        </Link>
       ))}
       <AddCard handleAddItem={handleAddItem} addUrl={addUrl} />
     </div>
@@ -42,54 +44,30 @@ function AddCard({ handleAddItem, addUrl }) {
   );
 }
 
-function CardItem({ data }) {
-  const [openEdit, setOpenEdit] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  const showModal = (index) => {
-    setOpenEdit(true);
-    setOpenDelete(true);
-  };
+function CardItem({ data, operationOptions }) {
+  const [showModal, setShowModal] = useState(false);
+  const [currentOpertion, setCurrentOpertion] = useState({});
+
   const handleOk = () => {
-    setOpenEdit(false);
-    setOpenDelete(false);
+    setShowModal(false);
+    currentOpertion.handleConfirm?.(data);
   };
   const handleCancel = () => {
-    setOpenEdit(false);
-    setOpenDelete(false);
+    setShowModal(false);
+    currentOpertion.handleCancel?.(data);
   };
 
-  const operationItems = useMemo(() => {
-    return [
-      {
-        key: 'rename',
-        title: 'Rename',
-        label: (
-          <Button
-            color='default'
-            onClick={() => showModal(0)}
-            variant='link'
-            icon={<EditOutlined />}
-          >
-            Rename
-          </Button>
-        ),
-      },
-      {
-        key: 'delete',
-        title: 'Delete',
-        label: (
-          <Button
-            color='default'
-            onClick={() => showModal(1)}
-            variant='link'
-            icon={<DeleteOutlined />}
-          >
-            Delete
-          </Button>
-        ),
-      },
-    ];
-  }, []);
+  const operationItems = operationOptions.map(item => ({
+    key: item.key,
+    title: item.buttonName,
+    label: (
+      <Button color='default' variant='link' onClick={()=> {
+        setShowModal(true);
+        setCurrentOpertion(item);
+      }} icon={item.icon}>{item.buttonName}</Button>
+    )
+  }))
+
   return (
     <div className='lexi-cards__item' key={data.id}>
       <div className='lexi-cards__item__header'>
@@ -111,18 +89,11 @@ function CardItem({ data }) {
         </div>
       </div>
       <LexiModal
-        open={openEdit}
+        open={showModal}
         handleConfirm={handleOk}
         handleCancel={handleCancel}
-        title='Do you want to delete this project?'
-        content="if you delete this project, you won't be able to recover it later"
-      ></LexiModal>
-      <LexiModal
-        open={openDelete}
-        handleConfirm={handleOk}
-        handleCancel={handleCancel}
-        title='Do you want to delete this project?'
-        content="if you delete this project, you won't be able to recover it later"
+        title={currentOpertion.modalTitle}
+        content={currentOpertion.modalContent}
       ></LexiModal>
     </div>
   );
