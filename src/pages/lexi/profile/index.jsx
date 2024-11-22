@@ -1,22 +1,59 @@
 import React, { useState } from 'react';
-import { Flex, Input, Select, Form, Button, Row, Col, Carousel } from 'antd';
+import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
+import AccountContent from './accountContent';
 import meta from '../../../assets/images/meta.png';
 import './index.css';
 
-const contentStyle = {
-  margin: 0,
-  height: '160px',
-  color: '#fff',
-  lineHeight: '160px',
-  textAlign: 'center',
-  background: '#364d79',
-};
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    accountId: 32,
+    accountStatus: 'Active',
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    accountId: 42,
+    accountStatus: 'Active',
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    accountId: 32,
+    accountStatus: 'Active',
+  },
+  {
+    key: '4',
+    name: 'Disabled User',
+    accountId: 99,
+    accountStatus: 'InActive',
+  },
+  {
+    key: '5',
+    name: 'Sandwich Lab',
+    accountId: 34,
+    accountStatus: 'Active',
+  },
+];
 
 function Content() {
   const { TextArea } = Input;
 
   const [accountCnt, setAccountCnt] = useState(1);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const onChange = (e) => {
     console.log('changed', e.target.value);
@@ -154,7 +191,7 @@ function Content() {
         
       </div>
 
-      <div className='account__connection'>
+      <div className='account__connection' onClick={() => setIsModalOpen(true)}>
         <span className='account__connection--title'>
           Ad Account Connection
         </span>
@@ -179,6 +216,10 @@ function Content() {
           </Button>
         </div>
       </div>
+
+      <Modal title="Selected Ad Account" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <AccountContent accountData={data}/>
+      </Modal>
     </div>
   );
 }
