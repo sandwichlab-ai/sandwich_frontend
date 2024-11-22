@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
-import AccountContent from './accountContent';
-import Examples from "../../../components/examples/index.jsx"
-import meta from '../../../assets/images/meta.png';
-import './index.css';
+import AccountContent from '../accountContent.jsx';
+import Examples from "../../../../components/examples/index.jsx"
+import meta from '../../../../assets/images/meta.png';
+import '../index.css';
 
 const data = [
   {
@@ -45,7 +45,7 @@ const examples = [
   "I am a divorce lawyer4 based in ...."
 ]
 
-function Content() {
+function Detail(props) {
   const { TextArea } = Input;
 
   const [accountCnt, setAccountCnt] = useState(1);
@@ -82,6 +82,7 @@ function Content() {
   return (
     <div className='content'>
       <div className='addtional__information'>
+        
         <div className="brand__container">
 
       <Form.Item
@@ -179,4 +180,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default Detail;

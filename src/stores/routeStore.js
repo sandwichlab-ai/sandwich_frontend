@@ -2,13 +2,16 @@
 import React from 'react';
 import { types } from 'mobx-state-tree';
 import { ProjectListModel } from './models'; // 示例模型
+import BrandListModel from './models/brand-list-model'; // 示例模型
 
 const rootStore = types
   .model('RootStore', {
     projectList: ProjectListModel, // project 列表
+    brandList: BrandListModel, // brand 列表
   })
   .create({
     projectList: { list: [] }, // 初始化状态
+    brandList: { list: [] }, // 初始化状态
   });
 
 const StoreContext = React.createContext(rootStore);
