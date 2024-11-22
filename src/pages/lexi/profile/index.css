@@ -115,10 +115,8 @@
 }
 
 .account__connection--wrapper {
-    position: relative;
     display: inline-block;
     width: 100%;
-    top: 35%;
     margin-top: 6% !important;
 }
 
@@ -132,7 +130,7 @@
     position: absolute;
     left: 67%;
     top: 50%;
-    transform: translateY(40%);
+    transform: translateY(8%);
     max-width: 245px;
     width: 20%;
     height: 40px;
@@ -243,7 +241,7 @@
     z-index: 1000;
     left: 6%;
     top: 50%;
-    transform: translateY(40%);
+    transform: translateY(10%);
     width: 40px;
     height: 40px;
 }
