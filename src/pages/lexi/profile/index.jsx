@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
 import AccountContent from './accountContent';
+import Examples from "../../../components/examples/index.jsx"
 import meta from '../../../assets/images/meta.png';
 import './index.css';
 
@@ -36,6 +37,13 @@ const data = [
     accountStatus: 'Active',
   },
 ];
+
+const examples = [
+  "I am a divorce lawyer1 based in ....",
+  "I am a divorce lawyer2 based in ....",
+  "I am a divorce lawyer3 based in ....",
+  "I am a divorce lawyer4 based in ...."
+]
 
 function Content() {
   const { TextArea } = Input;
@@ -129,60 +137,7 @@ function Content() {
            span={8}
           >
      <span>Examples</span>
-<Carousel autoplay>
-    <div>
-    <TextArea
-              disabled
-              value='I am a divorce lawyer1 based in ....'
-              maxLength={5000}
-              width={'40%'}
-              style={{
-                height: 251,
-                resize: 'none',
-                backgroundColor: '#FAF8FF',
-              }}
-            />
-    </div>
-    <div>
-    <TextArea
-              disabled
-              value='I am a divorce lawyer2 based in ....'
-              maxLength={5000}
-              width={'40%'}
-              style={{
-                height: 251,
-                resize: 'none',
-                backgroundColor: '#FAF8FF',
-              }}
-            />
-    </div>
-    <div>
-    <TextArea
-              disabled
-              value='I am a divorce lawyer3 based in ....'
-              maxLength={5000}
-              width={'40%'}
-              style={{
-                height: 251,
-                resize: 'none',
-                backgroundColor: '#FAF8FF',
-              }}
-            />
-    </div>
-    <div>
-    <TextArea
-              disabled
-              value='I am a divorce lawyer4 based in ....'
-              maxLength={5000}
-              width={'40%'}
-              style={{
-                height: 251,
-                resize: 'none',
-                backgroundColor: '#FAF8FF',
-              }}
-            />
-    </div>
-  </Carousel>
+        <Examples examples = {examples}/>
 
       </Col>
       </Row>

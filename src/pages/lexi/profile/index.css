@@ -1,7 +1,7 @@
 .content__profile--footer{
    height: 16%;  
    background: transparent; 
-   position: relative;
+   /* position: relative; */
    bottom: 30px;
 }
 
@@ -40,6 +40,7 @@
     height: 156px;
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 5%;
     position: relative;
     background-color: #FFFFFF;
     /* min-height: 205px; */
@@ -73,6 +74,7 @@
     height: 40%;
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 5%;
     background-color: #FFFFFF;
     min-height: 409px;
     display: flex;
@@ -117,6 +119,7 @@
     display: inline-block;
     width: 100%;
     top: 35%;
+    margin-top: 6% !important;
 }
 
 .account__connection--wrapper >input {
@@ -131,7 +134,7 @@
     top: 50%;
     transform: translateY(40%);
     max-width: 245px;
-    width: 29%;
+    width: 20%;
     height: 40px;
     text-align: left;
     background-color: #8C68FF;
@@ -398,4 +401,10 @@
     top: 78%;
     left: 39%;
     cursor: pointer;
+}
+
+.lexi__container__pages .content { 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
