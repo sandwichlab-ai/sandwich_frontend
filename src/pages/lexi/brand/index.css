@@ -120,6 +120,14 @@
     margin-top: 6% !important;
 }
 
+.account__connection--edit{
+    position: absolute;
+    left: 37%;
+    top: 57%;
+    font-size: 16px;
+    font-weight: 400;
+}
+
 .account__connection--wrapper >input {
     width: 100%;
     padding-left: calc(5% + 22px); 
@@ -286,6 +294,29 @@
 .content__btn--group .ant-btn >span {
     color: white;
     font-size: 20px;
+}
+
+.content__btn--group > .edit__btn--group .ant-btn {
+    width: 200px !important;
+    height: 56px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: transparent !important;
+}
+
+.content__btn--group > .edit__btn--group > #detail__cancel--btn {
+   background-color: transparent !important;
+   border: 1px #8C68FF solid !important;
+   /* color:#8C68FF!important;
+   border: 1px #8C68FF!important; */
+} 
+
+.content__btn--group > .edit__btn--group > #detail__cancel--btn span {
+    color: #8C68FF !important;
+}
+
+.content__btn--group > .edit__btn--group > #detail__submit--btn {
+    background-color: #8C68FF!important;
 }
 
 .content__bussiness  .ant-col-12 {

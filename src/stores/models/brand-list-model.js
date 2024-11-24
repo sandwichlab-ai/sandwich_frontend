@@ -12,13 +12,13 @@ const BrandListModel = types
           id: 1, // project id
           brand_id: 1,
           status: 'isRunning',
-          name: 'New Song Promotion', // 品牌名
+          name: 'New Song Promotion 111', // 品牌名
           updateTime: '2024-10-14', // 更新时间，设计稿上看有这个
         },
         {
           id: 2, // 品牌 id
           brand_id: 2,
-          name: 'Rapper John', // 品牌名
+          name: 'Rapper John  111', // 品牌名
           status: 'editing',
           updateTime: '2024-10-14', // 更新时间，设计稿上看有这个
         },

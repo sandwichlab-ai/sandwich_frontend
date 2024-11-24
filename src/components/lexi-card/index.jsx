@@ -10,7 +10,7 @@ import LexiModal from '../lexi-modal';
 
 import './index.scss';
 
-function CardList({ list, handleAddItem, addUrl, operationOptions, editUrl }) {
+function CardList({ list, handleAddItem, addUrl, from, operationOptions, editUrl }) {
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
@@ -18,12 +18,12 @@ function CardList({ list, handleAddItem, addUrl, operationOptions, editUrl }) {
           <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
         </Link>
       ))}
-      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} />
+      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from}/>
     </div>
   );
 }
 
-function AddCard({ handleAddItem, addUrl }) {
+function AddCard({ handleAddItem, addUrl, from }) {
   return (
     <div className='lexi-cards__item'>
       <div className='lexi-cards__item__content lexi-cards__item__add'>
@@ -37,7 +37,7 @@ function AddCard({ handleAddItem, addUrl }) {
           ></Button>
         </Link>
         <div className='lexi-cards__item__content__name'>
-          Create a new project
+          Create a new {from}
         </div>
       </div>
     </div>

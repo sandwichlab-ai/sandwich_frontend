@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useStore } from '../../../stores/routeStore';
+import { useLocation, useParams } from 'react-router-dom';
 import CardList from '../../../components/lexi-card';
 import AccountContent from './accountContent.jsx';
 import Examples from "../../../components/examples/index.jsx"
@@ -50,7 +51,12 @@ const examples = [
 ]
 
 function Content(props) {
+
+  const location = useLocation();
+  const params = useParams();
+
   const { TextArea } = Input;
+  const [mode, setMode] = useState("card")
 
   const [accountCnt, setAccountCnt] = useState(1);
   const [submitDisabled, setSubmitDisabled] = useState(true);
@@ -75,11 +81,15 @@ function Content(props) {
       brandList.removeProject(dataItem.id);
     }
   }], [])
-  const handleAddItem = useCallback(() => {}, []);
+  const handleAddItem = useCallback(() => {
+    console.log("add item")
+    setMode("add");
+  }, []);
 
   const { brandList } = useStore()
 
   useEffect(() => {
+    console.log("current path: ", location, params)
     console.log("brand list is: ", brandList)
     brandList.init();
     console.log("brand list is: ", brandList.list.map((el) => el.name))
@@ -87,6 +97,18 @@ function Content(props) {
     //   projectList.init();
     // }, []);
   }, [])
+
+  useEffect(() => {
+    console.log("current path: ", location, location.pathname ,params)
+    if(location && location.pathname === '/lexi/brands/add') {
+      setMode("add");
+    }else if(location && location.pathname === '/lexi/brands/edit') {
+      setMode("edit");
+    }else {
+      setMode("card")
+    }
+    console.log("current mode is: ", mode);
+  }, [location, params])
 
   const list = brandList.list;
 
@@ -118,7 +140,7 @@ function Content(props) {
 
   const handleChange = () => {}
 
-  return (
+  // return 
     
     // <div className='content'>
     //   <div className='addtional__information'>
@@ -220,9 +242,14 @@ function Content(props) {
     // <Detail brandList={brandList}/>
 
 
-    <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' operationOptions={operationOptions}></CardList>
-    
-  );
+    if(mode == "card") {
+       return <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' from="Brand" operationOptions={operationOptions}></CardList>
+    } else if(mode == "add") {
+      return <Detail brandList={brandList} mode="create"/>
+    } else if(mode == 'edit'){
+      return <Detail brandList={brandList} mode="edit"/>
+    }
+  
 }
 
 export default Content;

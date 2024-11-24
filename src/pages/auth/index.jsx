@@ -4,6 +4,7 @@ import {
   // useHistory
   useNavigate,
 } from 'react-router-dom';
+import { Row, Col, Card, Form, Input, Button, Tabs } from "antd";
 // import { Auth } from 'aws-amplify';
 import { signIn } from 'aws-amplify/auth';
 import axios from 'axios';
@@ -11,9 +12,14 @@ import image from '../../assets/images/logosandwich.png';
 import fblogo from '../../assets/images/fblogo.png';
 import './index.css';
 
+const { TabPane } = Tabs;
+
 function AuthComponent(props) {
+
+  const [accountStatus, setAccountStatus] = useState(0);                     // 0 : sign up , 1 : login
+
   const [testData, setTestData] = useState([
-    ['Full name'],
+    ['Full Name'],
     ['Your Email'],
     ['Password'],
   ]);
@@ -24,7 +30,7 @@ function AuthComponent(props) {
   ]);
   const [formData, setFormData] = useState([['', ''], [''], ['']]);
   const [errorData, setErrorData] = useState([
-    ['Full name is required', 'Email is required'],
+    ['Full Name is required', 'Email is required'],
     ['Password is required'],
   ]);
   const [selectedInput, setSelectedInput] = useState([0, 0]);
@@ -32,6 +38,12 @@ function AuthComponent(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
+
+  const [form] = Form.useForm();
+
+  const handleFinish = (values) => {
+    console.log("Form values:", values);
+  };
 
   const handleFacebookLogin = async () => {
     console.log('environment: ', process.env.NODE_ENV);
@@ -101,11 +113,28 @@ function AuthComponent(props) {
     }
   });
 
+  useEffect(() => {
+     console.log("account status change:", accountStatus)
+     if(accountStatus == 0) {
+       setTestData([
+         ['Full Name'],
+         ['Your Email'],
+         ['Password'],
+       ]);
+     } else {
+       setTestData([
+         ['Your Email'],
+         ['Password'],
+       ]);
+     }
+     console.log("form data is: ", formData)
+  }, [accountStatus])
+
   const handleSubmit = () => {
     console.log('sign request');
     // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
     window.open(
-      'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://test.sandwichlab.ai/profile'
+      'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
     );
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
 
@@ -132,15 +161,25 @@ function AuthComponent(props) {
       <img src={image} alt='logo' className='auth_logo' />
 
       <div className='content__container--auth'>
-        <div>
+        {!accountStatus && <div style={{marginTop: "8%"}}>
           <div className='auth__title'>Create an account</div>
           <div className='auth__title--note'>
             Already have an account?{' '}
-            <a style={{ textDecoration: 'underline' }}>Log in</a>{' '}
+            <a style={{ textDecoration: 'underline' }} onClick={() => setAccountStatus(1)}>Log in</a>{' '}
           </div>
-        </div>
+        </div>}
+
+        {accountStatus == 1 && <div style={{marginTop: "8%"}}>
+          <div className='auth__title'>Login</div>
+          <div className='auth__title--note'>
+            Don't have an account?{' '}
+            <a style={{ textDecoration: 'underline' }} onClick={() => setAccountStatus(0)}>Sign up</a>{' '}
+          </div>
+        </div>}
+
         <div className='contact__form--auth'>
-          <div>Enter your email address to create an account</div>
+          {/* {accountStatus == 0 && <div style={{marginTop:"7%"}}>Enter your email address to create an account</div>} */}
+          <div style={{marginTop:"7%"}}>{accountStatus == 0 && "Enter your email address to create an account" }</div>
           <form>
             {testData.map((row, rowIndex) => {
               return (
@@ -189,13 +228,21 @@ function AuthComponent(props) {
               );
             })}
             <div className='btn__group--auth'>
-              <button
+              {!accountStatus && <button
                 type='submit'
                 onClick={handleSubmit}
                 style={{ cursor: 'pointer' }}
               >
                 Continue
-              </button>
+              </button>}
+
+              {accountStatus == 1 && <button
+                type='submit'
+                onClick={handleSubmit}
+                style={{ cursor: 'pointer' }}
+              >
+                Log in
+              </button>}
             </div>
             <div className='line-with-text'>
               <span>OR</span>
@@ -208,10 +255,58 @@ function AuthComponent(props) {
                 style={{ cursor: 'pointer' }}
               >
                 <img src={fblogo} width='32px' height='32px' />
-                <span>Sign-up with Facebook</span>
+                <span>{accountStatus == 0? "Sign-up" : "Log in"} with Facebook</span>
               </button>
             </div>
           </form>
+          
+          {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <Row style={{ width: "100%", height: "40%" }} justify="center">
+        <Col xs={24} sm={18} md={12} lg={8}>
+                <Form form={form} onFinish={handleFinish} layout="vertical">
+                  <Form.Item
+                    name="username"
+                    label="用户名"
+                    rules={[{ required: true, message: "请输入用户名!" }]}
+                  >
+                    <Input placeholder="请输入用户名" />
+                  </Form.Item>
+                  <Form.Item
+                    name="email"
+                    label="邮箱"
+                    rules={[{ required: true, type: "email", message: "请输入有效的邮箱地址!" }]}
+                  >
+                    <Input placeholder="请输入邮箱" />
+                  </Form.Item>
+                  <Form.Item
+                    name="password"
+                    label="密码"
+                    rules={[{ required: true, message: "请输入密码!" }]}
+                  >
+                    <Input.Password placeholder="请输入密码" />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" block>
+                      注册
+                    </Button>
+                  </Form.Item>
+                </Form>     
+        </Col>
+      </Row>
+      <div className='auth__signin--facebook'>
+              <button
+                type='submit'
+                onClick={handleSubmit}
+                style={{ cursor: 'pointer' }}
+              >
+                <img src={fblogo} width='32px' height='32px' />
+                <span>Sign-up with Facebook</span>
+              </button>
+            </div>
+    </div>
+           */}
+  
+
         </div>
         <div className='contact__form--notes'>
           By signing up you agree to the{' '}

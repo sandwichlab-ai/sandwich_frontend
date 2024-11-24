@@ -26,7 +26,8 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/lexi' element={<Lexi />}>
             <Route path='brands' element={<Brand />} >
-             <Route path="add" element={<BrandCreate />} />
+              <Route path="add" element={<BrandCreate />} />
+              <Route path="edit" element={<BrandCreate />} />
             </Route>
             <Route path='projects' element={<Project />}>
               <Route path=":action" element={<ProjectEdit />} />
