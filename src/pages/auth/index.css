@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
   background-color: #F5F7FA;
 }
 
@@ -28,21 +29,24 @@
 }
 
 .content__container--auth {
+    position: relative;
+    top: 109px;
     min-width: 500px;
     background-color: white;
     width: 42%;
-    height: 90%;
+    /* height: 90%; */
     /* background-image: url("/public/images/bgContact.png"); */
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start; /*space-around;*/
     /* align-items: center; */
     /* border: 1px solid black; */
     border-radius: 24px;
+    padding-bottom: 4%;
 }
 
 .content__container--auth:nth-child(1) {
-    color: #666666
+    color: #666666;
 }
 
 .content__form--auth:nth-child(1) {
@@ -83,7 +87,7 @@
 .row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(20px, 80px));
+    grid-template-rows: repeat(auto-fit, minmax(20px, 87px));
     gap: 20px;
 }
 
@@ -113,13 +117,15 @@
 }
 
 .auth__form--item >label {
-    display: none;
+    /* display: none; */
     text-align: start;
+    margin-left: 17%;
     margin-bottom: 3px;
 }
 
 .btn__group--auth {
     /* margin-top: 48px; */
+    margin-bottom: 5%;
 }
 
 .btn__group--auth button {
@@ -131,7 +137,7 @@
     border-radius: 40px;
     font-family:white MiSans;
     color: white;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     font-weight: 330;
     font-size: 22px;
     line-height: 31.82px;
@@ -143,6 +149,7 @@
     text-align: center;
     margin: 0 auto;
     width: 66%;
+    margin-bottom: 5%;
   }
   
   .line-with-text::before,
@@ -163,7 +170,7 @@
   .line-with-text span {
     white-space: nowrap; 
     font-family: MiSans;
-    font-size: 35px; 
+    font-size: 22px; 
     color: #666666; 
   }
 

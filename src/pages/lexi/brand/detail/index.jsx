@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
-import AccountContent from './accountContent';
-import Examples from "../../../components/examples/index.jsx"
-import meta from '../../../assets/images/meta.png';
-import './index.css';
+import AccountContent from '../accountContent.jsx';
+import Examples from "../../../../components/examples/index.jsx"
+import meta from '../../../../assets/images/meta.png';
+import '../index.css';
 
 const data = [
   {
@@ -45,12 +45,26 @@ const examples = [
   "I am a divorce lawyer4 based in ...."
 ]
 
-function Content() {
+function Detail(props) {
   const { TextArea } = Input;
 
   const [accountCnt, setAccountCnt] = useState(1);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [accontText, setAccountText] = useState("Ad Account Connect")
+  const [btnWidth, setBtnWidth] = useState(412)
+  
+  useEffect(() => {
+    console.log("mode change", props.mode)
+     if(props.mode == 'add') {
+       setAccountText("Ad Account Connect") 
+       setBtnWidth(412)
+     } else {
+       setAccountText("Edit")
+       setBtnWidth(101)
+     }
+  }, [props.mode])
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -82,6 +96,7 @@ function Content() {
   return (
     <div className='content'>
       <div className='addtional__information'>
+        
         <div className="brand__container">
 
       <Form.Item
@@ -148,7 +163,9 @@ function Content() {
 
       <div className='account__connection' onClick={() => setIsModalOpen(true)}>
         <span className='account__connection--title'>
-          Ad Account Connection
+          {/* Ad Account Connection */}
+          {props.mode == "add" && <span>Ad Account Connection</span>}
+          {props.mode == "edit" && <span>Edit</span>}
         </span>
         <div className='account__connection--wrapper'>
           <img
@@ -158,7 +175,11 @@ function Content() {
           />
           <input type='text' value='Meta Ads' />
 
-          <button><span>+</span> {'Ad Account Connect`'}</button>
+          <button>{props.mode!="edit" && <span>+</span>} {props.mode != "edit" && "Ad Account Connection"}
+          {props.mode == "edit" && 'Edit'}</button>
+          {props.mode == 'edit' && (
+            <span className='account__connection--edit'>Sandwichlab</span>
+          )}
         </div>
       </div>
 
@@ -166,9 +187,21 @@ function Content() {
         <div className='content__btn--group'>
           {/* <button className='content__btn'>cancel</button> */}
           {/* <button className='content__btn'>save</button> */}
-          <Button disabled={submitDisabled} width="412" height="56">
+          {props.mode == "create" && <Button disabled={submitDisabled} width="412" height="56">
              Save and create ads now
+          </Button>}
+
+          {props.mode == "edit" && 
+          <div className="edit__btn--group">
+            <Button disabled={false} width="196" height="56" id="detail__cancel--btn">
+             Cancel
           </Button>
+          <Button disabled={false}  width="196" height="56" id="detail__submit--btn">
+             Update
+          </Button>
+        </div>
+          
+          }
         </div>
       </div>
 
@@ -179,4 +212,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default Detail;

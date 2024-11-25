@@ -35,7 +35,7 @@ const Project = observer(() => {
   // 显示访问list，触发mobx的依赖追踪
   const list = projectList.list.slice(0);
   return (
-    <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' operationOptions={operationOptions}></CardList>
+    <CardList list={list} handleAddItem={handleAddItem}  addUrl='add' editUrl='edit' from="Project" operationOptions={operationOptions}></CardList>
   );
 });
 
