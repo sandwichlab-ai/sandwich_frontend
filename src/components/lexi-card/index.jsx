@@ -13,8 +13,12 @@ import './index.scss';
 function CardList({ list, handleAddItem, addUrl, from, operationOptions, editUrl }) {
   return (
     <div className='lexi-cards'>
+      {/* {`${list[0]?.name}`} */}
       {list.map((item) => (
-        <Link to={editUrl}>
+        <Link 
+          to={editUrl}
+          state={item.name} 
+        >
           <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
         </Link>
       ))}

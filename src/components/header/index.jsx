@@ -9,13 +9,13 @@ const menuMap = {
 
 function Header() {
   const location = useLocation();
-  console.log(location);
+  console.log("location is: ", location);
   const [, , page] = location?.pathname?.split('/') || [];
 
-  return (
+  return(
     <div className='lexi__header'>
       <div>{`${menuMap[page]}`}</div>
-      <div></div>
+      <div>{`> ${location.state}`}</div>
     </div>
   );
 }
