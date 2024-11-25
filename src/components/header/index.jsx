@@ -15,7 +15,7 @@ function Header() {
   return(
     <div className='lexi__header'>
       <div>{`${menuMap[page]}`}</div>
-      <div>{`> ${location.state}`}</div>
+      {!location.pathname.includes("add") && <div>{`> ${location.state}`}</div>}
     </div>
   );
 }
