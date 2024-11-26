@@ -1,30 +1,28 @@
-import React from'react';
-import { Carousel, Input } from 'antd'
+import React from 'react';
+import { Carousel } from 'antd';
+import './index.scss';
 
-function Examples(props) {
-  const { TextArea } = Input;
+function Examples({ examples = [] }) {
   return (
-    <Carousel autoplay>
-       {
-        props.examples.map(el => {
-            return (
-                <div>
-    <TextArea
-              disabled
-              value={el}
-              maxLength={5000}
-              width={'40%'}
-              style={{
-                height: 251,
-                resize: 'none',
-                backgroundColor: '#FAF8FF',
-              }}
-            />
-    </div> 
-            )
-        })
-       }
-    </Carousel>
+    <div className='lexi-examples'>
+      <header>
+        <span className='lexi-examples__header'>Examples</span>
+      </header>
+      <Carousel
+        className='lexi-examples__carousel'
+        dotPosition='bottom'
+        autoplay
+      >
+        {examples.map((example, index) => (
+          <div className='lexi-examples__carousel__item' key={index}>
+            <div
+              className='lexi-examples__carousel__item__html'
+              dangerouslySetInnerHTML={{ __html: example.text }}
+            ></div>
+          </div>
+        ))}
+      </Carousel>
+    </div>
   );
 }
 

@@ -2,23 +2,36 @@
  * lexi 卡片列表
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Button, Dropdown } from 'antd';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import LexiModal from '../lexi-modal';
 
 import './index.scss';
 
-function CardList({ list, handleAddItem, addUrl, from, operationOptions, editUrl }) {
+function CardList({
+  list,
+  handleAddItem,
+  addUrl,
+  from,
+  operationOptions,
+  editUrl,
+  onEdit,
+}) {
+  const navigate = useNavigate();
+  const handleEdit = (item) => {
+    onEdit?.(item);
+    navigate(`${editUrl}/${item.id}`);
+  };
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
-        <Link to={editUrl}>
-          <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
-        </Link>
+        <div onClick={() => handleEdit(item)}>
+          <CardItem data={item} operationOptions={operationOptions}></CardItem>
+        </div>
       ))}
-      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from}/>
+      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from} />
     </div>
   );
 }
@@ -57,16 +70,23 @@ function CardItem({ data, operationOptions }) {
     currentOpertion.handleCancel?.(data);
   };
 
-  const operationItems = operationOptions.map(item => ({
+  const operationItems = operationOptions.map((item) => ({
     key: item.key,
     title: item.buttonName,
     label: (
-      <Button color='default' variant='link' onClick={()=> {
-        setShowModal(true);
-        setCurrentOpertion(item);
-      }} icon={item.icon}>{item.buttonName}</Button>
-    )
-  }))
+      <Button
+        color='default'
+        variant='link'
+        onClick={() => {
+          setShowModal(true);
+          setCurrentOpertion(item);
+        }}
+        icon={item.icon}
+      >
+        {item.buttonName}
+      </Button>
+    ),
+  }));
 
   return (
     <div className='lexi-cards__item' key={data.id}>

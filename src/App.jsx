@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from './stores/routeStore';
 import Project from './pages/lexi/project';
 import ProjectEdit from './pages/lexi/project/detail';
-import BrandCreate from './pages/lexi/brand/detail'
+import BrandCreate from './pages/lexi/brand/detail';
 import ProjectEffect from './pages/lexi/project/effect';
 
 Amplify.configure(aws_exports);
@@ -25,14 +25,15 @@ function App() {
           <Route path='/auth' element={<Auth />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/lexi' element={<Lexi />}>
-            {/* <Route path='brands' element={<Profile />} /> */}
-            <Route path='brands' element={<Brand />} >
-              <Route path="add" element={<BrandCreate />} />
-              <Route path="edit" element={<BrandCreate />} />
+            <Route path='brands'>
+              <Route index element={<Brand />} />
+              <Route path='add' element={<BrandCreate />} />
+              <Route path='edit/:id' element={<BrandCreate />} />
             </Route>
-            <Route path='projects' element={<Project />}>
-              <Route path=":action" element={<ProjectEdit />} />
-              <Route path="effect" element={<ProjectEffect />} />
+            <Route path='projects'>
+              <Route index element={<Project />} />
+              <Route path=':mode/:id?' element={<ProjectEdit />} />
+              <Route path='effect' element={<ProjectEffect />} />
             </Route>
           </Route>
         </Routes>

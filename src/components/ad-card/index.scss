@@ -1,0 +1,76 @@
+.ad-card {
+  font-size: 24px;
+  font-family: Roboto;
+
+  .ant-col {
+    font-size: 12px;
+  }
+
+  &__content {
+    padding: 20px;
+    background-color: #fff;
+    margin: 24px 0;
+    font-family: Roboto;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+
+    &__title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+}
+
+.ad-sets-status {
+  font-size: 12px;
+  color: #333;
+}
+
+.ad-sets-cards {
+  width: 100%;
+  display: flex;
+  font-family: Roboto;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+
+  .ad-card__content {
+    position: relative;
+    width: 100%;
+
+    &__title {
+      background: linear-gradient(90deg, #9c63fe 0%, #d390fa 100%);
+      -webkit-background-clip: text; /* 将背景剪裁为文字形状 */
+      -webkit-text-fill-color: transparent; /* 文字填充设为透明，显示背景 */
+    }
+  }
+
+  .ad-sets__performance-estimation {
+    margin: 24px 0;
+  }
+}
+
+.ad-sets_audience-tags__content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  &__item {
+    width: calc(20% - 9.6px);
+    background: #9b62fe0d;
+    height: 24px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 10px;
+    color: #000000b2;
+    line-height: 24px;
+  }
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.ad-copy__content {
+}

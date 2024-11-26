@@ -5,6 +5,12 @@ import ProjectEntity from './project-entity-model';
 const ProjectList = types
   .model('Counter', {
     list: types.array(ProjectEntity), // project 列表
+    currentProject: types.optional(ProjectEntity, {
+      id: 0,
+      name: '',
+      status: 'editing',
+      updateTime: '',
+    }), // 当前选中的 project
   })
   .actions((self) => ({
     init() {
@@ -25,7 +31,19 @@ const ProjectList = types
         },
       ];
     },
+    setCurrent(id) {
+      self.currentProject =
+        self.list.find((project) => project.id === id) || null;
+    },
+    updateCurrentProject(project) {
+      if (self.currentProject) {
+        Object.assign(self.currentProject, project);
+      } else {
+        self.currentProject = project;
+      }
+    },
     addProject(projectData) {
+      // 调用addProject API，然后获取到projectID
       self.list.push(projectData); // 添加新项目
     },
     removeProject(id) {

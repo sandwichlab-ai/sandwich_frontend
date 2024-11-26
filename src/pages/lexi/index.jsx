@@ -7,7 +7,6 @@ import './index.scss';
 
 const Lexi = observer(() => {
   const [collapsed, setCollapsed] = useState(false);
-
   return (
     <div
       className={`lexi__container  lexi__container--${
