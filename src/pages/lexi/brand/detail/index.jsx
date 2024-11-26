@@ -78,12 +78,12 @@ function Detail(props) {
         navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
       }
     };
-    // 监听 Auth 事件
-    Hub.listen('auth', handleAuthEvents);
+    // // 监听 Auth 事件
+    // Hub.listen('auth', handleAuthEvents);
 
-    return () => {
-      // Hub.remove('auth', handleAuthEvents);
-    };
+    // return () => {
+    //   // Hub.remove('auth', handleAuthEvents);
+    // };
   }, [navigate]);
 
   useEffect(() => {

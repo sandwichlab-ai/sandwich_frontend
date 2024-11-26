@@ -1,6 +1,8 @@
 import { types } from 'mobx-state-tree';
 import BrandEntity from './brand-entity-model';
+import axiosInstance from '../../axiosInstance';
 import axios from 'axios';
+
 import { Descriptions } from 'antd';
 
 const BrandListModel = types
@@ -9,7 +11,23 @@ const BrandListModel = types
   })
   .actions((self) => ({
     init() {
-      axios.get("http://192.168.0.38:8080/api/brand/brands").then((response) => {
+      // axiosInstance.
+      axiosInstance.interceptors.request.use(
+        (config) => {
+          const token = localStorage.getItem('accessToken');
+          console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
+          if (token) {
+            config.headers['Authorization'] = `${token}`;
+          }
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+
+
+      axiosInstance.get("http://192.168.0.38:8080/api/brand/brands").then((response) => {
         console.log("response is: ", response)
         // self.list = response.data;
         let result = response.data.map((item) => {

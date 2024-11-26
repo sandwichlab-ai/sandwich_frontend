@@ -97,70 +97,77 @@ function Brand(props) {
 
   const navigate = useNavigate()
 
-  useEffect(async () => {
-    const queryParams = new URLSearchParams(window.location.search);
-    console.log("queryParams: ", queryParams);
-    const code = queryParams.get('code');
-    console.log('code in profile: ', code);
-    // if (code) {
-    //   // 如果 code 存在，则调用函数去换取 token
-    //   console.log('code is: ', code);
-    //   axios
-    //     .get(`https://auth0.sandwichlab.ai/oauth2/callback?code=${code}`)
-    //     .then((res) => {
-    //       console.log('res is: ', res, res.data, res.data.error);
-    //       if (res && res.data && !res.data.error) {
-    //         localStorage.setItem('token_obj', JSON.stringify(res.data));
-    //         if (res.headers) {
-    //           localStorage.setItem(
-    //             'token_obj_header',
-    //             JSON.stringify(res.headers)
-    //           );
-    //         }
-    //       } else if (res.data.error && res.data.error === 'invalid_grant') {
-    //         console.log('expired invalid grant');
-    //         // localStorage.removeItem("token_obj");
-    //         // if(localStorage.getItem("token_obj_header")) {
-    //         //     localStorage.removeItem("token_obj_header");
-    //         // }
-    //         // navigate("/auth");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log('error is: ', error);
-    //     });
-    // } else {
-    //   console.error('Authorization code not found in URL.');
-    // }
-    // console.log("cur user: ", localStorage.getItem("token_obj"), localStorage.getItem("token_obj_header"))
-    // Auth.currentSession()
-    //   .then(session => {
-    //     console.log('session: ', session, "accessToken: ", session.getAccessToken().getJwtToken(), "refreshToken: ", session.getRefreshToken().getToken());
-    //     setTokens({
-    //       idToken: session.getIdToken().getJwtToken(),
-    //       accessToken: session.getAccessToken().getJwtToken(),
-    //       refreshToken: session.getRefreshToken().getToken()
-    //     });
-    //   })
-    //   .catch(err => console.error('Error fetching session:', err));
-    // cognitoUserPoolsTokenProvider.setKeyValueStorage(new CookieStorage())
-    // axios.post("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/token").then(
-    //   res => {
-    //     console.log("res is: ", res)
-    //   }
-    // ).catch(
-    //   error => {
-    //     console.log("error is: ", error)
-    //   }
-    // )
-    console.log("current path: ", location, params);
-    console.log("brand list is: ", brandList);
-    await brandList.init();
-    console.log("brand list is: ", brandList.list.map((el) => el.name));
-    // useEffect(() => {
-    //   projectList.init();
-    // }, []);
-  }, []);
+  useEffect(
+    // async 
+    () => {
+      const queryParams = new URLSearchParams(window.location.search);
+      console.log("queryParams: ", queryParams);
+      const code = queryParams.get('code');
+      console.log('code in profile: ', code);
+      // if (code) {
+      //   // 如果 code 存在，则调用函数去换取 token
+      //   console.log('code is: ', code);
+      //   axios
+      //     .get(`https://auth0.sandwichlab.ai/oauth2/callback?code=${code}`)
+      //     .then((res) => {
+      //       console.log('res is: ', res, res.data, res.data.error);
+      //       if (res && res.data && !res.data.error) {
+      //         localStorage.setItem('token_obj', JSON.stringify(res.data));
+      //         if (res.headers) {
+      //           localStorage.setItem(
+      //             'token_obj_header',
+      //             JSON.stringify(res.headers)
+      //           );
+      //         }
+      //       } else if (res.data.error && res.data.error === 'invalid_grant') {
+      //         console.log('expired invalid grant');
+      //         // localStorage.removeItem("token_obj");
+      //         // if(localStorage.getItem("token_obj_header")) {
+      //         //     localStorage.removeItem("token_obj_header");
+      //         // }
+      //         // navigate("/auth");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log('error is: ', error);
+      //     });
+      // } else {
+      //   console.error('Authorization code not found in URL.');
+      // }
+      // console.log("cur user: ", localStorage.getItem("token_obj"), localStorage.getItem("token_obj_header"))
+      // Auth.currentSession()
+      //   .then(session => {
+      //     console.log('session: ', session, "accessToken: ", session.getAccessToken().getJwtToken(), "refreshToken: ", session.getRefreshToken().getToken());
+      //     setTokens({
+      //       idToken: session.getIdToken().getJwtToken(),
+      //       accessToken: session.getAccessToken().getJwtToken(),
+      //       refreshToken: session.getRefreshToken().getToken()
+      //     });
+      //   })
+      //   .catch(err => console.error('Error fetching session:', err));
+      // cognitoUserPoolsTokenProvider.setKeyValueStorage(new CookieStorage())
+      // axios.post("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/token").then(
+      //   res => {
+      //     console.log("res is: ", res)
+      //   }
+      // ).catch(
+      //   error => {
+      //     console.log("error is: ", error)
+      //   }
+      // )
+      console.log("current path: ", location, params);
+      console.log("brand list is: ", brandList);
+      const asyncBrandCall = async () => {
+        await brandList.init();
+        console.log("brand list is: ", brandList.list.map((el) => el.name));
+      }
+
+
+      asyncBrandCall()
+      // useEffect(() => {
+      //   projectList.init();
+      // }, []);
+    }, []);
 
   useEffect(() => {
     const handleAuthEvents = (data) => {
@@ -174,12 +181,12 @@ function Brand(props) {
         navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
       }
     };
-    // 监听 Auth 事件
-    Hub.listen('auth', handleAuthEvents);
+    // // 监听 Auth 事件
+    // Hub.listen('auth', handleAuthEvents);
 
-    return () => {
-      // Hub.remove('auth', handleAuthEvents);
-    };
+    // return () => {
+    //   // Hub.remove('auth', handleAuthEvents);
+    // };
   }, [navigate]);
 
   useEffect(() => {
