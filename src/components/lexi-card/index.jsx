@@ -15,14 +15,14 @@ function CardList({ list, handleAddItem, addUrl, from, operationOptions, editUrl
     <div className='lexi-cards'>
       {/* {`${list[0]?.name}`} */}
       {list.map((item) => (
-        <Link 
-          to={editUrl}
-          state={item.name} 
+        <Link
+          to={`${editUrl}/${item.id}`}
+          state={item.name}
         >
           <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
         </Link>
       ))}
-      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from}/>
+      <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from} />
     </div>
   );
 }
@@ -65,7 +65,7 @@ function CardItem({ data, operationOptions }) {
     key: item.key,
     title: item.buttonName,
     label: (
-      <Button color='default' variant='link' onClick={()=> {
+      <Button color='default' variant='link' onClick={() => {
         setShowModal(true);
         setCurrentOpertion(item);
       }} icon={item.icon}>{item.buttonName}</Button>

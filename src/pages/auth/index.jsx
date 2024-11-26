@@ -133,25 +133,38 @@ function AuthComponent(props) {
   const handleSubmit = () => {
     console.log('sign request');
     // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
-    window.open(
-      'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
-    );
+
+    //  window.location.assign("https://www.google.com");
+    // 'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
+
+
+
+    // window.open(
+    //   'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
+    // );
+
+
+
+    // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
+    // window.open(
+    //   'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://test.sandwichlab.ai/profile'
+    // );
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
 
-    window.addEventListener(
-      'message',
-      (event) => {
-        console.log('event is: ', event);
-        // debugger
-        if (event.origin !== 'https://auth0.sandwichlab.ai') return;
+    // window.addEventListener(
+    //   'message',
+    //   (event) => {
+    //     console.log('event is: ', event);
+    //     // debugger
+    //     if (event.origin !== 'https://auth0.sandwichlab.ai') return;
 
-        // 确保获取到token并保存
-        const receivedToken = event.data.token;
-        if (receivedToken) {
-        }
-      },
-      { once: true }
-    );
+    //     // 确保获取到token并保存
+    //     const receivedToken = event.data.token;
+    //     if (receivedToken) {
+    //     }
+    //   },
+    //   { once: true }
+    // );
   };
   const handleFormChange = () => { };
   const handleSelect = () => { };
@@ -233,16 +246,23 @@ function AuthComponent(props) {
                 onClick={handleSubmit}
                 style={{ cursor: 'pointer' }}
               >
+                {/* <a href="https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands"> */}
                 Continue
+                {/* </a> */}
+
               </button>}
 
-              {accountStatus == 1 && <button
-                type='submit'
-                onClick={handleSubmit}
-                style={{ cursor: 'pointer' }}
-              >
-                Log in
-              </button>}
+              {accountStatus == 1 &&
+                <button
+                  type='submit'
+                  onClick={sessionStorage.setItem("from", "Login")}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {/* <a href="https://auth0.sandwichlab.ai/oauth2/login" >Log in</a> */}
+                  <a href="https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi">Log in</a>
+                </button>
+
+              }
             </div>
             <div className='line-with-text'>
               <span>OR</span>
@@ -257,6 +277,7 @@ function AuthComponent(props) {
                 <img src={fblogo} width='32px' height='32px' />
                 <span>{accountStatus == 0 ? "Sign-up" : "Log in"} with Facebook</span>
               </button>
+              <a href="https://www.google.com" />
             </div>
           </form>
 

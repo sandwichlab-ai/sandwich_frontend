@@ -5,8 +5,10 @@ import Examples from "../../../../components/examples/index.jsx"
 import meta from '../../../../assets/images/meta.png';
 import { useStore } from '../../../../stores/routeStore';
 import { observer } from 'mobx-react-lite';
-import '../index.css';
+import { Amplify } from 'aws-amplify';
+import { Hub } from '@aws-amplify/core';
 import { useNavigate } from 'react-router-dom';
+import '../index.css';
 
 const data = [
   {
@@ -63,6 +65,26 @@ function Detail(props) {
   const { brandList } = useStore();
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const handleAuthEvents = (data) => {
+      const { event } = data.payload;
+
+      if (event === 'signIn') {
+        console.log('User signed in');
+        navigate('/lexi/brand'); // 登录成功后跳转到 dashboard
+      } else if (event === 'signUp') {
+        console.log('User created account');
+        navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
+      }
+    };
+    // 监听 Auth 事件
+    Hub.listen('auth', handleAuthEvents);
+
+    return () => {
+      // Hub.remove('auth', handleAuthEvents);
+    };
+  }, [navigate]);
 
   useEffect(() => {
     brandList.init()
@@ -260,7 +282,10 @@ function Detail(props) {
 
           {props.mode == "edit" &&
             <div className="edit__btn--group">
-              <Button disabled={false} width="196" height="56" id="detail__cancel--btn" onClick={() => navigate("/lexi/brands")}>
+              <Button disabled={false} width="196" height="56" id="detail__cancel--btn" onClick={() => {
+                console.log("props is: ", props)
+                navigate("/lexi/brands")
+              }}>
                 Cancel
               </Button>
               <Button disabled={false} width="196" height="56" id="detail__submit--btn" onClick={handleUpdate}>
