@@ -33,6 +33,7 @@ function Header() {
         console.log("access token before", localStorage.getItem('accessToken'))
         console.log("session is: ", session.tokens.accessToken, session.tokens.idToken, "localStorage is: ");
         session.tokens.accessToken && localStorage.setItem('accessToken', session.tokens.accessToken);
+        session.tokens.idToken && localStorage.setItem('idToken', session.tokens.idToken);
 
         console.log("token: ", localStorage.getItem('accessToken'))
         // console.log('ID Token:', idToken);

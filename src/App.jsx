@@ -58,7 +58,7 @@ function App() {
                 {/* <Route path='brands' element={<Profile />} /> */}
                 <Route path='brands' element={<Brand />} >
                   <Route path="add" element={<BrandCreate />} />
-                  <Route path="edit" element={<BrandCreate />} />
+                  <Route path="edit/:id" element={<BrandCreate />} />
                 </Route>
                 <Route path='projects' element={<Project />}>
                   <Route path=":action" element={<ProjectEdit />} />

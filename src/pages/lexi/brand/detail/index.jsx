@@ -7,8 +7,9 @@ import { useStore } from '../../../../stores/routeStore';
 import { observer } from 'mobx-react-lite';
 import { Amplify } from 'aws-amplify';
 import { Hub } from '@aws-amplify/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
+import axiosInstance from '../../../../utils/axiosInstance.js';
 
 const data = [
   {
@@ -65,6 +66,7 @@ function Detail(props) {
   const { brandList } = useStore();
 
   const navigate = useNavigate()
+  const { id } = useParams();
 
   useEffect(() => {
     const handleAuthEvents = (data) => {
@@ -78,17 +80,30 @@ function Detail(props) {
         navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
       }
     };
-    // // 监听 Auth 事件
-    // Hub.listen('auth', handleAuthEvents);
-
-    // return () => {
-    //   // Hub.remove('auth', handleAuthEvents);
-    // };
   }, [navigate]);
 
   useEffect(() => {
+
+    console.log("86 id is: ", id)
     brandList.init()
   })
+
+  useEffect(() => {
+    const fetchReq = async () => {
+      axiosInstance.get(`http://192.168.0.38:8080/api/brand/${id}`).then(
+        res => {
+          console.log("89 res is: ", res)
+          setAccount(res.data)
+        }
+      ).catch(
+        err => {
+          console.log("92 err is: ", err)
+        }
+      )
+    }
+
+    fetchReq()
+  }, [id])
 
   const list = brandList.list.slice(0);
 
@@ -187,15 +202,16 @@ function Detail(props) {
       <div className='addtional__information'>
 
         <div className="brand__container">
-
-          <Form.Item
-            label="Brand Name"
-            name="brandname"
-            rules={[{ required: true, message: 'Please input brand name!' }]}
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-          >
-            <Select
+          {account.name}
+          <Form>
+            <Form.Item
+              label="Brand Name"
+              name="brandname"
+              rules={[{ required: true, message: 'Please input brand name!' }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
+            >
+              {/* <Select
               defaultValue="lucy"
               style={{ width: 680, height: 50 }}
               onChange={handleChange}
@@ -205,9 +221,11 @@ function Detail(props) {
                 { value: 'Yiminghe', label: 'yiminghe' },
                 { value: 'disabled', label: 'Disabled', disabled: true },
               ]}
-            />
-          </Form.Item>
+            /> */}
+              <Input defaultValue={account.name} style={{ width: "60%" }} />
+            </Form.Item>
 
+          </Form>
 
         </div>
       </div>

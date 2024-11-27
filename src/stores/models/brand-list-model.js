@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
 import BrandEntity from './brand-entity-model';
-import axiosInstance from '../../axiosInstance';
+import axiosInstance from '../../utils/axiosInstance';
 import axios from 'axios';
 
 import { Descriptions } from 'antd';
@@ -85,7 +85,14 @@ const BrandListModel = types
 
     updateBrands(updates) {
       self.list = updates;
+    },
+
+    getBrand(id) {
+      // const brand = self.list.find((brand) => brand.id == id);
+
+      // return brand;
     }
+
   }));
 
 export default BrandListModel;
