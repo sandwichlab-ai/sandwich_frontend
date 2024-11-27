@@ -47,7 +47,7 @@ function Header() {
 
     }
 
-    asyncFn()
+    // asyncFn()
 
     // const handleAuthEvents = (data) => {
     //   const { event } = data.payload;

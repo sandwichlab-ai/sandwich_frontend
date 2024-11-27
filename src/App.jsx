@@ -60,9 +60,10 @@ function App() {
                   <Route path="add" element={<BrandCreate />} />
                   <Route path="edit/:id" element={<BrandCreate />} />
                 </Route>
-                <Route path='projects' element={<Project />}>
-                  <Route path=":mode/:id" element={<ProjectEdit />} />
-                  <Route path="effect" element={<ProjectEffect />} />
+                <Route path='projects'>
+                  <Route index element={<Project />} />
+                  <Route path=':mode/:id?' element={<ProjectEdit />} />
+                  <Route path='effect' element={<ProjectEffect />} />
                 </Route>
               </Route>
             </Routes>

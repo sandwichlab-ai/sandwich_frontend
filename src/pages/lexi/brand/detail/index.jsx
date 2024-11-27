@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Flex, Input, Select, Form, Button, Row, Col, Carousel, Modal } from 'antd';
 import AccountContent from '../AccountContent.jsx';
 import Examples from "../../../../components/examples/index.jsx"
+import LexiForm from "../../../../components/lexi-form"
 import meta from '../../../../assets/images/meta.png';
 import { useStore } from '../../../../stores/routeStore';
 import { observer } from 'mobx-react-lite';
@@ -68,6 +69,8 @@ function Detail(props) {
   const navigate = useNavigate()
   const { id } = useParams();
 
+  const [form] = Form.useForm();
+
   useEffect(() => {
     const handleAuthEvents = (data) => {
       const { event } = data.payload;
@@ -94,6 +97,8 @@ function Detail(props) {
         res => {
           console.log("89 res is: ", res)
           setAccount(res.data)
+          setBrandName(res.data.name)
+          form.setFieldsValue(res.data.name);
         }
       ).catch(
         err => {
@@ -203,7 +208,10 @@ function Detail(props) {
 
         <div className="brand__container">
           {account.name}
-          <Form>
+          ...{brandName}
+          <Form
+            form={form}
+          >
             <Form.Item
               label="Brand Name"
               name="brandname"
@@ -211,21 +219,13 @@ function Detail(props) {
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
             >
-              {/* <Select
-              defaultValue="lucy"
-              style={{ width: 680, height: 50 }}
-              onChange={handleChange}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            /> */}
-              <Input defaultValue={account.name} style={{ width: "60%" }} />
+              <Input defaultValue={account.name} value={brandName} style={{ width: "60%" }} onChange={handleChange} />
             </Form.Item>
 
           </Form>
+
+
+          {/* <LexiForm data={account} /> */}
 
         </div>
       </div>

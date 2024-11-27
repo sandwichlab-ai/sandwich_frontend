@@ -15,11 +15,13 @@ import Examples from '../examples';
 import LexiButton from '../lexi-button';
 
 const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
+
   const [form] = Form.useForm();
   // 初始化默认值
   useEffect(() => {
+    console.log("data is: ", data)
     data && form.setFieldsValue(data);
-  }, []);
+  }, [data]);
   // 渲染字段方法
   const renderField = (field) => {
     switch (field.type) {
