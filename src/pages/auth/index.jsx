@@ -114,54 +114,67 @@ function AuthComponent(props) {
   });
 
   useEffect(() => {
-     console.log("account status change:", accountStatus)
-     if(accountStatus == 0) {
-       setTestData([
-         ['Full Name'],
-         ['Your Email'],
-         ['Password'],
-       ]);
-     } else {
-       setTestData([
-         ['Your Email'],
-         ['Password'],
-       ]);
-     }
-     console.log("form data is: ", formData)
+    console.log("account status change:", accountStatus)
+    if (accountStatus == 0) {
+      setTestData([
+        ['Full Name'],
+        ['Your Email'],
+        ['Password'],
+      ]);
+    } else {
+      setTestData([
+        ['Your Email'],
+        ['Password'],
+      ]);
+    }
+    console.log("form data is: ", formData)
   }, [accountStatus])
 
   const handleSubmit = () => {
     console.log('sign request');
     // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
-    window.open(
-      'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
-    );
+
+    //  window.location.assign("https://www.google.com");
+    // 'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
+
+
+
+    // window.open(
+    //   'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands'
+    // );
+
+
+
+    // window.location.href = `https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?response_type=code&client_id=111cv6odnaocu71pr68qosr42t&redirect_uri=http://localhost:3000/auth`
+    // window.open(
+    //   'https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://test.sandwichlab.ai/profile'
+    // );
     // window.open("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=https://auth0.sandwichlab.ai/oauth2/callback")
 
-    window.addEventListener(
-      'message',
-      (event) => {
-        console.log('event is: ', event);
-        // debugger
-        if (event.origin !== 'https://auth0.sandwichlab.ai') return;
+    // window.addEventListener(
+    //   'message',
+    //   (event) => {
+    //     console.log('event is: ', event);
+    //     // debugger
+    //     if (event.origin !== 'https://auth0.sandwichlab.ai') return;
 
-        // 确保获取到token并保存
-        const receivedToken = event.data.token;
-        if (receivedToken) {
-        }
-      },
-      { once: true }
-    );
+    //     // 确保获取到token并保存
+    //     const receivedToken = event.data.token;
+    //     if (receivedToken) {
+    //     }
+    //   },
+    //   { once: true }
+    // );
   };
-  const handleFormChange = () => {};
-  const handleSelect = () => {};
+  const handleFormChange = () => { };
+  const handleSelect = () => { };
 
   return (
     <div className='auth__container'>
       <img src={image} alt='logo' className='auth_logo' />
 
       <div className='content__container--auth'>
-        {!accountStatus && <div style={{marginTop: "8%"}}>
+        {!accountStatus && <div style={{ marginTop: "8%" }}>
           <div className='auth__title'>Create an account</div>
           <div className='auth__title--note'>
             Already have an account?{' '}
@@ -169,7 +182,7 @@ function AuthComponent(props) {
           </div>
         </div>}
 
-        {accountStatus == 1 && <div style={{marginTop: "8%"}}>
+        {accountStatus == 1 && <div style={{ marginTop: "8%" }}>
           <div className='auth__title'>Login</div>
           <div className='auth__title--note'>
             Don't have an account?{' '}
@@ -179,7 +192,7 @@ function AuthComponent(props) {
 
         <div className='contact__form--auth'>
           {/* {accountStatus == 0 && <div style={{marginTop:"7%"}}>Enter your email address to create an account</div>} */}
-          <div style={{marginTop:"7%"}}>{accountStatus == 0 && "Enter your email address to create an account" }</div>
+          <div style={{ marginTop: "7%" }}>{accountStatus == 0 && "Enter your email address to create an account"}</div>
           <form>
             {testData.map((row, rowIndex) => {
               return (
@@ -233,16 +246,23 @@ function AuthComponent(props) {
                 onClick={handleSubmit}
                 style={{ cursor: 'pointer' }}
               >
+                {/* <a href="https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi/brands"> */}
                 Continue
+                {/* </a> */}
+
               </button>}
 
-              {accountStatus == 1 && <button
-                type='submit'
-                onClick={handleSubmit}
-                style={{ cursor: 'pointer' }}
-              >
-                Log in
-              </button>}
+              {accountStatus == 1 &&
+                <button
+                  type='submit'
+                  onClick={sessionStorage.setItem("from", "Login")}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {/* <a href="https://auth0.sandwichlab.ai/oauth2/login" >Log in</a> */}
+                  <a href="https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi">Log in</a>
+                </button>
+
+              }
             </div>
             <div className='line-with-text'>
               <span>OR</span>
@@ -255,11 +275,12 @@ function AuthComponent(props) {
                 style={{ cursor: 'pointer' }}
               >
                 <img src={fblogo} width='32px' height='32px' />
-                <span>{accountStatus == 0? "Sign-up" : "Log in"} with Facebook</span>
+                <span>{accountStatus == 0 ? "Sign-up" : "Log in"} with Facebook</span>
               </button>
+              <a href="https://www.google.com" />
             </div>
           </form>
-          
+
           {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
       <Row style={{ width: "100%", height: "40%" }} justify="center">
         <Col xs={24} sm={18} md={12} lg={8}>
@@ -305,7 +326,7 @@ function AuthComponent(props) {
             </div>
     </div>
            */}
-  
+
 
         </div>
         <div className='contact__form--notes'>

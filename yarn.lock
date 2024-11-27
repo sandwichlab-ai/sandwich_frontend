@@ -8688,6 +8688,13 @@ mobx-react-lite@^4.0.7:
   dependencies:
     use-sync-external-store "^1.2.0"
 
+mobx-react@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-9.1.1.tgz"
+  integrity sha512-gVV7AdSrAAxqXOJ2bAbGa5TkPqvITSzaPiiEkzpW4rRsMhSec7C2NBCJYILADHKp2tzOAIETGRsIY0UaCV5aEw==
+  dependencies:
+    mobx-react-lite "^4.0.7"
+
 mobx-state-tree@^7.0.0:
   version "7.0.0"
   resolved "https://registry.npmjs.org/mobx-state-tree/-/mobx-state-tree-7.0.0.tgz"

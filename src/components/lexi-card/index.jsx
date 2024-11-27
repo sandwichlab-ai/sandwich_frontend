@@ -26,10 +26,14 @@ function CardList({
   };
   return (
     <div className='lexi-cards'>
+      {/* {`${list[0]?.name}`} */}
       {list.map((item) => (
-        <div onClick={() => handleEdit(item)}>
-          <CardItem data={item} operationOptions={operationOptions}></CardItem>
-        </div>
+        <Link
+          to={`${editUrl}/${item.id}`}
+          state={item.name}
+        >
+          <CardItem key={item.id} data={item} operationOptions={operationOptions}></CardItem>
+        </Link>
       ))}
       <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from} />
     </div>
@@ -74,19 +78,12 @@ function CardItem({ data, operationOptions }) {
     key: item.key,
     title: item.buttonName,
     label: (
-      <Button
-        color='default'
-        variant='link'
-        onClick={() => {
-          setShowModal(true);
-          setCurrentOpertion(item);
-        }}
-        icon={item.icon}
-      >
-        {item.buttonName}
-      </Button>
-    ),
-  }));
+      <Button color='default' variant='link' onClick={() => {
+        setShowModal(true);
+        setCurrentOpertion(item);
+      }} icon={item.icon}>{item.buttonName}</Button>
+    )
+  }))
 
   return (
     <div className='lexi-cards__item' key={data.id}>
