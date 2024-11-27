@@ -52,15 +52,31 @@ const examples = [
   "I am a divorce lawyer4 based in ...."
 ]
 
+function setToken() {
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('accessToken');
+      console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
+      if (token) {
+        config.headers['Authorization'] = `${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+}
+
 function Detail(props) {
   const { TextArea } = Input;
 
   const [accountCnt, setAccountCnt] = useState(1);
-  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accontText, setAccountText] = useState("Ad Account Connect")
   const [btnWidth, setBtnWidth] = useState(412)
-  const [brandName, setBrandName] = useState("lucy")
+  const [brandName, setBrandName] = useState("")
   const [brandIntro, setBrandIntro] = useState("")
   const [account, setAccount] = useState({});
 
@@ -88,26 +104,47 @@ function Detail(props) {
   useEffect(() => {
 
     console.log("86 id is: ", id)
-    brandList.init()
-  })
+    if (brandName && brandName.length > 0) {
+      console.log("enable false")
+      setSubmitDisabled(false)
+    } else {
+      console.log("enable true")
+      setSubmitDisabled(true)
+    }
+    // brandList.init()
+  }, [brandName])
 
   useEffect(() => {
-    const fetchReq = async () => {
-      axiosInstance.get(`http://192.168.0.38:8080/api/brand/${id}`).then(
-        res => {
-          console.log("89 res is: ", res)
-          setAccount(res.data)
-          setBrandName(res.data.name)
-          form.setFieldsValue(res.data.name);
-        }
-      ).catch(
-        err => {
-          console.log("92 err is: ", err)
-        }
-      )
+
+    if (id) {
+
+      const fetchReq = async () => {
+        setToken()
+        axiosInstance.get(`http://192.168.0.38:8080/api/brand/${id}`).then(
+          res => {
+            console.log("89 res is: ", res)
+            setAccount(res.data)
+            setBrandName(res.data.name)
+            // form.setFieldsValue({ "": res.data.name });
+          }
+        ).catch(
+          err => {
+            console.log("92 err is: ", err)
+          }
+        )
+      }
+
+      fetchReq()
     }
 
-    fetchReq()
+    // console.log("id changed", id)
+    // const asyncBrandCall = async () => {
+    //   await brandList.getBrand(id);
+    //   //console.log("brand list is: ", brandList.list.map((el) => el.name));
+    // }
+
+
+    // asyncBrandCall()
   }, [id])
 
   const list = brandList.list.slice(0);
@@ -151,12 +188,45 @@ function Detail(props) {
   );
 
   const handleChange = (e) => {
-    console.log("select brand change", e);
-    setBrandName(e)
+    console.log("select brand change", e.target.value);
+    setBrandName(e.target.value)
   }
 
   const handleSumbit = () => {
     console.log("submit");
+    if (props.mode == "create") {
+      console.log("add brand", brandName, brandIntro)
+      // brandList.addBrand({
+      //   name: brandName,
+      //   status: "draft",
+      //   updateTime: `${Date.now()}`,
+      // })
+      // console.log("list is: ", brandList.list)
+      // navigate("/lexi/brands")
+
+      console.log("id token", localStorage.getItem("idToken"))
+
+      const result = {
+        "name": brandName,
+        "description": brandIntro,
+        "goal": "123",
+        "user_id": "123"
+      }
+
+      axiosInstance.post("http://192.168.0.38:8080/api/brand", result).then(
+        res => {
+          console.log("res is: ", res)
+          navigate("/lexi/brands")
+        }
+      ).catch(
+        error => {
+          console.log("error is: ", error)
+        }
+      )
+
+    } else {
+      handleUpdate()
+    }
   }
 
   const setAddAccount = (account) => {
@@ -208,7 +278,7 @@ function Detail(props) {
 
         <div className="brand__container">
           {account.name}
-          ...{brandName}
+          ...{brandName}...
           <Form
             form={form}
           >
@@ -219,7 +289,7 @@ function Detail(props) {
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
             >
-              <Input defaultValue={account.name} value={brandName} style={{ width: "60%" }} onChange={handleChange} />
+              <Input value={brandName} style={{ width: "60%" }} onChange={handleChange} />
             </Form.Item>
 
           </Form>
@@ -294,9 +364,14 @@ function Detail(props) {
         <div className='content__btn--group'>
           {/* <button className='content__btn'>cancel</button> */}
           {/* <button className='content__btn'>save</button> */}
-          {props.mode == "create" && <Button disabled={submitDisabled} width="412" height="56" onClick={handleSumbit}>
+
+          {props.mode == "create" && submitDisabled && <Button disabled={true} id={"detail__create--disable"} width="412" height="56" onClick={handleSumbit}>
             Save and create ads now
           </Button>}
+          {props.mode == "create" && !submitDisabled && <Button disabled={false} id={"detail__create--btn"} width="412" height="56" onClick={handleSumbit}>
+            Save and create ads now
+          </Button>}
+          disable:{`${submitDisabled}`}
 
           {props.mode == "edit" &&
             <div className="edit__btn--group">

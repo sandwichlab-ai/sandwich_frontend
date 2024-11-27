@@ -1,8 +1,8 @@
-.content__profile--footer{
-   height: 16%;  
-   background: transparent; 
-   /* position: relative; */
-   bottom: 30px;
+.content__profile--footer {
+    height: 16%;
+    background: transparent;
+    /* position: relative; */
+    bottom: 30px;
 }
 
 .content__btn--group {
@@ -46,13 +46,13 @@
     /* min-height: 205px; */
 }
 
-.addtional__information >label {
+.addtional__information>label {
     position: absolute;
     left: 32px;
     top: 40%;
 }
 
-.addtional__information >input {
+.addtional__information>input {
     position: absolute;
     border: 1px solid #C4C4C4;
     left: 32px;
@@ -62,7 +62,7 @@
     border-radius: 12px;
 }
 
-.addtional__information--title{
+.addtional__information--title {
     position: absolute;
     top: 21.5px;
     left: 32px;
@@ -70,7 +70,7 @@
     font-size: 20px;
 }
 
-.content__bussiness{
+.content__bussiness {
     height: 40%;
     width: 100%;
     margin: 0 auto;
@@ -120,7 +120,7 @@
     margin-top: 6% !important;
 }
 
-.account__connection--edit{
+.account__connection--edit {
     position: absolute;
     left: 37%;
     top: 57%;
@@ -128,13 +128,13 @@
     font-weight: 400;
 }
 
-.account__connection--wrapper >input {
+.account__connection--wrapper>input {
     width: 100%;
-    padding-left: calc(5% + 22px); 
+    padding-left: calc(5% + 22px);
     height: 36px
 }
 
-.account__connection--wrapper button{
+.account__connection--wrapper button {
     position: absolute;
     left: 67%;
     top: 50%;
@@ -152,7 +152,7 @@
     align-items: center;
 }
 
-.account__connection--wrapper button >span {
+.account__connection--wrapper button>span {
     margin-right: 4%;
     font-weight: bold;
 }
@@ -175,21 +175,21 @@
     border-radius: 12px;
 }
 
-.ant-input-data-count{
+.ant-input-data-count {
     padding-bottom: 38px;
     padding-right: 15px;
 }
 
 .bussiness__inspire--btn {
-   z-index: 1000;
-   border: 1px #8C68FF solid;
-   color: #8C68FF;
-   position: absolute;
-   right: 6px;
-   bottom: 14px;
-   width: 157px;
-   height: 40px;
-   cursor: pointer;
+    z-index: 1000;
+    border: 1px #8C68FF solid;
+    color: #8C68FF;
+    position: absolute;
+    right: 6px;
+    bottom: 14px;
+    width: 157px;
+    height: 40px;
+    cursor: pointer;
 }
 
 .bussiness__btn--group {
@@ -203,7 +203,7 @@
     flex: 1;
     bottom: 10%;
     width: 100%;
-    
+
 }
 
 .bussiness__btn {
@@ -212,7 +212,7 @@
     color: #8C68FF;
 }
 
-.textarea__wrapper{
+.textarea__wrapper {
     position: relative;
     width: 48%;
 }
@@ -222,8 +222,7 @@
     position: relative;
 }
 
-.bussiness__btn--close 
-{
+.bussiness__btn--close {
     z-index: 1000;
     border: 1px #8C68FF solid;
     color: #8C68FF;
@@ -255,11 +254,11 @@
 }
 
 .ant-input-textarea-show-count {
-   /* margin-top: 13% */
+    /* margin-top: 13% */
 }
 
 .ant-input-textarea {
-    position: relative; 
+    position: relative;
 }
 
 .brand__container {
@@ -271,32 +270,32 @@
     margin-top: 32px;
 }
 
-.brand__container  .ant-form-item-control-input-content{
+.brand__container .ant-form-item-control-input-content {
     display: flex !important;
 }
 
 .custom-button {
-    width: 412px;    
-    height: 56px;   
-    font-size: 20; 
+    width: 412px;
+    height: 56px;
+    font-size: 20;
     color: white;
     border-radius: 8px;
-  }
+}
 
 .content__btn--group .ant-btn {
-    width: 412px;    
-    height: 56px ; 
-    background-color: #C1C7CD !important;  
+    width: 412px;
+    height: 56px;
+    background-color: #C1C7CD !important;
     color: white;
-    border-radius: 8px; 
-}  
+    border-radius: 8px;
+}
 
-.content__btn--group .ant-btn >span {
+.content__btn--group .ant-btn>span {
     color: white;
     font-size: 20px;
 }
 
-.content__btn--group > .edit__btn--group .ant-btn {
+.content__btn--group>.edit__btn--group .ant-btn {
     width: 200px !important;
     height: 56px !important;
     margin-left: 10px;
@@ -304,22 +303,22 @@
     background-color: transparent !important;
 }
 
-.content__btn--group > .edit__btn--group > #detail__cancel--btn {
-   background-color: transparent !important;
-   border: 1px #8C68FF solid !important;
-   /* color:#8C68FF!important;
+.content__btn--group>.edit__btn--group>#detail__cancel--btn {
+    background-color: transparent !important;
+    border: 1px #8C68FF solid !important;
+    /* color:#8C68FF!important;
    border: 1px #8C68FF!important; */
-} 
+}
 
-.content__btn--group > .edit__btn--group > #detail__cancel--btn span {
+.content__btn--group>.edit__btn--group>#detail__cancel--btn span {
     color: #8C68FF !important;
 }
 
-.content__btn--group > .edit__btn--group > #detail__submit--btn {
-    background-color: #8C68FF!important;
+.content__btn--group>.edit__btn--group>#detail__submit--btn {
+    background-color: #8C68FF !important;
 }
 
-.content__bussiness  .ant-col-12 {
+.content__bussiness .ant-col-12 {
     /* margin: 2% !important; */
     margin-top: 2% !important;
 }
@@ -341,10 +340,10 @@
     content: '';
     position: absolute;
     left: 41%;
-    bottom: 93%; 
-    width: 18%; 
-    height: 2px; 
-    background-color: purple; 
+    bottom: 93%;
+    width: 18%;
+    height: 2px;
+    background-color: purple;
 }
 
 
@@ -364,7 +363,7 @@
 }
 
 .ant-modal .ant-modal-content .ant-modal-body {
-    height: 661px!important;
+    height: 661px !important;
 }
 
 .ant-modal .ant-modal-content .ant-modal-title {
@@ -376,7 +375,7 @@
     display: none;
 }
 
-.ant-modal .ant-modal-content .ant-modal-header .ant-modal-title{
+.ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
     color: #343C6A !important;
     font-size: 28px !important;
     font-weight: 600 !important;
@@ -392,18 +391,18 @@
     left: 6% !important;
 }
 
-.ant-table .ant-table-thead > tr > th {
-    background-color: #8C68FF; 
-    color: #FFF; 
+.ant-table .ant-table-thead>tr>th {
+    background-color: #8C68FF;
+    color: #FFF;
 }
 
-.custom-table .ant-table-tbody > tr > td {
-    background-color: #F7F5FF !important; 
-    color: #343C6A !important; 
+.custom-table .ant-table-tbody>tr>td {
+    background-color: #F7F5FF !important;
+    color: #343C6A !important;
 }
 
 .ant-modal-content .ant-modal-body {
-   height: 450px !important;
+    height: 450px !important;
 }
 
 .ant-modal .ant-modal-footer {
@@ -432,7 +431,11 @@
     cursor: pointer;
 }
 
-.lexi__container__pages .content { 
+#detail__create--btn {
+    background-color: #8C68FF !important;
+}
+
+.lexi__container__pages .content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -85,7 +85,8 @@ function Brand(props) {
     modalTitle: 'Do you want to delete this brand?',
     modalContent: `if you delete this brand, you won't be able to recover it later`,
     handleConfirm: (dataItem) => {
-      brandList.removeProject(dataItem.id);
+      // brandList.removeProject(dataItem.id);
+      brandList.removeBrand(dataItem.id)
     }
   }], []);
   const handleAddItem = useCallback(() => {
@@ -314,6 +315,9 @@ function Brand(props) {
   //   </Modal>
   // </div>
   // <Detail brandList={brandList}/>
+
+  const triggerlist = brandList.list.slice(0);
+
   console.log("list is: ", list, "props", props);
   if (mode == "card") {
     return <CardList list={list} handleAddItem={handleAddItem} addUrl='add' editUrl='edit' from="Brand" operationOptions={operationOptions}></CardList>;

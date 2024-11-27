@@ -29,7 +29,7 @@ function AccountContent(props) {
   const [addAccount, setAddAccount] = useState({})
 
   useEffect(() => {
-    brandList.init()
+
   })
 
   const rowSelection = {

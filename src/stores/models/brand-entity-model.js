@@ -15,7 +15,7 @@ const BrandEntity = types
     id: types.number,
     name: types.string,
     updated: types.number,
-    user_id: types.number,
+    user_id: types.string,
   })
   .actions((self) => ({}))
   .views((self) => ({

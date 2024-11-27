@@ -1,33 +1,34 @@
 import { types } from 'mobx-state-tree';
 import BrandEntity from './brand-entity-model';
 import axiosInstance from '../../utils/axiosInstance';
-import axios from 'axios';
 
-import { Descriptions } from 'antd';
+function setToken() {
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('accessToken');
+      console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
+      if (token) {
+        config.headers['Authorization'] = `${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+}
 
 const BrandListModel = types
-  .model('Counter', {
+  .model('BrandListModel', {
     list: types.array(BrandEntity), // brand 列表
+    currentBrand: types.frozen() // 选中的 brand
   })
   .actions((self) => ({
     init() {
-      // axiosInstance.
-      axiosInstance.interceptors.request.use(
-        (config) => {
-          const token = localStorage.getItem('accessToken');
-          console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
-          if (token) {
-            config.headers['Authorization'] = `${token}`;
-          }
-          return config;
-        },
-        (error) => {
-          return Promise.reject(error);
-        }
-      );
+      setToken()
 
 
-      axiosInstance.get("http://192.168.0.38:8080/api/brand/brands").then((response) => {
+      axiosInstance.get("http://192.168.0.38:8080/api/brand/all").then((response) => {
         console.log("response is: ", response)
         // self.list = response.data;
         let result = response.data.map((item) => {
@@ -49,6 +50,8 @@ const BrandListModel = types
       }).catch((error) => {
         console.log("error is: ", error)
       })
+
+
       // self.list = [
       //   {
       //     id: "1", // brand id
@@ -67,20 +70,17 @@ const BrandListModel = types
       // ];
     },
     addBrand(brandData) {
-      self.list.push(brandData); // 添加新brand
+      // self.list.push(brandData); // 添加新brand
     },
     removeBrand(id) {
-      self.list = self.list.filter((brand) => brand.id !== id); // 删除项目
+      console.log("delete id is: ", id)
+      debugger
+      // self.list = self.list.filter((brand) => brand.id !== id); // 删除项目
     },
     updateBrand(id, updates) {
       console.log("id is: ", id, "input", updates)
-      const brand = self.list.findIndex((brand) => brand.id == id);
-      console.log("brand is: ", brand, updates)
-      self.list.splice(brand, 1, updates);
-      // if (brand) {
-      //  Object.assign(brand, updates); 
-
-      // }
+      console.log("brand is: ", updates)
+      self.currentBrand = updates
     },
 
     updateBrands(updates) {
@@ -89,8 +89,28 @@ const BrandListModel = types
 
     getBrand(id) {
       // const brand = self.list.find((brand) => brand.id == id);
-
+      console.log("id is: ", id)
       // return brand;
+      setToken();
+
+      axiosInstance.get(`http://192.168.0.38:8080/api/brand/id?brand_id=${id}`).then(
+        res => {
+          console.log("115 get brand by id: ", res)
+
+          this.updateBrand(res.data.id, res.data)
+
+          // setAccount(res.data)
+          // setBrandName(res.data.name)
+          // form.setFieldsValue({ "": res.data.name });
+        }
+      ).catch(
+        err => {
+          console.log("92 err is: ", err)
+        }
+      )
+
+
+
     }
 
   }));

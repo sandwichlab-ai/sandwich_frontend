@@ -78,9 +78,9 @@ function CardItem({ data, operationOptions }) {
     key: item.key,
     title: item.buttonName,
     label: (
-      <Button color='default' variant='link' onClick={() => {
-        setShowModal(true);
-        setCurrentOpertion(item);
+      <Button color='default' variant='link' onClick={(e) => {
+        e.preventDefault()
+        console.log("action triggered")
       }} icon={item.icon}>{item.buttonName}</Button>
     )
   }))
