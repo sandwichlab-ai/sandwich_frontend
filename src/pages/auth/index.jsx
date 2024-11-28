@@ -192,7 +192,7 @@ function AuthComponent(props) {
 
         <div className='contact__form--auth'>
           {/* {accountStatus == 0 && <div style={{marginTop:"7%"}}>Enter your email address to create an account</div>} */}
-          <div style={{ marginTop: "7%" }}>{accountStatus == 0 && "Enter your email address to create an account"}</div>
+          <div style={{ marginTop: "7%", textAlign: "center" }}>{accountStatus == 0 && "Enter your email address to create an account"}</div>
           <form>
             {testData.map((row, rowIndex) => {
               return (
@@ -255,11 +255,15 @@ function AuthComponent(props) {
               {accountStatus == 1 &&
                 <button
                   type='submit'
-                  onClick={sessionStorage.setItem("from", "Login")}
+                  onClick={
+                    () => {
+                      console.log("navigate")
+                      navigate('/')
+                    }
+                  }
                   style={{ cursor: 'pointer' }}
                 >
-                  {/* <a href="https://auth0.sandwichlab.ai/oauth2/login" >Log in</a> */}
-                  <a href="https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/login?client_id=111cv6odnaocu71pr68qosr42t&response_type=code&scope=email+openid+phone&redirect_uri=http://localhost:3000/lexi">Log in</a>
+                  Log in
                 </button>
 
               }
@@ -271,7 +275,10 @@ function AuthComponent(props) {
             <div className='auth__signin--facebook'>
               <button
                 type='submit'
-                onClick={handleSubmit}
+                onClick={() => {
+                  console.log("navigate")
+                  navigate('/')
+                }}
                 style={{ cursor: 'pointer' }}
               >
                 <img src={fblogo} width='32px' height='32px' />

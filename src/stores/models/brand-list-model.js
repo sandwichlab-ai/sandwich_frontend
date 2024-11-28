@@ -28,7 +28,7 @@ const BrandListModel = types
       setToken()
 
 
-      axiosInstance.get("http://192.168.0.38:8080/api/brand/all").then((response) => {
+      axiosInstance.get("http://api-dev.sandwichlab.ai/api/brand/all").then((response) => {
         console.log("response is: ", response)
         // self.list = response.data;
         let result = response.data.map((item) => {
@@ -93,7 +93,7 @@ const BrandListModel = types
       // return brand;
       setToken();
 
-      axiosInstance.get(`http://192.168.0.38:8080/api/brand/id?brand_id=${id}`).then(
+      axiosInstance.get(`http://api-dev.sandwichlab.ai/api/brand/id?brand_id=${id}`).then(
         res => {
           console.log("115 get brand by id: ", res)
 

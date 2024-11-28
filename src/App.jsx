@@ -10,7 +10,7 @@ import { Amplify } from 'aws-amplify';
 import { Hub } from '@aws-amplify/core';
 import aws_exports from './aws-exports';
 import { Authenticator } from '@aws-amplify/ui-react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { StoreProvider } from './stores/routeStore';
 import Project from './pages/lexi/project';
 import ProjectEdit from './pages/lexi/project/detail';
@@ -46,32 +46,41 @@ function App() {
 
 
   return (
-    <Authenticator socialProviders={['facebook']}>
-      {({ signOut, user }) => (
-        <StoreProvider>
-          <div className='App'>
-            <button onClick={() => signOut()}>test</button>
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/auth' element={<Auth />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/lexi' element={<Lexi />}>
-                {/* <Route path='brands' element={<Profile />} /> */}
-                <Route path='brands' element={<Brand />} >
-                  <Route path="add" element={<BrandCreate />} />
-                  <Route path="edit/:id" element={<BrandCreate />} />
-                </Route>
-                <Route path='projects'>
-                  <Route index element={<Project />} />
-                  <Route path=':mode/:id?' element={<ProjectEdit />} />
-                  <Route path='effect' element={<ProjectEffect />} />
-                </Route>
-              </Route>
-            </Routes>
-          </div>
-        </StoreProvider>
-      )}
-    </Authenticator>
+    <Routes>
+      <Route path='/auth' element={<Auth />} />
+
+      <Route
+        path="/*"
+        element={
+          <Authenticator socialProviders={['facebook']}>
+            {({ signOut, user }) => (
+              <StoreProvider>
+                <div className="App">
+                  <button onClick={() => signOut()}>Sign Out</button>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/lexi" element={<Lexi />}>
+                      <Route index element={<Navigate to="/lexi/brands" replace />} />
+                      <Route path="brands" element={<Brand />}>
+                        <Route path="add" element={<BrandCreate />} />
+                        <Route path="edit/:id" element={<BrandCreate />} />
+                      </Route>
+                      <Route path="projects">
+                        <Route index element={<Project />} />
+                        <Route path=":mode/:id?" element={<ProjectEdit />} />
+                        <Route path="effect" element={<ProjectEffect />} />
+                      </Route>
+                    </Route>
+                  </Routes>
+                </div>
+              </StoreProvider>
+            )}
+          </Authenticator>
+        }
+      />
+    </Routes>
+
   );
 }
 
