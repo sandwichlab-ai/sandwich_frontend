@@ -5,8 +5,8 @@ import axiosInstance from '../../utils/axiosInstance';
 function setToken() {
   axiosInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('accessToken');
-      console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
+      const token = localStorage.getItem('idToken');
+      console.log("token is: ", token, "header is: ", localStorage.getItem("idToken"))
       if (token) {
         config.headers['Authorization'] = `${token}`;
       }

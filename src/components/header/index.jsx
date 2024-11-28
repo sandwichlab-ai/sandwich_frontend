@@ -31,7 +31,7 @@ function Header() {
 
         localStorage.setItem("accessToken", "")
         console.log("access token before", localStorage.getItem('accessToken'))
-        console.log("session is: ", session.tokens.accessToken, session.tokens.idToken, "localStorage is: ");
+        console.log("session is: ", session.tokens.accessToken, "id Token", session.tokens.idToken, "localStorage is: ");
         session.tokens.accessToken && localStorage.setItem('accessToken', session.tokens.accessToken);
         session.tokens.idToken && localStorage.setItem('idToken', session.tokens.idToken);
 
@@ -47,30 +47,8 @@ function Header() {
 
     }
 
-    // asyncFn()
+    asyncFn()
 
-    // const handleAuthEvents = (data) => {
-    //   const { event } = data.payload;
-
-    //   if (event === 'signIn') {
-    //     console.log('User signed in');
-    //     navigate('/lexi/brand'); // 登录成功后跳转到 dashboard
-    //   } else if (event === 'signUp') {
-    //     console.log('User created account');
-    //     navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
-    //   }
-    // };
-    // 监听 Auth 事件
-    // Hub.listen('auth', handleAuthEvents);
-
-    // return () => {
-    // Hub.remove('auth', handleAuthEvents);
-
-    // };
-
-    // return () => {
-    //   console.log("header unmount")
-    // }
   })
 
   return (

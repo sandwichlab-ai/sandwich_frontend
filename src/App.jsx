@@ -5,6 +5,7 @@ import LoginPage from './pages/login';
 import Brand from './pages/lexi/brand';
 import Lexi from './pages/lexi';
 import './App.css';
+import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
 import { Hub } from '@aws-amplify/core';
 import aws_exports from './aws-exports';

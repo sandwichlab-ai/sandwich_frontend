@@ -55,7 +55,7 @@ const examples = [
 function setToken() {
   axiosInstance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem('idToken');
       console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
       if (token) {
         config.headers['Authorization'] = `${token}`;
@@ -120,11 +120,12 @@ function Detail(props) {
 
       const fetchReq = async () => {
         setToken()
-        axiosInstance.get(`http://192.168.0.38:8080/api/brand/${id}`).then(
+        axiosInstance.get(`http://192.168.0.38:8080/api/brand/?brand_id=${id}`).then(
           res => {
             console.log("89 res is: ", res)
             setAccount(res.data)
             setBrandName(res.data.name)
+            setBrandIntro(res.data.description)
             // form.setFieldsValue({ "": res.data.name });
           }
         ).catch(
@@ -210,7 +211,6 @@ function Detail(props) {
         "name": brandName,
         "description": brandIntro,
         "goal": "123",
-        "user_id": "123"
       }
 
       axiosInstance.post("http://192.168.0.38:8080/api/brand", result).then(
@@ -239,36 +239,32 @@ function Detail(props) {
   const handleUpdate = () => {
     console.log("126 brand name", brandName)
     const result = {
-      brandName: brandName,
-      brandIntro: brandIntro,
-      account: account
+      "brand_name": brandName,
+      "brand_description": brandIntro
     }
-    console.log("info: ", props.editLocation)
-    let current = brandList.list.filter((item) => {
-      console.log("item is: ", item.name)
-      if (item.name == props.editLocation.state) {
-        return result
+
+    const input = {
+      "id": +id,
+      "name": brandName,
+      "brand_description": brandIntro,
+      "description": brandIntro,
+      "goal": "123",
+    }
+
+    setToken()
+
+    axiosInstance.put(`http://192.168.0.38:8080/api/brand/`, input).then(
+      res => {
+        console.log("res is: ", res)
+        navigate("/lexi/brands")
       }
-    })
+    ).catch(
+      error => {
+        console.log("error is: ", error)
+      }
+    )
 
-    /**
-     *     id: types.identifierNumber, // brand ID
-    name: types.string, // brand 名称
-    status: types.enumeration('Status', ['isRunning', 'draft', 'editing']), // 0 表示
-    updateTime: types.string, // 更新时间（ISO 日期格式）
-     */
-
-    const submitRes = {
-      id: `${result.account.accountId}`,
-      name: `${result.brandName}`,
-      status: "draft",
-      updateTime: `${Date.now()}`,
-    }
-
-    console.log("result", result, current, submitRes)
-    brandList.updateBrand(result.account.key, submitRes)
-    console.log("list is: ", brandList.list)
-    navigate("/lexi/brands")
+    // navigate("/lexi/brands")
     // props.brandsList.update(result)
   }
 
@@ -277,8 +273,6 @@ function Detail(props) {
       <div className='addtional__information'>
 
         <div className="brand__container">
-          {account.name}
-          ...{brandName}...
           <Form
             form={form}
           >
@@ -289,6 +283,7 @@ function Detail(props) {
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
             >
+              <div style={{ display: "none" }}> {brandName} </div>
               <Input value={brandName} style={{ width: "60%" }} onChange={handleChange} />
             </Form.Item>
 
@@ -314,8 +309,10 @@ function Detail(props) {
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
             >
+              <div style={{ display: "none" }}> {brandIntro} </div>
               <TextArea
                 showCount={renderCount}
+                value={brandIntro}
                 maxLength={5000}
                 width={'60%'}
                 onChange={onChange}
@@ -362,8 +359,6 @@ function Detail(props) {
 
       <div className='content__profile--footer'>
         <div className='content__btn--group'>
-          {/* <button className='content__btn'>cancel</button> */}
-          {/* <button className='content__btn'>save</button> */}
 
           {props.mode == "create" && submitDisabled && <Button disabled={true} id={"detail__create--disable"} width="412" height="56" onClick={handleSumbit}>
             Save and create ads now
@@ -371,7 +366,6 @@ function Detail(props) {
           {props.mode == "create" && !submitDisabled && <Button disabled={false} id={"detail__create--btn"} width="412" height="56" onClick={handleSumbit}>
             Save and create ads now
           </Button>}
-          disable:{`${submitDisabled}`}
 
           {props.mode == "edit" &&
             <div className="edit__btn--group">

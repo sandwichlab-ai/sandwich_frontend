@@ -2,7 +2,7 @@
  * lexi 卡片列表
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dropdown } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
@@ -65,7 +65,12 @@ function CardItem({ data, operationOptions }) {
   const [showModal, setShowModal] = useState(false);
   const [currentOpertion, setCurrentOpertion] = useState({});
 
+  useEffect(() => {
+    console.log("show model changed: ", showModal)
+  }, [showModal])
+
   const handleOk = () => {
+    console.log("ok clicked", data)
     setShowModal(false);
     currentOpertion.handleConfirm?.(data);
   };
@@ -80,7 +85,19 @@ function CardItem({ data, operationOptions }) {
     label: (
       <Button color='default' variant='link' onClick={(e) => {
         e.preventDefault()
-        console.log("action triggered")
+        console.log("item key isL ", item.key)
+        if (item.key === 'delete') {
+          console.log("set current option", item.handleConfirm, item.handleCancel)
+          setShowModal(true)
+          setCurrentOpertion({
+            ...item,
+            handleConfirm: item.handleConfirm,
+            handleCancel: item.handleCancel,
+            modalTitle: item.modalTitle,
+            modalContent: item.modalContent,
+          })
+        }
+        console.log("action triggered", item, e.target.value)
       }} icon={item.icon}>{item.buttonName}</Button>
     )
   }))

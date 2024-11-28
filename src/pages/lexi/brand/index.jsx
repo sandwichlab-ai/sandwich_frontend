@@ -16,6 +16,7 @@ import { cognitoUserPoolsTokenProvider } from 'aws-amplify/auth/cognito';
 import { CookieStorage } from 'aws-amplify/utils'
 import { useNavigate } from 'react-router-dom'
 import './index.css';
+import axiosInstance from '../../../utils/axiosInstance.js';
 
 const data = [
   {
@@ -57,6 +58,22 @@ const examples = [
   "I am a divorce lawyer4 based in ...."
 ]
 
+function setToken() {
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem('idToken');
+      console.log("token is: ", token, "header is: ", localStorage.getItem("accessToken"))
+      if (token) {
+        config.headers['Authorization'] = `${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+}
+
 function Brand(props) {
 
   const location = useLocation();
@@ -83,10 +100,21 @@ function Brand(props) {
     buttonName: 'Delete',
     icon: <DeleteOutlined />,
     modalTitle: 'Do you want to delete this brand?',
-    modalContent: `if you delete this brand, you won't be able to recover it later`,
+    modalContent: `if you delete this brand..., you won't be able to recover it later`,
     handleConfirm: (dataItem) => {
-      // brandList.removeProject(dataItem.id);
-      brandList.removeBrand(dataItem.id)
+      setToken()
+      console.log("id is ", dataItem.id)
+
+      axiosInstance.delete(`http://192.168.0.38:8080/api/brand/?brand_id=${dataItem.id}`).then(
+        res => {
+          console.log("result is: ", res, res.data);
+          navigate('/lexi/brands')
+        }
+      ).catch(
+        error => {
+          console.log("delete error: ", error)
+        }
+      )
     }
   }], []);
   const handleAddItem = useCallback(() => {
@@ -105,57 +133,6 @@ function Brand(props) {
       console.log("queryParams: ", queryParams);
       const code = queryParams.get('code');
       console.log('code in profile: ', code);
-      // if (code) {
-      //   // 如果 code 存在，则调用函数去换取 token
-      //   console.log('code is: ', code);
-      //   axios
-      //     .get(`https://auth0.sandwichlab.ai/oauth2/callback?code=${code}`)
-      //     .then((res) => {
-      //       console.log('res is: ', res, res.data, res.data.error);
-      //       if (res && res.data && !res.data.error) {
-      //         localStorage.setItem('token_obj', JSON.stringify(res.data));
-      //         if (res.headers) {
-      //           localStorage.setItem(
-      //             'token_obj_header',
-      //             JSON.stringify(res.headers)
-      //           );
-      //         }
-      //       } else if (res.data.error && res.data.error === 'invalid_grant') {
-      //         console.log('expired invalid grant');
-      //         // localStorage.removeItem("token_obj");
-      //         // if(localStorage.getItem("token_obj_header")) {
-      //         //     localStorage.removeItem("token_obj_header");
-      //         // }
-      //         // navigate("/auth");
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       console.log('error is: ', error);
-      //     });
-      // } else {
-      //   console.error('Authorization code not found in URL.');
-      // }
-      // console.log("cur user: ", localStorage.getItem("token_obj"), localStorage.getItem("token_obj_header"))
-      // Auth.currentSession()
-      //   .then(session => {
-      //     console.log('session: ', session, "accessToken: ", session.getAccessToken().getJwtToken(), "refreshToken: ", session.getRefreshToken().getToken());
-      //     setTokens({
-      //       idToken: session.getIdToken().getJwtToken(),
-      //       accessToken: session.getAccessToken().getJwtToken(),
-      //       refreshToken: session.getRefreshToken().getToken()
-      //     });
-      //   })
-      //   .catch(err => console.error('Error fetching session:', err));
-      // cognitoUserPoolsTokenProvider.setKeyValueStorage(new CookieStorage())
-      // axios.post("https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/token").then(
-      //   res => {
-      //     console.log("res is: ", res)
-      //   }
-      // ).catch(
-      //   error => {
-      //     console.log("error is: ", error)
-      //   }
-      // )
       console.log("current path: ", location, params);
       console.log("brand list is: ", brandList);
       const asyncBrandCall = async () => {
@@ -165,10 +142,7 @@ function Brand(props) {
 
 
       asyncBrandCall()
-      // useEffect(() => {
-      //   projectList.init();
-      // }, []);
-    }, []);
+    }, [mode]);
 
   useEffect(() => {
     const handleAuthEvents = (data) => {
@@ -182,12 +156,6 @@ function Brand(props) {
         navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
       }
     };
-    // // 监听 Auth 事件
-    // Hub.listen('auth', handleAuthEvents);
-
-    // return () => {
-    //   // Hub.remove('auth', handleAuthEvents);
-    // };
   }, [navigate]);
 
   useEffect(() => {

@@ -363,7 +363,7 @@
 }
 
 .ant-modal .ant-modal-content .ant-modal-body {
-    height: 661px !important;
+    /* height: 661px !important; */
 }
 
 .ant-modal .ant-modal-content .ant-modal-title {
@@ -406,7 +406,7 @@
 }
 
 .ant-modal .ant-modal-footer {
-    display: none;
+    /* display: none; */
 }
 
 .ant-modal .ant-pagination {
