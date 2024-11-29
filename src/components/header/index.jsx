@@ -19,7 +19,10 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("header effect")
+    console.log("header effect", location)
+    if (location.state) {
+      console.log("location state: ", location.state)
+    }
 
     const asyncFn = async () => {
       try {
