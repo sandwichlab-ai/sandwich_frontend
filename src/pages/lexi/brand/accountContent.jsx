@@ -55,11 +55,11 @@ function AccountContent(props) {
         dataSource={props.accountData}
       />
 
-      <button onClick={
+      <div className="btn-wrapper"><button onClick={
         () => {
           props.setAccount(addAccount)
         }
-      }>OK</button>
+      }>OK</button></div>
     </div>
   );
 }

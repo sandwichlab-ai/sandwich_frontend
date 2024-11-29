@@ -1,0 +1,19 @@
+.effect-card {
+    width: 305px;
+    height: 117px;
+    background-color: white;
+    margin-top: 16px;
+    margin-right: 21px;
+
+    .name {
+        margin-left: 27px;
+        margin-top: 16px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .status {
+        margin-left: 27px;
+        margin-top: 16px;
+    }
+}
