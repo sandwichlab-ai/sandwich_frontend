@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://192.168.0.38:8080', // 替换为你的 API 基础地址
+    baseURL: "https://api-dev.sandwichlab.ai/api/brand/all",// 'http://192.168.0.38:8080', // 替换为你的 API 基础地址
     timeout: 10000, // 请求超时时间
 });
 

@@ -11,6 +11,7 @@ import { Hub } from '@aws-amplify/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../index.css';
 import axiosInstance from '../../../../utils/axiosInstance.js';
+import FacebookLogin from 'react-facebook-login';
 
 const data = [
   {
@@ -80,6 +81,7 @@ function Detail(props) {
   const [brandIntro, setBrandIntro] = useState("")
   const [account, setAccount] = useState({});
   const [realData, setRealData] = useState([]);
+  const [fbUrl, setFbUrl] = useState("")
 
   const { brandList } = useStore();
 
@@ -121,7 +123,7 @@ function Detail(props) {
 
       const fetchReq = async () => {
         setToken()
-        axiosInstance.get(`http://api-dev.sandwichlab.ai/api/brand/?brand_id=${id}`).then(
+        axiosInstance.get(`https://api-dev.sandwichlab.ai/api/brand/?brand_id=${id}`).then(
           res => {
             console.log("89 res is: ", res)
             setAccount(res.data)
@@ -176,8 +178,8 @@ function Detail(props) {
   };
 
   const handleClose = () => {
-    realData.push({ "id": 111 })
-    setRealData(realData)
+    // realData.push({ "id": 111 })
+    // setRealData(realData)
     console.log("close triggered")
   }
 
@@ -221,7 +223,7 @@ function Detail(props) {
         "goal": "123",
       }
 
-      axiosInstance.post("http://api-dev.sandwichlab.ai/api/brand", result).then(
+      axiosInstance.post("https://api-dev.sandwichlab.ai/api/brand", result).then(
         res => {
           console.log("res is: ", res)
           navigate("/lexi/brands")
@@ -237,6 +239,14 @@ function Detail(props) {
     }
   }
 
+  const handleFacebookCallback = (response) => {
+    if (response?.status === "unknown") {
+      console.error('Sorry!', 'Something went wrong with facebook Login.', response);
+      return;
+    }
+    console.log(response);
+  }
+
   const setAddAccount = (account) => {
     console.log("account is: ", account)
     account.key = 1;
@@ -246,10 +256,6 @@ function Detail(props) {
 
   const handleUpdate = () => {
     console.log("126 brand name", brandName)
-    const result = {
-      "brand_name": brandName,
-      "brand_description": brandIntro
-    }
 
     const input = {
       "id": +id,
@@ -261,7 +267,7 @@ function Detail(props) {
 
     setToken()
 
-    axiosInstance.put(`http://api-dev.sandwichlab.ai/api/brand/`, input).then(
+    axiosInstance.put(`https://api-dev.sandwichlab.ai/api/brand/`, input).then(
       res => {
         console.log("res is: ", res)
         navigate("/lexi/brands")
@@ -345,10 +351,37 @@ function Detail(props) {
 
       <div className='account__connection' onClick={() => {
         setIsModalOpen(true) //isModalOpen
+
         setToken()
-        axiosInstance.get(`http://api-dev.sandwichlab.ai/meta/fb/account`).then(
+        axiosInstance.get(`https://api-dev.sandwichlab.ai/meta/fb/account`).then(
           res => {
             console.log("89 res is: ", res)
+            if (res.data.oauthURL) {
+              setFbUrl(res.data.oauthURL)
+
+              // setIsModalOpen(true)
+              let obj = window.open(res.data.oauthURL, '_blank')
+              console.log("obj is: ", obj)
+              console.log("obj is: ", obj.closed)
+              var timer = setInterval(() => {
+                axiosInstance.get(`https://api-dev.sandwichlab.ai/meta/fb/account`).then(
+                  res => {
+                    if (res.data.data) {
+                      console.log("res is: ", res.data.data)
+                      clearInterval(timer)
+                      obj.close()
+                      setIsModalOpen(false)
+                    }
+                  }
+                ).catch()
+              }, 500)
+
+
+            } else {
+              // console.log("92 err is: ", err)
+              setRealData(res.data.data)
+            }
+            // setFbUrl()
             // setIsModalOpen(true)}
             // form.setFieldsValue({ "": res.data.name });
           }
@@ -409,7 +442,9 @@ function Detail(props) {
 
       <Modal title="Selected Ad Account" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} afterClose={handleClose}>
         {realData.length > 0 && <AccountContent accountData={data} setIsOpen={setIsModalOpen} setAccount={setAddAccount} />}
-        {(!realData || realData.length === 0) && <iframe src="https://www.sandwichlab.ai/" width={"100%"} height={"100%"} />}
+        {(!realData || realData.length === 0) &&
+          <div>111</div>
+        }
       </Modal>
     </div>
   );

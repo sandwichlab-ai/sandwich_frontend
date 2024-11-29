@@ -19,7 +19,10 @@ const aws_sandwich = {
         ],
         "redirectSignIn": "http://localhost:3000/lexi,https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse",
         "redirectSignOut": "http://localhost:3000,https://sandwichlab.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse/",
-        "responseType": "code"
+        "responseType": "code",
+        "socialProviders": [
+            "facebook"
+        ],
     }
 };
 

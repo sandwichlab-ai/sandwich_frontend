@@ -105,7 +105,7 @@ function Brand(props) {
       setToken()
       console.log("id is ", dataItem.id)
 
-      axiosInstance.delete(`http://api-dev.sandwichlab.ai/api/brand/?brand_id=${dataItem.id}`).then(
+      axiosInstance.delete(`https://api-dev.sandwichlab.ai/api/brand/?brand_id=${dataItem.id}`).then(
         res => {
           console.log("result is: ", res, res.data);
           navigate('/lexi/brands')
