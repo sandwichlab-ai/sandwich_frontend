@@ -4,6 +4,7 @@ import Card from "./card";
 import AddCard from "./addCard";
 import LexiModal from '../../../../components/lexi-modal/index.jsx';
 import './index.scss';
+import { useNavigate } from "react-router-dom";
 
 const { RangePicker } = DatePicker;
 
@@ -47,6 +48,8 @@ function DashBoard(props) {
     const [showModal, setShowModal] = useState(false);
     const [modalTitle, setModalTitle] = useState("Confirm to turn off ads");
     const [modalContent, setModalContent] = useState("Ads will stop running after being turned off")
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (isPublished) {
@@ -128,8 +131,8 @@ function DashBoard(props) {
 
             <div className="effect-btn-container">
                 <button onClick={() => {
-                    console.log("dash board click triggered", props.isDashboard)
-                    props.setIsDashboard(!props.isDashboard)
+                    console.log("dash board click triggered")
+                    navigate("/lexi/projects")
                 }}
                     className="effect-add-plan"
                 >Check Ad Plan</button>
