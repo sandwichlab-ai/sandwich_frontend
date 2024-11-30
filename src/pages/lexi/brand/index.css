@@ -359,7 +359,7 @@
 }
 
 .ant-modal .ant-modal-content {
-    height: 661px !important;
+    /* height: 661px !important; */
 }
 
 .ant-modal .ant-modal-content .ant-modal-body {
@@ -401,9 +401,9 @@
     color: #343C6A !important;
 }
 
-.ant-modal-content .ant-modal-body {
+/* .ant-modal-content .ant-modal-body {
     height: 450px !important;
-}
+} */
 
 .ant-modal .ant-modal-footer {
     /* display: none; */
@@ -417,6 +417,12 @@
     margin-top: 36px;
 }
 
+.profile__account--content>.btn-wrapper {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+
 .profile__account--content button {
     width: 196px;
     height: 56px;
@@ -425,9 +431,9 @@
     font-size: 20px;
     color: white;
     font-weight: 500;
-    position: absolute;
-    top: 78%;
-    left: 39%;
+    /* position: absolute; */
+    /* top: 78%;
+    left: 39%; */
     cursor: pointer;
 }
 

@@ -52,7 +52,7 @@ function App() {
       <Route
         path="/*"
         element={
-          <Authenticator socialProviders={['facebook']}>
+          <Authenticator socialProviders={['facebook', 'google']}>
             {({ signOut, user }) => (
               <StoreProvider>
                 <div className="App">
@@ -69,7 +69,7 @@ function App() {
                       <Route path="projects">
                         <Route index element={<Project />} />
                         <Route path=":mode/:id?" element={<ProjectEdit />} />
-                        <Route path="effect" element={<ProjectEffect />} />
+                        <Route path="effect/:id" element={<ProjectEffect />} />
                       </Route>
                     </Route>
                   </Routes>

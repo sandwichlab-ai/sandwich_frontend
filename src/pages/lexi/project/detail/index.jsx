@@ -3,6 +3,7 @@ import { Steps, message, Row, Col, Form } from 'antd';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import LexiForm from '../../../../components/lexi-form';
+import DashBoard from '../effect';
 import LexiButton from '../../../../components/lexi-button';
 import AdCard, { AdCampaign, AdSets } from '../../../../components/ad-card';
 
@@ -38,6 +39,7 @@ const ProjectEdit = observer(() => {
   const { id, mode } = useParams();
   console.log('...ddd.....', id, mode);
   const [current, setCurrent] = useState(0); // steps 状态控制
+  const [isDashboard, setIsDashboard] = useState(0);
   const { projectList } = useStore();
   const [projectData, setProjectData] = useState(
     (projectList.list || []).find((item) => item.id === +id) || {}
@@ -113,6 +115,9 @@ const ProjectEdit = observer(() => {
             { label: 'Brand 4', value: 4 },
           ],
         },
+        {
+
+        }
       ],
       buttons: [
         {
@@ -196,6 +201,8 @@ const ProjectEdit = observer(() => {
         },
       ],
       onSubmit: (values) => {
+        //setIsDashboard(1);
+        // ----- 调试完注释回来
         values.start_date = values.start_date.format('YYYY-MM-DD');
         values.end_date = values.end_date?.format('YYYY-MM-DD');
         const curProjectData = { ...projectData, settings: values };
@@ -245,18 +252,32 @@ const ProjectEdit = observer(() => {
 
   return (
     <div className='lexi-project-item'>
-      <Steps
-        className='lexi-project-item__steps'
-        size='small'
-        current={current}
-        items={stepOtions}
-      />
-      <LexiForm
-        config={formConfig}
-        buttonConfig={buttons}
-        onSubmit={onSubmit}
-        data={projectData}
-      ></LexiForm>
+
+      <div>
+        <Steps
+          className='lexi-project-item__steps'
+          size='small'
+          current={current}
+          items={stepOtions}
+        />
+
+        <LexiForm
+          config={formConfig}
+          buttonConfig={buttons}
+          onSubmit={onSubmit}
+          data={projectData}
+        ></LexiForm>
+      </div>
+
+
+      {/* {
+        // isDashboard && <div onClick={() => setIsDashboard(false)}>dashboard</div>
+        isDashboard && <DashBoard isDashboard={isDashboard} setIsDashboard={(input) => {
+          console.log("call back input", input)
+          setIsDashboard(input)
+        }} />
+      } */}
+
     </div>
   );
 });
