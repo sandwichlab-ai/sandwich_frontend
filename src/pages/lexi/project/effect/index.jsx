@@ -116,10 +116,10 @@ function DashBoard(props) {
                         <div>Your adds has not been add it is a draft status on meta</div>
                     </div>
                     {!isPublished && <div className="add-publish-btn">
-                        <button onClick={handlePublish}>Publish ads</button>
+                        <div onClick={handlePublish}>Publish ads</div>
                     </div>}
                     {isPublished && <div className="add-turnoff-btn">
-                        <button onClick={handleTurnOff}>Turn off</button>
+                        <div onClick={handleTurnOff}>Turn off</div>
                     </div>}
                 </div>
                 <div className="add-detail">
