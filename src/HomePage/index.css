@@ -15,7 +15,7 @@
     width: 100%;
     justify-content: center;
     align-items: flex-start;
-    /* overflow: hidden; */
+    overflow: hidden;
     background-color: black;
     /* overflow-x: auto; */
 }
@@ -31,6 +31,7 @@
 }
 
 .header__left {
+    display: none;
     position: absolute;
     top: 30px;
     cursor: pointer;
@@ -41,6 +42,28 @@
     width: 64px;
     height: 48px;
     /* background-image: url("/public/images/logo.png") */
+}
+
+.header__right {
+    /* position: absolute;
+    top: 30px;
+    cursor: pointer;
+    right: 32px;
+    color: white;
+    width: 264px;
+    height: 48px;
+    text-align: center;
+    line-height: 48px; */
+    position: absolute;
+    top: 30px;
+    cursor: pointer;
+    /* left: 100px; */
+    right: 32px;
+    /* transform: translateY(-50%); */
+    width: 264px;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .header__btn--group {
@@ -64,7 +87,6 @@
     height: 29px;
     font-weight: 700;
     margin-bottom: 4px;
-    text-align: center;
     /* padding-left: 22px; */
     font-size: 20px;
     line-height: 31.82px;
@@ -213,23 +235,6 @@
         /* background-image: url("/public/images/logo.png") */
     }
 
-    .header__right {
-        position: absolute;
-        top: 30px;
-        cursor: pointer;
-        right: 32px;
-        /* transform: translateY(-50%); */
-        width: 64px;
-        height: 48px;
-        width: 666px;
-    }
-
-    .header__right>.header__right--login {
-        border: 1px white solid;
-        background-color: transparent;
-        color: white;
-        font-size: 22px medium;
-    }
 
     .home div {
         display: none !important;

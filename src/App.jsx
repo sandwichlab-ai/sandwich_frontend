@@ -48,7 +48,7 @@ function App() {
   return (
     <Routes>
       <Route path='/auth' element={<Auth />} />
-
+      <Route path="/" element={<HomePage />} />
       <Route
         path="/*"
         element={
@@ -58,7 +58,6 @@ function App() {
                 <div className="App">
                   <button onClick={() => signOut()}>Sign Out</button>
                   <Routes>
-                    <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/lexi" element={<Lexi />}>
                       <Route index element={<Navigate to="/lexi/brands" replace />} />

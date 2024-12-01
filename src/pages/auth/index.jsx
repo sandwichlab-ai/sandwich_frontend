@@ -38,6 +38,7 @@ function AuthComponent(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
+  const { status } = location.state || {};
 
   const [form] = Form.useForm();
 
@@ -112,6 +113,16 @@ function AuthComponent(props) {
       );
     }
   });
+
+  useEffect(() => {
+    console.log("status is: ", status)
+    if (status == "login") {
+      setAccountStatus(1)
+    } else if (status == "register") {
+      console.log('register')
+      setAccountStatus(0)
+    }
+  }, [status])
 
   useEffect(() => {
     console.log("account status change:", accountStatus)
@@ -258,7 +269,7 @@ function AuthComponent(props) {
                   onClick={
                     () => {
                       console.log("navigate")
-                      navigate('/')
+                      navigate('/lexi')
                     }
                   }
                   style={{ cursor: 'pointer' }}
@@ -277,7 +288,7 @@ function AuthComponent(props) {
                 type='submit'
                 onClick={() => {
                   console.log("navigate")
-                  navigate('/')
+                  navigate('/lexi')
                 }}
                 style={{ cursor: 'pointer' }}
               >

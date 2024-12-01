@@ -1,8 +1,8 @@
-.home__container{
-  min-width: 810px; 
-  height: 100%;
-  overflow: auto;
-  background-color: black;
+.home__container {
+   min-width: 810px;
+   height: 100%;
+   overflow: auto;
+   background-color: black;
 }
 
 .home {
@@ -18,7 +18,7 @@
 }
 
 .home__joinus--container {
-   display: none !important; 
+   /* display: none !important; */
    position: absolute;
    right: 64px;
    width: 260px;
@@ -41,23 +41,23 @@
    gap: 20px;
 }
 
-.home div >.home__join--us {
+.home div>.home__join--us {
    background-color: #FFFFFF;
    border-radius: 79px;
    color: #000000;
-   width: 176px;
+   width: 226px;
    height: 78px;
    display: flex;
    justify-content: center;
    align-items: center;
-   font-family:#000000  MiSans;
+   font-family: #000000 MiSans;
    font-size: 24px;
    font-weight: 600;
    text-align: center;
    line-height: 31.82px;
 }
 
-.home div >.home__go {
+.home div>.home__go {
    position: relative;
    background-color: #8C68FF;
    width: 78px;
@@ -65,17 +65,18 @@
    border-radius: 78px;
    top: 0;
    left: 0;
-   transform: translate(208%, -126%);
+   transform: translate(260%, -126%);
    cursor: pointer;
 }
 
-.home div >.home__go img {
+.home div>.home__go img {
    margin-top: 25px;
+   margin-left: 25px;
 }
 
 .home__image--bg {
    position: absolute;
-   width: 78px; 
+   width: 78px;
    height: 78px;
    border-radius: 79px;
    background-color: #8C68FF;
@@ -87,7 +88,7 @@
 }
 
 .home__footer h1 {
- display: none;
+   display: none;
 }
 
 .home__logo {
@@ -97,57 +98,75 @@
    margin-bottom: 100px;
 }
 
+.home__footer {
+   margin-bottom: 20px;
+   margin-left: 32px;
+   color: white;
+}
+
+.home__footer a {
+   color: purple;
+   text-decoration: underline;
+}
+
+@media (max-width: 1326px) {
+   .header__right {
+      width: 266px !important;
+   }
+}
+
 @media (max-width: 810px) {
+
    /* .home__container{
        min-width: 810px;;
    } */
-  .home__footer h1 {
-   color: white !important;
-   display: block !important;
-   /* height:500px; */
-   background-color: black !important;
- }
+   .home__footer h1 {
+      color: white !important;
+      display: block !important;
+      /* height:500px; */
+      background-color: black !important;
+   }
 
- .home div {
-   top: 75% !important;
-   right: 64px !important;
-   position: absolute !important;
-   width: 260px !important;
-   display: grid !important;
-   gap: 20px !important;
- }
+   .home div {
+      top: 75% !important;
+      right: 64px !important;
+      position: absolute !important;
+      width: 260px !important;
+      display: grid !important;
+      gap: 20px !important;
+   }
 
- .home__join--us {
-   display: none !important;
-   background-color: #FFFFFF !important;
-   border-radius: 79px !important;
-   color: #000000 !important;
-   width: 126px !important;
-   height: 51px !important;
-   display: flex !important;
-   justify-content: center !important;
-   align-items: center !important;
-   font-family: #000000 MiSans !important;
-   font-size: 20px !important;
-   font-weight: 600 !important;
-   text-align: center !important;
-   line-height: 31.82px !important;
- }
+   .home__join--us {
+      /* display: none !important; */
+      background-color: #FFFFFF !important;
+      border-radius: 79px !important;
+      color: #000000 !important;
+      width: 126px !important;
+      height: 51px !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      font-family: #000000 MiSans !important;
+      font-size: 20px !important;
+      font-weight: 600 !important;
+      text-align: center !important;
+      line-height: 31.82px !important;
+   }
 
- .home__go { 
-   position: relative !important;
-   /* background-color: #8C68FF; */
-   background-color:  #8C68FF !important;
-   width: 51px !important;
-   height: 51px !important;
-   border-radius: 51px !important;
-   top: 0 !important;
-   left: 0 !important;
-   transform: translate(211%, -137%) !important;
-   cursor: pointer !important;
- }
+   .home__go {
+      position: relative !important;
+      /* background-color: #8C68FF; */
+      background-color: #8C68FF !important;
+      width: 51px !important;
+      height: 51px !important;
+      border-radius: 51px !important;
+      top: 0 !important;
+      left: 0 !important;
+      transform: translate(211%, -137%) !important;
+      cursor: pointer !important;
+   }
 
- .home div .home__go img {
-   margin-top: 13px !important;
- }
+   .home div .home__go img {
+      margin-top: 13px !important;
+   }
 }

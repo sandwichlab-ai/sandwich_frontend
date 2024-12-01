@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import arrow from '../../assets/images/arrow.png';
 import image from '../../assets/images/logo.png';
 
 function Navigate(props) {
@@ -12,6 +13,41 @@ function Navigate(props) {
   const navigate = useNavigate();
 
   const renderText = 'Home';
+
+  const rightSideStyle = {
+    position: "absolute",
+    top: "30px",
+    cursor: "pointer",
+    right: "32px",
+    width: "466px",
+    height: "48px",
+    display: "flex",
+    justifyContent: "space-between"
+  }
+
+  const LoginBtnStyle = {
+    color: 'White',
+    border: "1px solid white",
+    height: "48px",
+    width: "126px",
+    borderRadius: "99px",
+    bacgroundColor: 'white'
+  }
+
+  const TryfreeBtnStyle = {
+    color: '#8C68FF',
+    border: "1px solid white",
+    backgroundColor: "white",
+    width: "320px",
+    height: "48px",
+    borderRadius: "79px",
+    backgroundColor: 'white',
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    fontWeight: "bold"
+  }
+  const sig = '->'
 
   return (
     <div className='header'>
@@ -49,6 +85,12 @@ function Navigate(props) {
           Contact Us
         </span>
       </div>
+
+      <div className="header__right" style={rightSideStyle}>
+        <button className="header__right--login" style={LoginBtnStyle} onClick={() => navigate('/auth', { state: { status: "login" } })}>Login</button>
+        <button className="header__right-tryfree" style={TryfreeBtnStyle} onClick={() => navigate('/auth', { state: { status: "register" } })}><span>Try for free now</span><img src={arrow} width='25.38p;' height='18.88px' /></button>
+      </div>
+
     </div>
   );
 }
