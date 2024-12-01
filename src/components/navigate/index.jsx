@@ -31,7 +31,7 @@ function Navigate(props) {
     height: "48px",
     width: "126px",
     borderRadius: "99px",
-    bacgroundColor: 'white'
+    backgroundColor: 'transparent',
   }
 
   const TryfreeBtnStyle = {
