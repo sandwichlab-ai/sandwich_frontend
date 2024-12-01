@@ -36,6 +36,7 @@ const Project = observer(() => {
   const handleAddItem = useCallback(() => {}, []);
   // 初始化projectList
   useEffect(() => {
+    console.log(11111111);
     projectList.init();
   }, []);
   // 显示访问list，触发mobx的依赖追踪
@@ -43,6 +44,7 @@ const Project = observer(() => {
   return (
     <CardList
       list={list}
+      map={{ name: 'introduction.project_name' }}
       handleAddItem={handleAddItem}
       addUrl='add'
       editUrl='edit'

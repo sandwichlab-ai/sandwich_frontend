@@ -1,13 +1,4 @@
 import React, { useState } from 'react';
-import {
-  AppstoreOutlined,
-  ContainerOutlined,
-  DesktopOutlined,
-  MailOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-} from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import logo from '../../assets/images/logosandwich.png';
 import logoShrink from '../../assets/images/logosandwich-shrink.png';
@@ -43,7 +34,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
     setCollapsed(!collapsed);
   };
   const handleMenuClick = ({ key }) => {
-    console.log("key is: ", key)
+    console.log('key is: ', key);
     navigate(key); // 跳转到对应的路由
   };
   return (

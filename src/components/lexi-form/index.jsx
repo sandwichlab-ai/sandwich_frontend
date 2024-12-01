@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import _ from 'lodash';
 import {
   Form,
   Input,
@@ -14,12 +15,12 @@ import './index.scss';
 import Examples from '../examples';
 import LexiButton from '../lexi-button';
 
-const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
+const LexiForm = ({ config = [], buttonConfig = [], onSubmit, data }) => {
   const [form] = Form.useForm();
   // 初始化默认值
   useEffect(() => {
-    data && form.setFieldsValue(data);
-  }, []);
+    data.id && form.setFieldsValue(data);
+  }, [data]);
   // 渲染字段方法
   const renderField = (field) => {
     switch (field.type) {
@@ -58,6 +59,7 @@ const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
         name={field.name}
         rules={field.rules}
         extra={field.extra}
+        hidden={field.hidden}
       >
         {renderFormItemByType(field)}
       </Form.Item>
@@ -79,7 +81,12 @@ const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
           />
         );
       case 'datePicker':
-        return <DatePicker style={{ width: '100%' }} />;
+        return (
+          <DatePicker
+            style={{ width: '100%' }}
+            format={field.format || 'YYYY-MM-DD'}
+          />
+        );
       case 'select':
         return (
           <Select
@@ -121,15 +128,19 @@ const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
           return acc;
         }, {})}
       >
-        {config.map((field, index) =>
-          field.type === 'custom' ? (
-            field.children
-          ) : (
-            <div className='lexi-form-item' key={index}>
-              {renderField(field)}
-            </div>
-          )
-        )}
+        {config.map((field, index) => {
+          if (field.hidden) {
+            return null;
+          } else if (field.type === 'custom') {
+            return field.children;
+          } else {
+            return (
+              <div className='lexi-form-item' key={index}>
+                {renderField(field)}
+              </div>
+            );
+          }
+        })}
         {!!buttonConfig.length && (
           <div className='lexi-form__buttons'>
             {buttonConfig.map((button) =>
@@ -153,4 +164,4 @@ const LexiFormItem = ({ config = [], buttonConfig = [], onSubmit, data }) => {
   );
 };
 
-export default LexiFormItem;
+export default LexiForm;

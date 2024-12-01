@@ -10,6 +10,7 @@ function LexiModal({
   handleCancel,
   title,
   content,
+  footer,
 }) {
   return (
     <Modal
@@ -19,10 +20,12 @@ function LexiModal({
       onOk={handleConfirm}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      footer={[
-        <LexiButton handleClick={handleConfirm} text='Cancel'></LexiButton>,
-        <LexiButton handleClick={handleConfirm} text='Confirm'></LexiButton>,
-      ]}
+      footer={
+        footer || [
+          <LexiButton handleClick={handleConfirm} text='Cancel'></LexiButton>,
+          <LexiButton handleClick={handleConfirm} text='Confirm'></LexiButton>,
+        ]
+      }
     >
       <div className='lexi-modal__title'>{title}</div>
       <div className='lexi-modal__content'>{content}</div>

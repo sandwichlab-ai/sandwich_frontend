@@ -13,6 +13,7 @@ import Project from './pages/lexi/project';
 import ProjectEdit from './pages/lexi/project/detail';
 import BrandCreate from './pages/lexi/brand/detail';
 import ProjectEffect from './pages/lexi/project/effect';
+import './mock'; // 引入 mock 数据
 
 Amplify.configure(aws_exports);
 

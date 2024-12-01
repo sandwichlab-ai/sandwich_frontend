@@ -7,6 +7,7 @@ import { Button, Dropdown } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
 import LexiModal from '../lexi-modal';
+import _ from 'lodash';
 
 import './index.scss';
 
@@ -18,17 +19,25 @@ function CardList({
   operationOptions,
   editUrl,
   onEdit,
+  map,
 }) {
   const navigate = useNavigate();
-  const handleEdit = (item) => {
+  const handleEdit = (e, item) => {
+    // if (e.target === e.currentTarget) {
     onEdit?.(item);
     navigate(`${editUrl}/${item.id}`);
+    // }
   };
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
-        <div onClick={() => handleEdit(item)}>
-          <CardItem data={item} operationOptions={operationOptions}></CardItem>
+        <div className='cursor-pointer'>
+          <CardItem
+            data={item}
+            operationOptions={operationOptions}
+            map={map}
+            handleEdit={handleEdit}
+          ></CardItem>
         </div>
       ))}
       <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from} />
@@ -57,7 +66,7 @@ function AddCard({ handleAddItem, addUrl, from }) {
   );
 }
 
-function CardItem({ data, operationOptions }) {
+function CardItem({ data, operationOptions, map, handleEdit }) {
   const [showModal, setShowModal] = useState(false);
   const [currentOpertion, setCurrentOpertion] = useState({});
 
@@ -77,7 +86,8 @@ function CardItem({ data, operationOptions }) {
       <Button
         color='default'
         variant='link'
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setShowModal(true);
           setCurrentOpertion(item);
         }}
@@ -87,9 +97,14 @@ function CardItem({ data, operationOptions }) {
       </Button>
     ),
   }));
-
-  return (
-    <div className='lexi-cards__item' key={data.id}>
+  return [
+    <div
+      className='lexi-cards__item'
+      key={data.id}
+      onClick={(e) => {
+        handleEdit(e, data);
+      }}
+    >
       <div className='lexi-cards__item__header'>
         {data.status != null && (
           <div className='lexi-cards__item__header__tag'>
@@ -97,26 +112,34 @@ function CardItem({ data, operationOptions }) {
           </div>
         )}
         <Dropdown menu={{ items: operationItems }} placement='bottomRight'>
-          <div className='lexi-cards__item__header__operation'>···</div>
+          <div
+            className='lexi-cards__item__header__operation'
+            onClick={(e) => e.stopPropagation()}
+          >
+            ···
+          </div>
         </Dropdown>
       </div>
       <div className='lexi-cards__item__content'>
-        <div className='lexi-cards__item__content__name'>{data.name}</div>
+        <div className='lexi-cards__item__content__name'>
+          {_.get(data, map.name)}
+        </div>
       </div>
       <div className='lexi-cards__item__footer'>
         <div className='lexi-cards__item__footer__date'>
           Edit in {data.formatUpdateTime()}
         </div>
       </div>
-      <LexiModal
-        open={showModal}
-        handleConfirm={handleOk}
-        handleCancel={handleCancel}
-        title={currentOpertion.modalTitle}
-        content={currentOpertion.modalContent}
-      ></LexiModal>
-    </div>
-  );
+    </div>,
+    <LexiModal
+      key='modal'
+      open={showModal}
+      handleConfirm={handleOk}
+      handleCancel={handleCancel}
+      title={currentOpertion.modalTitle}
+      content={currentOpertion.modalContent}
+    ></LexiModal>,
+  ];
 }
 
 export default CardList;

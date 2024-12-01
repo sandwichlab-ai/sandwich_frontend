@@ -45,10 +45,6 @@
       -webkit-text-fill-color: transparent; /* 文字填充设为透明，显示背景 */
     }
   }
-
-  .ad-sets__performance-estimation {
-    margin: 24px 0;
-  }
 }
 
 .ad-sets_audience-tags__content {
@@ -72,5 +68,48 @@
   font-weight: bold;
 }
 
-.ad-copy__content {
+.ad-sets__item,
+.ad-sets__item--selected {
+  .lexi-triangle {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-bottom: 40px solid transparent;
+    border-right: 40px solid #bababa;
+    border-top: 40px solid #bababa;
+  }
+}
+
+.ad-sets__item--selected .lexi-triangle {
+  border-right-color: #8c68ff;
+  border-top-color: #8c68ff;
+}
+
+.icon-rounded {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #00000025;
+  border-radius: 50%;
+}
+
+.icon-rounded--active {
+  border-color: #8c68ff;
+}
+
+.dp-small {
+  .ant-picker-range {
+    height: 25px !important;
+    width: 150px !important;
+  }
+}
+
+.card-shadow {
+  margin: 20px 0;
+  padding: 20px 24px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+}
+
+.ant-form-item-control-input {
+  min-height: inherit !important;
 }

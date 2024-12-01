@@ -352,46 +352,6 @@
     margin-top: 10px;
 }
 
-.ant-modal {
-    /* display: none; */
-    width: 80% !important;
-    height: 661px !important;
-    top: 30%;
-}
-
-.ant-modal .ant-modal-content {
-    height: 661px !important;
-}
-
-.ant-modal .ant-modal-content .ant-modal-body {
-    height: 661px!important;
-}
-
-.ant-modal .ant-modal-content .ant-modal-title {
-    margin-top: 34px;
-    margin-left: 28px;
-}
-
-.ant-modal .ant-modal-content .ant-modal-footer:nth-child(1) {
-    display: none;
-}
-
-.ant-modal .ant-modal-content .ant-modal-header .ant-modal-title{
-    color: #343C6A !important;
-    font-size: 28px !important;
-    font-weight: 600 !important;
-}
-
-.ant-modal .ant-table-selection-column {
-    /* position: relative !important;
-    left: 6% !important; */
-}
-
-.ant-modal .ant-table-cell .ant-table-selection-column .ant-table-cell-row-hover {
-    position: relative !important;
-    left: 6% !important;
-}
-
 .ant-table .ant-table-thead > tr > th {
     background-color: #8C68FF; 
     color: #FFF; 
@@ -400,18 +360,6 @@
 .custom-table .ant-table-tbody > tr > td {
     background-color: #F7F5FF !important; 
     color: #343C6A !important; 
-}
-
-.ant-modal-content .ant-modal-body {
-   height: 450px !important;
-}
-
-.ant-modal .ant-modal-footer {
-    display: none;
-}
-
-.ant-modal .ant-pagination {
-    display: none;
 }
 
 .profile__account--content {

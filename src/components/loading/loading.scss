@@ -1,0 +1,40 @@
+.spinner {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+  animation: infinite circle 800ms linear;
+  animation-timing-function: steps(12);
+  i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    &::after {
+      display: block;
+      width: 2px;
+      height: 25%;
+      margin: 0 auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 40%;
+      content: ' ';
+    }
+  }
+}
+
+.spinner-primary {
+  i::after {
+    background-color: #8c68ff;
+  }
+}
+
+@keyframes circle {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
