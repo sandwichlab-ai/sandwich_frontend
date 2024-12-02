@@ -32,17 +32,6 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 };
 
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
 
 function AdCard({ title, children }) {
   return (
@@ -116,6 +105,7 @@ export const AdSets = ({ project }) => {
   const [selected, setSelected] = useState({});
   const [active, setActive] = useState(0); // 当前可见的卡片
   const { proposal = [] } = project || {};
+  const brandId = project?.introduction?.brand_id;
   const handleUpdateSetItem = (data) => {
     project.updateAdProposal(data);
   };
@@ -134,6 +124,7 @@ export const AdSets = ({ project }) => {
             selected={selected}
             setSelected={setSelected}
             handleUpdateSetItem={handleUpdateSetItem}
+            brandId={brandId}
           ></AdSetsItem>
         </div>
       </div>
@@ -186,25 +177,49 @@ function AdSetsStatus({ data, active, setActive }) {
   );
 }
 
-function AdSetsItem({ data, active, handleUpdateSetItem }) {
+function AdSetsItem({ data, active, handleUpdateSetItem, brandId }) {
   const [curData, setCurData] = useState(data);
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl1x1, setImageUrl1x1] = useState();
+  const [imageUrl9x16, setImageUrl9x16] = useState();
+  const [actionUrl, setActionUrl] = useState();
+  const [fileType, setFileType] = useState(null);  // 用来存储动态获取的文件类型
+  // TODO:域名替换？
+  setActionUrl(`http://localhost:8080/api/${brandId}/upload`)
 
   useEffect(() => {
     setCurData(data);
   }, [data]);
+  
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    
+    const fileType = file.type.split('/')[0];
+    setFileType(fileType); // 更新状态
+    if (!isImage && !isVideo) {
+      message.error('只能上传图片或视频!');
+      return false;  // 阻止文件上传
+    }
+    const isLt50M = file.size / 1024 / 1024 < 50;
+    if (!isLt50M) {
+      message.error('Image must smaller than 50MB!');
+    }
 
-  const handleChange = (info) => {
+    return true;  // 允许文件上传
+  };
+
+  const handleChange = (info,setImage) => {
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
+      // TODO: 替换文件url
       getBase64(info.file.originFileObj, (url) => {
         setLoading(false);
-        setImageUrl(url);
+        setImage(url);
       });
     }
   };
@@ -366,13 +381,19 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
                 listType='picture-card'
                 className='avatar-uploader'
                 showUploadList={false}
-                action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
+                action={actionUrl}
                 beforeUpload={beforeUpload}
-                onChange={handleChange}
+                onChange={(info) => handleChange(info, setImageUrl1x1)}
+                data={{
+                  // 传递额外的参数
+                  file_type: fileType,  // 例如：文件类型
+                  ratio: '1x1',        // 例如：比例
+                  set_id: curData.adset_id,     // 例如：set_id
+                }}
               >
-                {imageUrl ? (
+                {imageUrl1x1 ? (
                   <img
-                    src={imageUrl}
+                    src={imageUrl1x1}
                     alt='avatar'
                     style={{
                       width: '100%',
@@ -387,13 +408,19 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
                 listType='picture-card'
                 className='avatar-uploader'
                 showUploadList={false}
-                action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
+                action={actionUrl}
                 beforeUpload={beforeUpload}
-                onChange={handleChange}
+                  onChange={(info) => handleChange(info,setImageUrl9x16)}
+                data={{
+                  // 传递额外的参数
+                  file_type: fileType,  // 例如：文件类型
+                  ratio: '9x16',        // 例如：比例
+                  set_id: curData.adset_id,     // 例如：set_id
+                }}
               >
-                {imageUrl ? (
+                {imageUrl9x16 ? (
                   <img
-                    src={imageUrl}
+                    src={imageUrl9x16}
                     alt='avatar'
                     style={{
                       width: '100%',

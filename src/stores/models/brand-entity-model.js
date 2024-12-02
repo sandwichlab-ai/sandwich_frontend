@@ -7,7 +7,7 @@ const BrandEntity = types
     // name: types.string, // brand 名称
     // status: types.string, // types.enumeration('Status', ['isRunning', 'draft', 'editing']), // 0 表示
     // updateTime: types.string, // 更新时间（ISO 日期格式）
-    ad_account_id: types.number,
+    ad_account_id: types.string,
     created: types.number,
     deleted: types.number,
     description: types.string,
