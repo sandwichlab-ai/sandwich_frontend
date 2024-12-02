@@ -6,9 +6,12 @@
     font-family: white MiSans;
     color: white;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.contact_title >span {
+.contact_title>span {
     position: relative;
     top: -15px;
 }
@@ -22,7 +25,7 @@
     align-items: center;
 }
 
-.contact__container{
+.contact__container {
     height: 100%;
     /* top: 324px; */
     top: 35%;
@@ -52,7 +55,7 @@
     justify-content: flex-start;
 }
 
-.form-item >input {
+.form-item>input {
     background-color: #333333;
     border-color: rgba(140, 104, 255, 0.2);
     border-radius: 6px;
@@ -62,7 +65,7 @@
     box-sizing: border-box;
 }
 
-.form-item >select {
+.form-item>select {
     background-color: #333333;
     border-color: rgba(140, 104, 255, 0.2);
     border-radius: 6px;
@@ -71,35 +74,40 @@
 
 }
 
-.contact__select .ant-select-selector{
+.contact__select .ant-select-selector {
     border-color: rgba(140, 104, 255, 0.2) !important;
     background-color: #333333 !important;
 }
 
-.contact__select .ant-select-selector > .ant-select-selection-item {
+.contact__select .ant-select-selector>.ant-select-selection-item {
     padding: 0px 5px;
 }
 
-.contact__select .ant-select-selector > .ant-select-selection-item{
+.contact__select .ant-select-selector>.ant-select-selection-item {
     color: white;
     text-align: start;
 }
 
-.contact__select .ant-select-selector > .ant-select-item-option-selected {
+.contact__select .ant-select-selector>.ant-select-item-option-selected {
     background-color: #F1F1F1 !important;
 }
 
-.form-item > select option {
+.form-item>select option {
     /* display: none; */
-        background-color: red; /* 未选中时背景颜色 */
-        padding-top: 3px;  /* 控制选项上下距离 */
-        padding-bottom: 3px; /* 控制选项上下距离 */
-        height: 37px; /* 每个选项的高度 */
-        font-family: 'MiSans', sans-serif;
-        font-weight: 330;
-        font-size: 16px;
-        line-height: 21.22px; /* 行高 */
-      
+    background-color: red;
+    /* 未选中时背景颜色 */
+    padding-top: 3px;
+    /* 控制选项上下距离 */
+    padding-bottom: 3px;
+    /* 控制选项上下距离 */
+    height: 37px;
+    /* 每个选项的高度 */
+    font-family: 'MiSans', sans-serif;
+    font-weight: 330;
+    font-size: 16px;
+    line-height: 21.22px;
+    /* 行高 */
+
 }
 
 label {
@@ -116,7 +124,7 @@ label {
     height: 57px;
     background-color: #8C68FF;
     border-radius: 6px;
-    font-family:white MiSans;
+    font-family: white MiSans;
     color: white;
     margin-top: 20px;
     font-weight: 330;
@@ -130,12 +138,13 @@ label {
 
 @media (max-width: 810px) {
     .contact__form {
-        width: 80vw; 
+        width: 80vw;
         top: 320px;
-        margin: 0 auto; 
-        
+        margin: 0 auto;
+
     }
-    .contact__form >form {
+
+    .contact__form>form {
         width: 80vw;
         /* display: flex;
         flex-wrap: wrap; */
@@ -149,7 +158,7 @@ label {
         display: none;
     } */
 
-    .btn__group button { 
+    .btn__group button {
         width: 80vw;
     }
 
@@ -160,18 +169,16 @@ label {
         /* gap: 20px; */
     }
 
-   .contact_title {
-    position: absolute;
-    /* top: 140px; */
-    top: 247px;
-    width: 100%;
-    font-family: white MiSans;
-    color: white;
-    font-size: 30px;
-    margin: 0 auto;
-   }
+    .contact_title {
+        position: absolute;
+        /* top: 140px; */
+        top: 247px;
+        width: 100%;
+        font-family: white MiSans;
+        color: white;
+        font-size: 30px;
+        margin: 0 auto;
+    }
 
-   .contact_title span {
-    
-   }
+    .contact_title span {}
 }

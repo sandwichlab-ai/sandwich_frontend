@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import './index.scss';
 
-function LexiButton({ handleClick, text, type }) {
+function LexiButton({ handleClick, text, children, type }) {
   return (
     <Button
       key='submit'
@@ -10,7 +10,7 @@ function LexiButton({ handleClick, text, type }) {
       onClick={handleClick}
       htmlType={type || 'button'}
     >
-      {text || 'unknown'}
+      {children || text || 'unknown'}
     </Button>
   );
 }

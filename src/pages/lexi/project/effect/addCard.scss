@@ -1,0 +1,13 @@
+.add-card {
+    height: 120px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 32px;
+    padding-right: 32px;
+
+    :nth-child(2) {
+        display: flex;
+    }
+}

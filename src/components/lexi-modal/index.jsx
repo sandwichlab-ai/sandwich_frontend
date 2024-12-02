@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Dropdown, Modal } from 'antd';
+import React from 'react';
+import { Modal } from 'antd';
 import './index.scss';
 import LexiButton from '../lexi-button';
 
@@ -15,7 +15,7 @@ function LexiModal({
   return (
     <Modal
       className='lexi-modal'
-      title='title'
+      title={title}
       open={open}
       onOk={handleConfirm}
       confirmLoading={confirmLoading}

@@ -2,7 +2,7 @@
  * lexi 卡片列表
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dropdown } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
@@ -23,22 +23,18 @@ function CardList({
 }) {
   const navigate = useNavigate();
   const handleEdit = (e, item) => {
-    // if (e.target === e.currentTarget) {
     onEdit?.(item);
     navigate(`${editUrl}/${item.id}`);
-    // }
   };
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
-        <div className='cursor-pointer'>
-          <CardItem
-            data={item}
-            operationOptions={operationOptions}
-            map={map}
-            handleEdit={handleEdit}
-          ></CardItem>
-        </div>
+        <CardItem
+          data={item}
+          operationOptions={operationOptions}
+          map={map}
+          handleEdit={handleEdit}
+        ></CardItem>
       ))}
       <AddCard handleAddItem={handleAddItem} addUrl={addUrl} from={from} />
     </div>
@@ -70,7 +66,12 @@ function CardItem({ data, operationOptions, map, handleEdit }) {
   const [showModal, setShowModal] = useState(false);
   const [currentOpertion, setCurrentOpertion] = useState({});
 
+  useEffect(() => {
+    console.log('show model changed: ', showModal);
+  }, [showModal]);
+
   const handleOk = () => {
+    console.log('ok clicked', data);
     setShowModal(false);
     currentOpertion.handleConfirm?.(data);
   };
@@ -99,18 +100,16 @@ function CardItem({ data, operationOptions, map, handleEdit }) {
   }));
   return [
     <div
-      className='lexi-cards__item'
+      className='lexi-cards__item cursor-pointer'
       key={data.id}
       onClick={(e) => {
         handleEdit(e, data);
       }}
     >
       <div className='lexi-cards__item__header'>
-        {data.status != null && (
-          <div className='lexi-cards__item__header__tag'>
-            {data.status === 'isRunning' ? 'Lexi is running' : ''}
-          </div>
-        )}
+        <div className='lexi-cards__item__header__tag'>
+          {data.status === 'isRunning' ? 'Lexi is running' : ''}
+        </div>
         <Dropdown menu={{ items: operationItems }} placement='bottomRight'>
           <div
             className='lexi-cards__item__header__operation'
@@ -122,7 +121,7 @@ function CardItem({ data, operationOptions, map, handleEdit }) {
       </div>
       <div className='lexi-cards__item__content'>
         <div className='lexi-cards__item__content__name'>
-          {_.get(data, map.name)}
+          {_.get(data, map?.name || 'name')}
         </div>
       </div>
       <div className='lexi-cards__item__footer'>

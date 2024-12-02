@@ -360,6 +360,7 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
           <div className='card-shadow'>
             <div className='text-bold'>Ad Creative</div>
             <div className='flex gap-3 mt-[5px]'>
+              {/* TODO kongming start */}
               <Upload
                 name='avatar'
                 listType='picture-card'
@@ -402,6 +403,7 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
                   uploadButton
                 )}
               </Upload>
+              {/* TODO kongming end */}
             </div>
           </div>
         </Col>

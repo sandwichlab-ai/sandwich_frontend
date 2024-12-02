@@ -1,4 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Amplify } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth'
+import { Hub } from '@aws-amplify/core';
+import { useNavigate } from 'react-router-dom';
 import './index.scss';
 import { useLocation } from 'react-router-dom';
 
@@ -9,13 +13,42 @@ const menuMap = {
 
 function Header() {
   const location = useLocation();
-  console.log(location);
+  console.log("location is: ", location);
   const [, , page] = location?.pathname?.split('/') || [];
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("header effect", location)
+    if (location.state) {
+      console.log("location state: ", location.state)
+    }
+
+    const asyncFn = async () => {
+      try {
+        const session = await fetchAuthSession({ forceRefresh: true });
+        console.log("session is: ", session, session.tokens.accessToken, session.tokens.refreshToken)
+        localStorage.setItem("accessToken", "")
+        console.log("access token before", localStorage.getItem('accessToken'))
+        console.log("session is: ", session.tokens.accessToken, "id Token", session.tokens.idToken, "localStorage is: ");
+        session.tokens.accessToken && localStorage.setItem('accessToken', session.tokens.accessToken);
+        session.tokens.idToken && localStorage.setItem('idToken', session.tokens.idToken);
+        console.log("token: ", localStorage.getItem('accessToken'))
+      } catch (error) {
+        console.error('Error fetching tokens:', error);
+      }
+
+    }
+
+    asyncFn()
+
+  })
 
   return (
     <div className='lexi__header'>
       <div>{`${menuMap[page]}`}</div>
-      <div></div>
+      {location.pathname.includes("edit") && <div>{`> ${location.state}`}</div>}
+      {location.pathname.includes("add") && <div>{`> Create`}</div>}
     </div>
   );
 }

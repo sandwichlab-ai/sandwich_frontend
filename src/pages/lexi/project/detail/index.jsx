@@ -22,6 +22,7 @@ const ProjectEdit = observer(() => {
   const [forceUpdate, setForceUpdate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
   const [current, setCurrent] = useState(0); // steps 状态控制
+  const [isDashboard, setIsDashboard] = useState(0);
   const { projectList } = useStore();
   const projectData = useRef({});
   const fetchRef = useRef(null);
