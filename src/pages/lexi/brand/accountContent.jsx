@@ -4,10 +4,6 @@ import { Table } from 'antd';
 import { observer } from 'mobx-react-lite';
 
 const columns = [
-  // {
-  //     title: 'Select',
-  //     dataIndex: 'selectedIndex',
-  // },
   {
     title: 'Name',
     dataIndex: 'name',
@@ -15,11 +11,12 @@ const columns = [
   },
   {
     title: 'Account Id',
-    dataIndex: 'accountId',
+    dataIndex: 'id',
   },
   {
     title: 'Account Status',
-    dataIndex: 'accountStatus',
+    dataIndex: 'account_status',
+    render: (status) => (status === 0 ? 'in_active' : 'active'),
   },
 ];
 
@@ -32,16 +29,17 @@ function AccountContent(props) {
 
   })
 
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 保存选中行的 keys
+
   const rowSelection = {
+    type: "radio", // 单选
+    selectedRowKeys, // 当前选中的行
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      // 更新选中的行
+      setSelectedRowKeys(selectedRowKeys);
+      console.log("Selected Row Keys: ", selectedRowKeys, selectedRows, selectedRows[0]);
       setAddAccount(selectedRows[0])
     },
-    getCheckboxProps: (record) => ({
-      // disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
   };
 
   return (
@@ -53,6 +51,7 @@ function AccountContent(props) {
         }}
         columns={columns}
         dataSource={props.accountData}
+        rowKey={(record) => record.id}
       />
 
       <div className="btn-wrapper"><button onClick={

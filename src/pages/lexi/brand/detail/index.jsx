@@ -123,7 +123,7 @@ function Detail(props) {
 
       const fetchReq = async () => {
         setToken()
-        axiosInstance.get(`https://api-dev.sandwichlab.ai/api/brand/?brand_id=${id}`).then(
+        axiosInstance.get(`https://api-dev.sandwichlab.ai/api/brand/${id}`).then(
           res => {
             console.log("89 res is: ", res)
             setAccount(res.data)
@@ -215,13 +215,15 @@ function Detail(props) {
       // console.log("list is: ", brandList.list)
       // navigate("/lexi/brands")
 
-      console.log("id token", localStorage.getItem("idToken"))
+      console.log("id token", localStorage.getItem("idToken"), 'account', account)
 
       const result = {
         "name": brandName,
         "description": brandIntro,
         "goal": "123",
+        "ad_account_id": account.id
       }
+      console.log("result is: ", result)
 
       axiosInstance.post("https://api-dev.sandwichlab.ai/api/brand", result).then(
         res => {
@@ -263,11 +265,15 @@ function Detail(props) {
       "brand_description": brandIntro,
       "description": brandIntro,
       "goal": "123",
+      "ad_account_id": account.id
     }
+
+    console.log("input is: ", input, account)
+    // return;
 
     setToken()
 
-    axiosInstance.put(`https://api-dev.sandwichlab.ai/api/brand/`, input).then(
+    axiosInstance.put(`https://api-dev.sandwichlab.ai/api/brand/${input.id}`, input).then(
       res => {
         console.log("res is: ", res)
         navigate("/lexi/brands")
@@ -441,7 +447,7 @@ function Detail(props) {
       </div>
 
       <Modal title="Selected Ad Account" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} afterClose={handleClose}>
-        {realData.length > 0 && <AccountContent accountData={data} setIsOpen={setIsModalOpen} setAccount={setAddAccount} />}
+        {realData.length > 0 && <AccountContent accountData={realData} setIsOpen={setIsModalOpen} setAccount={setAddAccount} />}
         {(!realData || realData.length === 0) &&
           <div>111</div>
         }

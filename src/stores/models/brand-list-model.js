@@ -74,7 +74,6 @@ const BrandListModel = types
     },
     removeBrand(id) {
       console.log("delete id is: ", id)
-      debugger
       // self.list = self.list.filter((brand) => brand.id !== id); // 删除项目
     },
     updateBrand(id, updates) {
@@ -84,6 +83,7 @@ const BrandListModel = types
     },
 
     updateBrands(updates) {
+      console.log("updates is: ", updates)
       self.list = updates;
     },
 
@@ -93,7 +93,7 @@ const BrandListModel = types
       // return brand;
       setToken();
 
-      axiosInstance.get(`https://api-dev.sandwichlab.ai/api/brand/id?brand_id=${id}`).then(
+      axiosInstance.get(`https://api-dev.sandwichlab.ai/api/brand/${id}`).then(
         res => {
           console.log("115 get brand by id: ", res)
 
