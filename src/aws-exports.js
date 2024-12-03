@@ -18,8 +18,13 @@ const aws_sandwich = {
             "openid",
             "phone"
         ],
-        "redirectSignIn": "http://localhost:3000/lexi",
-        "redirectSignOut": "http://localhost:3000",
+        // "redirectSignIn": "http://localhost:8080/oauth2/callback",
+        "redirectSignIn": "https://openidconnect.net/callback,https://auth0.sandwichlab.ai/oauth2/callback,http://localhost:8080/oauth2/callback",
+        // "redirectSignIn": "",
+        // "redirectSignIn": "http://localhost:3000/",
+        "redirectSignOut": "http://localhost:3000/",
+        // "redirectSignOut": "https://auth0.sandwichlab.ai/oauth2/callback",
+
         "responseType": "code",
         "socialProviders": [
             "facebook",
