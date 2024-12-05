@@ -3,9 +3,9 @@ import Mock from 'mockjs';
 
 Mock.mock('/api/projects', 'get', [
   {
-    id: '1', // project id
-    status: 'isRunning',
-    updateTime: '2024-10-14', // 更新时间，设计稿上看有这个
+    project_id: '84b530e0-7f35-4046-aed2-383128d1aa00', // project id
+    status: 'PENDING',
+    updated_at: '2024-10-14', // 更新时间，设计稿上看有这个
     introduction: {
       project_name: 'New Song Promotion',
       project_introduction: '111',
@@ -21,9 +21,9 @@ Mock.mock('/api/projects', 'get', [
     },
   },
   {
-    id: '2', // 品牌 id
+    project_id: '2', // 品牌 id
     status: 'editing',
-    updateTime: '2024-10-14', // 更新时间，设计稿上看有这个
+    updated_at: '2024-10-14', // 更新时间，设计稿上看有这个
     introduction: {
       project_name: 'Rapper John',
       project_introduction: '111',

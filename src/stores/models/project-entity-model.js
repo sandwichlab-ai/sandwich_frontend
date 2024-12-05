@@ -1,15 +1,14 @@
 // 这是一个示例
 import { types, flow, getParent, getSnapshot } from 'mobx-state-tree';
 import moment from 'moment';
-import dayjs from 'dayjs';
-import axios from 'axios';
+import http from '../../utils/axiosInstance';
 
 const ProjectIntroduction = types
   .model('ProjectIntroduction', {
     project_name: types.string, // project 名称
     project_introduction: types.string,
     project_goal_description: types.string,
-    brand_id: types.identifierNumber,
+    brand_id: types.string,
   })
   .actions((self) => ({}))
   .views((self) => ({
@@ -22,7 +21,7 @@ const ProjectIntroduction = types
 
 const ProjectAdSettings = types
   .model('ProjectAdSettings', {
-    link: types.string,
+    website_url: types.maybeNull(types.string),
     daily_budget: types.number,
     start_date: types.frozen(),
     end_date: types.maybeNull(types.frozen()),
@@ -44,14 +43,14 @@ const NumberType = types.model('NumberType', {
 
 const ProjectAdProposal = types
   .model('ProjectAdProposal', {
-    adset_id: types.string, // project ID
-    adset_title: types.string, // project 名称
+    ad_set_id: types.string, // project ID
+    ad_set_title: types.string, // project 名称
     audience_description: types.string,
     audience_explanation: types.string,
     age_range: types.optional(NumberType, { min: 0, max: 1 }),
-    gender: types.array(types.string),
-    geo_locations: types.array(types.string),
-    audience_tags: types.array(types.string),
+    genders: types.maybeNull(types.array(types.string)),
+    geo_locations: types.maybeNull(types.array(types.string)),
+    audience_tags: types.maybeNull(types.array(types.string)),
     audience_size_range: types.optional(NumberType, { min: 0, max: 1 }),
     daily_reach_size_range: types.optional(NumberType, { min: 0, max: 1 }),
     daily_clicks_range: types.optional(NumberType, { min: 0, max: 1 }),
@@ -59,7 +58,8 @@ const ProjectAdProposal = types
     ad_copywriting_body: types.string,
     ad_creative_image_square_url: types.string,
     ad_creative_image_9x16_url: types.string,
-    status: types.number, // 0 表示
+    status: types.optional(types.number, 0),
+    // types.string, // 0 表示
     selected: types.optional(types.boolean, false),
     // updateTime: types.string, // 更新时间（ISO 日期格式）
   })
@@ -77,14 +77,21 @@ const ProjectAdCampaign = types.model('ProjectAdCampaign', {
   start_date: types.frozen(),
   end_date: types.maybeNull(types.frozen()),
   project_goal: types.string,
-  max_num_of_adsets: types.number,
+  max_num_of_ad_sets: types.number,
+  website_url: types.maybeNull(types.string),
 });
 
 const ProjectEntity = types
   .model('ProjectEntity', {
-    id: types.string, // project ID
-    status: types.enumeration('Status', ['isRunning', 'draft', 'editing']), // 0 表示
-    updateTime: types.string, // 更新时间（ISO 日期格式）
+    project_id: types.string, // project ID
+    status: types.enumeration('Status', [
+      'UNSUBMITTED',
+      'RUNNING',
+      'PENDING',
+      'SUBMITTED',
+      'DELETE',
+    ]), // 0 表示
+    updated_at: types.maybeNull(types.string), // 更新时间（ISO 日期格式）
     introduction: types.maybeNull(ProjectIntroduction),
     settings: types.maybeNull(ProjectAdSettings),
     proposal: types.maybeNull(types.array(ProjectAdProposal)),
@@ -92,22 +99,34 @@ const ProjectEntity = types
   })
   .actions((self) => ({
     getADProposal: flow(function* (id) {
-      const { data } = yield axios.get(`/api/project/project_id`);
+      const { data } = yield http.get(
+        `http://47.129.43.201:8080/api/project/${self.project_id}`
+      );
       self.campaign = data?.campaign_proposal;
-      self.proposal = data?.adset_proposals || [];
+      self.proposal = data?.ad_set_proposals || [];
+      return data.status;
     }),
+    // 还没到提交的时候，静态更新
+    updateProject: (updated) => {
+      console.log('updateProject....', updated);
+      self = { ...self, ...updated };
+    },
     updateAdProposal: flow(function* (postData) {
-      const { data } = yield axios.post(`/api/project/project_id`, postData);
+      const { data } = yield http.post(
+        `http://47.129.43.201:8080/api/project/${self.project_id}`,
+        postData
+      );
       self.campaign = data?.campaign_proposal;
-      self.proposal = data?.adset_proposals || [];
+      self.proposal = data?.ad_set_proposals || [];
     }),
     lauchDraft: flow(function* () {
-      const select_ad_sets = self.proposal
+      const select_ad_sets = (self.proposal || [])
         .filter((item) => item.selected)
-        .map((item) => item.adset_id);
-      console.log('...select_ad_sets........', select_ad_sets);
-      const { data } = yield axios.post(`/api/project/project_id/submit`, {
+        .map((item) => item.ad_set_id);
+      yield http.post(`/meta/submit`, {
         select_ad_sets,
+        brand_id: self.introduction.brand_id, // TODO 数据跟湛洋对一下，这里一个是数字，一个是字符串
+        project_id: self.project_id,
       });
     }),
   }))

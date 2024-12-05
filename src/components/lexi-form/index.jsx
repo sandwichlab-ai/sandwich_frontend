@@ -14,12 +14,20 @@ import {
 import './index.scss';
 import Examples from '../examples';
 import LexiButton from '../lexi-button';
+import { useParams } from 'react-router-dom';
 
-const LexiForm = ({ config = [], buttonConfig = [], onSubmit, data }) => {
+const LexiForm = ({
+  className,
+  config = [],
+  buttonConfig = [],
+  onSubmit,
+  data,
+}) => {
   const [form] = Form.useForm();
+  const { id, mode } = useParams();
   // 初始化默认值
   useEffect(() => {
-    data.id && form.setFieldsValue(data);
+    id && mode === 'edit' && form.setFieldsValue(data);
   }, [data]);
   // 渲染字段方法
   const renderField = (field) => {
@@ -120,6 +128,7 @@ const LexiForm = ({ config = [], buttonConfig = [], onSubmit, data }) => {
   return (
     <div>
       <Form
+        className={className}
         form={form}
         layout='vertical'
         onFinish={onSubmit}

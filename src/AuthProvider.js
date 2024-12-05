@@ -9,40 +9,57 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkTokenExpiry = () => {
-    if(localStorage.getItem("token_obj") !== null && localStorage.getItem("token_obj") != "[object Object]" && localStorage.getItem("token_obj_header")!= null) {
-        console.log("auth part: ", JSON.parse(localStorage.getItem("token_obj"),"start time ", JSON.parse(localStorage.getItem("token_obj_header"))))
-        const dateHeader = JSON.parse(localStorage.getItem("token_obj_header"))['date'];
-        console.log("date header: ", dateHeader, JSON.parse(localStorage.getItem("token_obj_header")))
+      if (
+        localStorage.getItem('token_obj') !== null &&
+        localStorage.getItem('token_obj') != '[object Object]' &&
+        localStorage.getItem('token_obj_header') != null
+      ) {
+        console.log(
+          'auth part: ',
+          JSON.parse(
+            localStorage.getItem('token_obj'),
+            'start time ',
+            JSON.parse(localStorage.getItem('token_obj_header'))
+          )
+        );
+        const dateHeader = JSON.parse(localStorage.getItem('token_obj_header'))[
+          'date'
+        ];
+        console.log(
+          'date header: ',
+          dateHeader,
+          JSON.parse(localStorage.getItem('token_obj_header'))
+        );
         const dateObject = new Date(dateHeader);
-        console.log("create time: ", dateObject)
-        const expireData = 10// JSON.parse(localStorage.getItem("token_obj"))['expires_in']
+        console.log('create time: ', dateObject);
+        const expireData = 10; // JSON.parse(localStorage.getItem("token_obj"))['expires_in']
         const expirationTime = new Date(dateObject.getTime() + 3 * 1000);
-        console.log("date data: ", expirationTime, dateObject.getTime() + expireData * 1000,"current time", Date.now())
-       
-        console.log("judge: ", )
+        console.log(
+          'date data: ',
+          expirationTime,
+          dateObject.getTime() + expireData * 1000,
+          'current time',
+          Date.now()
+        );
 
-        if(Date.now() + 2000 >= dateObject.getTime() + expireData * 1000) {
-          console.log("token expired", "interval id is: ",intervalId)
+        console.log('judge: ');
+
+        if (Date.now() + 2000 >= dateObject.getTime() + expireData * 1000) {
+          console.log('token expired', 'interval id is: ', intervalId);
           clearInterval(intervalId);
-          debugger
           setIsTokenValid(false);
-          localStorage.removeItem("token_obj");
-          localStorage.removeItem("token_obj_header");
-          navigate("/auth"); // Redirect to login page
+          localStorage.removeItem('token_obj');
+          localStorage.removeItem('token_obj_header');
+          navigate('/auth'); // Redirect to login page
         }
-       
-    
-    }
+      }
     };
 
-    const intervalId = setInterval(checkTokenExpiry, 1000); 
+    const intervalId = setInterval(checkTokenExpiry, 1000);
 
-    console.log("clear interval id: ", intervalId)
-    return () => clearInterval(intervalId); 
+    console.log('clear interval id: ', intervalId);
+    return () => clearInterval(intervalId);
   }, [navigate]);
-
-
-
 
   // const navigateRef = useRef(navigate);
 

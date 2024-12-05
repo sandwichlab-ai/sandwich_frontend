@@ -5,7 +5,7 @@ import Sidebar from '../../components/sidebar';
 import Header from '../../components/header';
 import './index.scss';
 
-const Lexi = observer(() => {
+const Lexi = observer(({ signOut, user }) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <div
@@ -15,7 +15,7 @@ const Lexi = observer(() => {
     >
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <div className='lexi__container__right'>
-        <Header />
+        <Header signOut={signOut} user={user} />
         <div className='lexi__container__pages'>
           <Outlet />
         </div>

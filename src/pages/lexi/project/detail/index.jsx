@@ -4,17 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import LexiForm from '../../../../components/lexi-form';
 import AdCard, { AdCampaign, AdSets } from '../../../../components/ad-card';
-import axios from 'axios';
+import http from '../../../../utils/axiosInstance';
 
 import './index.scss';
 import { useStore } from '../../../../stores/routeStore';
 import LexiModal from '../../../../components/lexi-modal';
-
-const stepOtions = [
-  { title: 'Ad Introduction' },
-  { title: 'Ad Settings' },
-  { title: 'Ad Proposal' },
-];
+import dayjs from 'dayjs';
+import { stepOtions, countryList } from './config';
 
 const ProjectEdit = observer(() => {
   const navigate = useNavigate();
@@ -22,50 +18,71 @@ const ProjectEdit = observer(() => {
   const [forceUpdate, setForceUpdate] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
   const [current, setCurrent] = useState(0); // steps 状态控制
-  const [isDashboard, setIsDashboard] = useState(0);
-  const { projectList } = useStore();
+  const {
+    projectList,
+    projectList: { currentProject },
+  } = useStore();
   const projectData = useRef({});
   const fetchRef = useRef(null);
+  const projectGoal = useRef('');
+  const [brandList, setBrandList] = useState([]);
   const [hidden, setHidden] = useState({});
   const [showModal, setShowModal] = useState(false);
 
-  // 当 projectData.current 更新时触发
+  // 第一次进入编辑页面，如果没有 projectList，那么init
+  useEffect(() => {
+    projectList.getCurrentProject(id);
+  }, []);
+
+  // 如果跳转到step3，开始轮询; 如果跳转到step1，获取brandList
+  useEffect(() => {
+    if (current === 0) {
+      fetchBrandList();
+    } else if (current === 2 && currentProject?.getADProposal) {
+      if (adsets.length !== 5 || loadingLen !== 0) {
+        getADProposal();
+      }
+    }
+  }, [current]);
+
+  const getADProposal = async () => {
+    const status = await currentProject.getADProposal(id);
+    if (status === 'RUNNING') {
+      setTimeout(async () => {
+        await getADProposal();
+      }, 10 * 1000);
+    } else if (status === 'PENDING') {
+      setForceUpdate((prev) => prev + 1);
+    }
+  };
+
+  // 当 currentProject 更新时触发
+  useEffect(() => {
+    if (mode === 'edit' && id && currentProject) {
+      setCurrent(2);
+    }
+  }, [currentProject]);
+
   useEffect(() => {
     setForceUpdate((prev) => prev + 1); // 强制更新
-  }, [projectData.current]);
+  }, [brandList]);
 
-  const list = projectList.list.slice(0); // 显示访问list，触发mobx的依赖追踪
-  // 当projectList更新的时候，那么更新 ProjectData
-  if (id) {
-    projectData.current = list.find((item) => item.id === id) || {};
-  }
-  const adsets = projectData.current.proposal || [];
+  const adsets = currentProject?.proposal || [];
   const loadingLen = adsets.filter((item) => item.status === 0).length;
-  const selectedLen = adsets.filter((item) => item.selected === 0).length;
+  // const selectedLen = adsets.filter((item) => item.selected === 0).length;
   if (adsets.length === 5 && !loadingLen) {
     clearInterval(fetchRef.current);
   }
 
-  // 第一次进入编辑页面，如果没有 projectList，那么init
-  useEffect(() => {
-    if (!list.length) {
-      projectList.init();
-    }
-  }, []);
-
-  // 如果跳转到step3，开始轮询
-  useEffect(() => {
-    if (current === 2 && projectData.current.getADProposal) {
-      if (adsets.length !== 5 || loadingLen !== 0) {
-        projectData.current.getADProposal();
-        // TODO 暂时注释掉
-        // fetchRef.current = setInterval(async () => {
-        //   await projectData.current.getADProposal();
-        //   setForceUpdate((prev) => prev + 1); // 强制更新
-        // }, 10 * 1000);
-      }
-    }
-  }, [current]);
+  const fetchBrandList = async () => {
+    const res = await http.get('https://api-dev.sandwichlab.ai/api/brand/all');
+    setBrandList(
+      (res.data || []).map((item) => ({
+        value: item.id + '', // TODO 后端返回的是number
+        label: item.name,
+      }))
+    );
+  };
 
   const next = () => {
     setCurrent(current + 1);
@@ -130,12 +147,7 @@ const ProjectEdit = observer(() => {
           label: 'Brand Introduction',
           name: ['introduction', 'brand_id'],
           rules: [{ required: true, message: 'Select at least one country' }],
-          options: [
-            { label: 'Brand 1', value: 1 },
-            { label: 'Brand 2', value: 2 },
-            { label: 'Brand 3', value: 3 },
-            { label: 'Brand 4', value: 4 },
-          ],
+          options: brandList,
         },
       ],
       buttons: [
@@ -150,21 +162,19 @@ const ProjectEdit = observer(() => {
           content: 'Action in progress..',
           duration: 0,
         });
-        projectData.current = {
-          id: 0,
-          status: 'editing',
-          updateTime: '',
-          ...projectData.current,
-          ...values,
-        };
         // 调用API，获得setiings的值，做一些操作，之后调用handleStepSubmitCommon进行到下一步
         const {
           data: { project_goal },
-        } = await axios.post('/api/project/goal', {
+        } = await http.post(
+          'http://47.129.43.201:8080/api/project/goal',
+          values.introduction
+        );
+        projectList.updateCurrentProject({
+          update_at: '',
           ...values,
-          user_id: 1,
         });
-        setHidden(project_goal !== 'WEBSITE_TRAFFIC');
+        projectGoal.current = project_goal;
+        setHidden(project_goal !== 'website');
         messageApi.destroy();
         handleStepSubmitCommon();
       },
@@ -176,7 +186,7 @@ const ProjectEdit = observer(() => {
           label: 'The link to your website',
           extra:
             'Increasing traffic to your website is a better way to achieve your goal.',
-          name: ['settings', 'link'],
+          name: ['settings', 'website_url'],
           rules: [{ required: true, message: 'Website is required' }],
           hidden,
         },
@@ -211,12 +221,7 @@ const ProjectEdit = observer(() => {
           label: 'Countries to Advertise',
           name: ['settings', 'target_countries'],
           rules: [{ required: true, message: 'Select at least one country' }],
-          options: [
-            { label: 'Country 1', value: 'Country 1' },
-            { label: 'Country 2', value: 'Country 2' },
-            { label: 'Country 3', value: 'Country 3' },
-            { label: 'Country 4', value: 'Country 4' },
-          ],
+          options: countryList,
           mode: 'multiple',
           placeholder: 'Select countries',
         },
@@ -240,16 +245,27 @@ const ProjectEdit = observer(() => {
           content: 'Action in progress..',
           duration: 0,
         });
-        const curProjectData = { ...projectData.current, ...values };
-        projectData.current = curProjectData;
+        const curProjectData = { ...currentProject, ...values };
+        console.log('....curProjectData.....', curProjectData);
+        const { introduction, settings, project_name } = curProjectData;
         if (mode === 'add') {
-          await projectList.addProject(curProjectData);
+          await projectList.addProject({
+            ...curProjectData,
+            project_goal: projectGoal.current,
+          });
           const list = projectList.list.slice(0); // 显示访问list，触发mobx的依赖追踪
           // 当projectList更新的时候，那么更新 ProjectData
           projectData.current =
             list.find((item) => item.id === curProjectData.id) || {};
         } else {
-          await projectList.updateProject(id, curProjectData);
+          await projectList.updateProject(id, {
+            project_name,
+            project_goal: projectGoal.current,
+            ...introduction,
+            ...settings,
+            start_date: dayjs(settings.start_date).format('X'),
+            end_date: dayjs(settings.end_date).format('X'),
+          });
         }
         messageApi.destroy();
         // 异步调用 addProject API，做一些操作，之后调用handleStepSubmitCommon进行到下一步
@@ -264,7 +280,7 @@ const ProjectEdit = observer(() => {
             <AdCard title='Ad Campaign'>
               <AdCampaign
                 key={forceUpdate}
-                project={projectData.current}
+                project={currentProject}
               ></AdCampaign>
             </AdCard>
           ),
@@ -273,7 +289,7 @@ const ProjectEdit = observer(() => {
           type: 'custom',
           children: (
             <AdCard title='Ad Sets Details'>
-              <AdSets key={forceUpdate} project={projectData.current}></AdSets>
+              <AdSets key={forceUpdate} project={currentProject}></AdSets>
             </AdCard>
           ),
         },
@@ -287,7 +303,7 @@ const ProjectEdit = observer(() => {
           },
         },
         {
-          label: 'Lauch Draft',
+          label: 'Launch Draft',
           type: 'submit',
         },
       ],
@@ -309,7 +325,7 @@ const ProjectEdit = observer(() => {
           content: 'Action in progress..',
           duration: 0,
         });
-        await projectData.current.lauchDraft();
+        await currentProject.lauchDraft();
         messageApi.destroy();
         // 成功的话跳转到 effect 页面
         navigate('/lexi/projects/effect/1');
@@ -331,7 +347,7 @@ const ProjectEdit = observer(() => {
         config={formConfig}
         buttonConfig={buttons}
         onSubmit={onSubmit}
-        data={projectData.current}
+        data={currentProject}
       ></LexiForm>
       {contextHolder}
       <LexiModal

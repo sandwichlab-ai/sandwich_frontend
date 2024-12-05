@@ -6,7 +6,7 @@
   &__item {
     width: 252px;
     height: 252px;
-    background-color: #FCFCFC;
+    background-color: #fcfcfc;
     padding: 16px;
     margin-right: 32px;
     margin-bottom: 32px;
@@ -25,18 +25,18 @@
 
       &__button {
         height: 70px;
-        width: 70px!important;
+        width: 70px !important;
         border: 1.5px solid #000000;
         border-radius: 0;
         margin-bottom: 27px;
       }
     }
-    
+
     &__header {
       font-size: 14px;
       font-weight: 400;
       text-align: left;
-      color: #8C68FF;
+      color: #8c68ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -68,4 +68,3 @@
     }
   }
 }
-

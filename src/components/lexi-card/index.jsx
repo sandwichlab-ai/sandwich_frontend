@@ -24,7 +24,7 @@ function CardList({
   const navigate = useNavigate();
   const handleEdit = (e, item) => {
     onEdit?.(item);
-    navigate(`${editUrl}/${item.id}`);
+    navigate(`${editUrl}/${_.get(item, map?.id || 'id')}`);
   };
   return (
     <div className='lexi-cards'>
@@ -108,7 +108,7 @@ function CardItem({ data, operationOptions, map, handleEdit }) {
     >
       <div className='lexi-cards__item__header'>
         <div className='lexi-cards__item__header__tag'>
-          {data.status === 'isRunning' ? 'Lexi is running' : ''}
+          {data.status === 'SUBMITTED' ? 'Lexi is running' : ''}
         </div>
         <Dropdown menu={{ items: operationItems }} placement='bottomRight'>
           <div

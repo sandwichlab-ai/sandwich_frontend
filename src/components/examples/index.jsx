@@ -4,12 +4,13 @@ import './index.scss';
 
 function Examples({ examples = [] }) {
   return (
-    <div className='lexi-examples'>
-      <header>
+    <div className='lexi-examples mt-[30px]'>
+      <header className='text-center h-[27px]'>
         <span className='lexi-examples__header'>Examples</span>
       </header>
       <Carousel
-        className='lexi-examples__carousel'
+        rootClassName='lexi-examples__carousel'
+        dots
         dotPosition='bottom'
         autoplay
       >

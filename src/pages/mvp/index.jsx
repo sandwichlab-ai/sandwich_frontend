@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { signIn, signOut } from 'aws-amplify/auth';
-import { observer } from 'mobx-react-lite';
-// import { useStore } from '../../stores/routeStore'; {/* mobx 使用示例 */}
 import Sidebar from '../../components/sidebar';
 import Title from '../../components/header';
 import './index.css';

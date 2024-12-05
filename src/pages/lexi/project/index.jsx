@@ -17,7 +17,7 @@ const Project = observer(() => {
         modalTitle: 'Do you want to rename this project?',
         modalContent: `if you delete this project, you won't be able to recover it later`,
         handleConfirm: (dataItem) => {
-          projectList.removeProject(dataItem.id);
+          projectList.renameProject(dataItem.id);
         },
       },
       {
@@ -27,29 +27,33 @@ const Project = observer(() => {
         modalTitle: 'Do you want to delete this project?',
         modalContent: `if you delete this project, you won't be able to recover it later`,
         handleConfirm: (dataItem) => {
-          projectList.removeProject(dataItem.id);
+          projectList.removeProject(dataItem.project_id);
         },
       },
     ],
     []
   );
   const handleAddItem = useCallback(() => {}, []);
+
   // 初始化projectList
   useEffect(() => {
-    console.log(11111111);
     projectList.init();
   }, []);
+
   // 显示访问list，触发mobx的依赖追踪
   const list = projectList.list.slice(0);
   return (
     <CardList
       list={list}
-      map={{ name: 'introduction.project_name' }}
+      map={{ name: 'introduction.project_name', id: 'project_id' }}
       handleAddItem={handleAddItem}
       addUrl='add'
       editUrl='edit'
       from='Project'
       operationOptions={operationOptions}
+      onEdit={(item) => {
+        projectList.getCurrentProject(item.project_id);
+      }}
     ></CardList>
   );
 });

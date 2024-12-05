@@ -320,8 +320,10 @@
     background-color: #8C68FF !important;
 }
 
-.lexi__container__pages .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.lexi-table .ant-table-cell{
+    border-radius: 0px !important;
+}
+
+.lexi-table td {
+    background-color: #F7F5FF !important;
 }

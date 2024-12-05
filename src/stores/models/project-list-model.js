@@ -2,56 +2,78 @@
 import { types, flow } from 'mobx-state-tree';
 import dayjs from 'dayjs';
 import ProjectEntity from './project-entity-model';
-import axios from 'axios';
+import http from '../../utils/axiosInstance';
+import _ from 'lodash';
 
 const ProjectList = types
   .model('Counter', {
     list: types.array(ProjectEntity), // project 列表
-    currentProject: types.optional(ProjectEntity, {
-      id: '0',
-      status: 'editing',
-      updateTime: '',
-    }), // 当前选中的 project
+    currentProject: types.maybeNull(ProjectEntity), // 当前选中的 project
   })
   .actions((self) => ({
     init: flow(function* () {
-      const response = yield axios.get('/api/projects');
+      // const response = yield axios.get('/api/projects');
+      const response = yield http.get('http://47.129.43.201:8080/api/projects');
       const updateList = response.data.map((item) => {
         const { start_date, end_date } = item.settings || {};
-        start_date && (item.settings.start_date = dayjs(start_date));
-        end_date && (item.settings.end_date = dayjs(end_date));
+        start_date && (item.settings.start_date = dayjs(start_date, 'X'));
+        end_date && (item.settings.end_date = dayjs(end_date, 'X'));
         return item;
       });
       // self.updateList(updateList);
       self.list = updateList;
     }),
-
-    setCurrent(id) {
-      self.currentProject =
-        self.list.find((project) => project.id === id) || null;
-    },
-    updateCurrentProject(project) {
-      if (self.currentProject) {
-        Object.assign(self.currentProject, project);
-      } else {
-        self.currentProject = project;
+    getCurrentProject: flow(function* (id) {
+      if (self.list.length === 0) {
+        yield self.init();
       }
+      const project = self.list.find((project) => project.project_id === id);
+      self.currentProject = project
+        ? _.cloneDeep(project)
+        : {
+            project_id: '0',
+            status: 'UNSUBMITTED',
+            update_at: '',
+          };
+    }),
+    // 还没到提交的时候，静态更新
+    updateCurrentProject: (updated) => {
+      console.log('updateProject....', updated);
+      self.currentProject = { ...self.currentProject, ...updated };
     },
     addProject: flow(function* (projectData) {
       // 调用addProject API，然后获取到projectID
-      console.log(33333, projectData);
+      const { introduction, settings, project_name, project_goal } =
+        projectData;
+      const reqData = {
+        project_name,
+        project_goal,
+        ...introduction,
+        ...settings,
+        start_date: dayjs(settings.start_date).format('X'),
+        end_date: dayjs(settings.end_date).format('X'),
+      };
       const {
         data: { project_id },
-      } = yield axios.post('/api/project', projectData);
-      projectData.id = project_id;
-      self.list.push(projectData); // 添加新项目
+      } = yield http.post('http://47.129.43.201:8080/api/project', reqData);
+      projectData.project_id = project_id;
+      projectData.updated_at = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      self.currentProject = projectData;
     }),
-    removeProject(id) {
-      self.list = self.list.filter((project) => project.id !== id); // 删除项目
-    },
+    removeProject: flow(function* (id) {
+      const {
+        data: { message, error },
+      } = yield http.delete(`http://47.129.43.201:8080/api/project/${id}`);
+      if (message) {
+        self.list = self.list.filter((project) => project.project_id !== id); // 删除项目
+      }
+    }),
     updateProject: flow(function* (id, updates) {
       // yield axios.post(`/api/project/${id}`);
-      yield axios.post(`/api/project/project_id`);
+      yield http.post(`http://47.129.43.201:8080/api/project/${id}`, {
+        ...self.currentProject,
+        updates,
+      });
       const project = self.list.find((project) => project.id === id);
       if (project) {
         Object.assign(project, updates); // 更新项目属性

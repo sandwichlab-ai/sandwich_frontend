@@ -1,56 +1,40 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Amplify } from 'aws-amplify';
-import { fetchAuthSession } from 'aws-amplify/auth'
-import { Hub } from '@aws-amplify/core';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import './index.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../stores/routeStore';
 
 const menuMap = {
   projects: 'Ad Projects',
   brands: 'Brands',
 };
 
-function Header() {
+function Header({ signOut, user }) {
   const location = useLocation();
-  console.log("location is: ", location);
-  const [, , page] = location?.pathname?.split('/') || [];
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("header effect", location)
-    if (location.state) {
-      console.log("location state: ", location.state)
+  const { mode, id } = useParams();
+  const { brandList, projectList } = useStore();
+  console.log('currentBrand is: ', brandList.currentBrand?.toJSON());
+  console.log('currentProject is: ', projectList.currentProject?.toJSON());
+  const [, , page] = location?.pathname?.split('/') || [];
+  const getEditName = () => {
+    if (page === 'brands') {
+      return brandList.currentBrand?.name;
+    } else {
+      return projectList.currentProject?.introduction?.project_name;
     }
-
-    const asyncFn = async () => {
-      try {
-        const session = await fetchAuthSession({ forceRefresh: true });
-        console.log("session is: ", session, session.tokens.accessToken, session.tokens.refreshToken)
-        localStorage.setItem("accessToken", "")
-        console.log("access token before", localStorage.getItem('accessToken'))
-        console.log("session is: ", session.tokens.accessToken, "id Token", session.tokens.idToken, "localStorage is: ");
-        session.tokens.accessToken && localStorage.setItem('accessToken', session.tokens.accessToken);
-        session.tokens.idToken && localStorage.setItem('idToken', session.tokens.idToken);
-        console.log("token: ", localStorage.getItem('accessToken'))
-      } catch (error) {
-        console.error('Error fetching tokens:', error);
-      }
-
-    }
-
-    asyncFn()
-
-  })
-
+  };
   return (
     <div className='lexi__header'>
       <div>{`${menuMap[page]}`}</div>
-      {location.pathname.includes("edit") && <div>{`> ${location.state}`}</div>}
-      {location.pathname.includes("add") && <div>{`> Create`}</div>}
+      {location.pathname.includes('edit') && <div>{`> ${getEditName()}`}</div>}
+      {location.pathname.includes('add') && <div>{`> Create`}</div>}
+      <div className='lexi__header__logout ' onClick={signOut}>
+        Logout
+      </div>
+      <div>{user?.username}</div>
     </div>
   );
 }
 
-export default Header;
+export default observer(Header);

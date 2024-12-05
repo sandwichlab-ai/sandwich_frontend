@@ -1,6 +1,6 @@
 .lexi-examples {
   padding-left: 12px;
-  height: 100%;
+  height: calc(100% - 30px);
   display: flex;
   flex-direction: column;
   header {
@@ -19,9 +19,14 @@
     flex-grow: 1;
   }
   &__carousel {
-    height: 100%;
+    height: calc(100% - 27px);
+
+    .slick-slider {
+      position: static;
+    }
+
     &__item {
-      height: 80px;
+      height: 100%;
       background-color: #f8f6ff;
       display: flex !important;
       padding: 0 16px;

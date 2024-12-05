@@ -6,7 +6,6 @@ import {
   PlusOutlined,
 } from '@ant-design/icons';
 import ChatButton from '../func-button/chat-button';
-// import { ReactComponent as Loading } from '../../assets/images/loading.svg';
 import './index.scss';
 import {
   DatePicker,
@@ -19,30 +18,12 @@ import {
   Form,
 } from 'antd';
 import dayjs from 'dayjs';
-import { observer } from 'mobx-react-lite';
-import { useStore } from '../../stores/routeStore';
-import { useParams } from 'react-router-dom';
+import ImgCrop from 'antd-img-crop';
 import EditFormItem from '../lexi-form/edit-form-item';
 import Loading from '../loading/loading';
+import { testUserStatus } from '../../utils/axiosInstance';
 
 const { RangePicker } = DatePicker;
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
 
 function AdCard({ title, children }) {
   return (
@@ -65,9 +46,11 @@ export function AdCardItem({ children }) {
 }
 
 export const AdCampaign = ({ project }) => {
-  const projectData = useRef({});
-
   const campaign = project?.campaign || {};
+  const [date, setDate] = useState([
+    dayjs(campaign.start_date, 'X'),
+    dayjs(campaign.end_date, 'X'),
+  ]);
   return (
     <AdCardItem>
       <div className='flex justify-between mt-[20px]'>
@@ -75,17 +58,22 @@ export const AdCampaign = ({ project }) => {
           className='flex text-[#333]'
           label='Duration: '
           onConfirm={(values) => {
-            projectData.current.updateAdProposal({
-              start_date: dayjs(values[0]).format('YYYY-MM-DD'),
-              end_date: dayjs(values[1]).format('YYYY-MM-DD'),
+            project.updateAdProposal({
+              start_date: values.date[0].format('X'),
+              end_date: values.date[1].format('X'),
             });
           }}
-          value={`${campaign.start_date}-${campaign.end_date}`}
+          value={`${dayjs(campaign.start_date, 'X').format(
+            'YYYY-MM-DD'
+          )}-${dayjs(campaign.end_date, 'X').format('YYYY-MM-DD')}`}
         >
           <Form.Item name='date' className='mr-2'>
             <RangePicker
               size='small'
-              value={[dayjs(campaign.start_date), dayjs(campaign.end_date)]}
+              value={date}
+              onChange={(value) => {
+                setDate(value);
+              }}
             />
           </Form.Item>
         </EditFormItem>
@@ -93,7 +81,7 @@ export const AdCampaign = ({ project }) => {
           className='flex text-[#333]'
           label='Daily budget: '
           onConfirm={(values) => {
-            projectData.current.updateAdProposal({
+            project.updateAdProposal({
               daily_budget: values.daily,
             });
           }}
@@ -105,7 +93,7 @@ export const AdCampaign = ({ project }) => {
         </EditFormItem>
         <div className='text-[14px] flex'>
           <span className='mr-2'>Ad sets choices: </span>
-          <span className='flex'>{campaign.max_num_of_adsets}</span>
+          <span className='flex'>{campaign.max_num_of_ad_sets}</span>
         </div>
       </div>
     </AdCardItem>
@@ -115,7 +103,7 @@ export const AdCampaign = ({ project }) => {
 export const AdSets = ({ project }) => {
   const [selected, setSelected] = useState({});
   const [active, setActive] = useState(0); // 当前可见的卡片
-  const { proposal = [] } = project || {};
+  const { proposal = [], status } = project || {};
   const handleUpdateSetItem = (data) => {
     project.updateAdProposal(data);
   };
@@ -124,14 +112,19 @@ export const AdSets = ({ project }) => {
       <AdSetsStatus
         data={proposal || []}
         active={active}
+        status={status}
+        selected={selected}
         setActive={setActive}
       />
       <div className='ad-sets-cards'>
         <div className='ad-card__content'>
           <AdSetsItem
+            status={status}
             data={proposal?.[active] || {}}
             active={active}
             selected={selected}
+            projectID={project?.project_id}
+            brandID={project?.introduction?.brand_id}
             setSelected={setSelected}
             handleUpdateSetItem={handleUpdateSetItem}
           ></AdSetsItem>
@@ -141,28 +134,28 @@ export const AdSets = ({ project }) => {
   );
 };
 
-function AdSetsStatus({ data, active, setActive }) {
+function AdSetsStatus({ data, active, setActive, selected, status }) {
   const renderIcon = (item, index) => {
     if (active === index) {
-      if (item.selected) {
+      if (selected[item.ad_set_id]) {
         return (
           <CheckCircleOutlined
             style={{ color: '#8c68ff', fontSize: '16px', lineHeight: '16px' }}
           />
         );
-      } else if (item.status === 0) {
+      } else if (status === 'RUNNING') {
         return <Loading type='primary' />;
       } else {
         return <div className='icon-rounded icon-rounded--active'></div>;
       }
     } else {
-      if (item.selected) {
+      if (selected[item.ad_set_id]) {
         return (
           <CheckCircleOutlined
             style={{ color: '#00000025', fontSize: '16px' }}
           />
         );
-      } else if (item.status === 0) {
+      } else if (status === 'RUNNING') {
         return <Loading />;
       } else {
         return <div className='icon-rounded'></div>;
@@ -186,26 +179,91 @@ function AdSetsStatus({ data, active, setActive }) {
   );
 }
 
-function AdSetsItem({ data, active, handleUpdateSetItem }) {
+function AdSetsItem({
+  data,
+  projectID,
+  brandID,
+  active,
+  status,
+  selected,
+  setSelected,
+  handleUpdateSetItem,
+}) {
   const [curData, setCurData] = useState(data);
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [imageLoading, setImageLoading] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const token = useRef('');
+  const [imageUrl, setImageUrl] = useState(data.ad_creative_image_9x16_url);
+  const [imageVideoUrl, setImageVideoUrl] = useState(
+    data.ad_creative_video_9x16_url
+  );
+  const actionUrl = `https://api-dev.sandwichlab.ai/api/creative/${brandID}/upload`;
 
+  useEffect(() => {
+    testUserStatus().then((newToken) => {
+      token.current = newToken;
+    });
+  }, []);
   useEffect(() => {
     setCurData(data);
   }, [data]);
 
-  const handleChange = (info) => {
+  const beforeImageUpload = (file) => {
+    const isImage = file.type.startsWith('image/');
+    if (!isImage) {
+      message.error('only support image');
+    }
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('Image must smaller than 5MB!');
+    }
+    return isLt5M & isImage;
+  };
+
+  const beforeVideoUpload = (file) => {
+    const isVideo = file.type.startsWith('video/');
+    if (!isVideo) {
+      message.error('only support image');
+    }
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('Image must smaller than 5MB!');
+    }
+    return isLt5M & isVideo;
+  };
+
+  const handleImageChange = (info) => {
+    console.log(1111111111);
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
+      const url = info.file.response?.data?.url;
+      setImageUrl(url);
+
+      // // Get this url from response in real world.
+      // getBase64(info.file.originFileObj, (url) => {
+      //   setLoading(false);
+      //   setImageUrl(url);
+      // });
+    }
+  };
+
+  const handleVideoChange = (info) => {
+    if (info.file.status === 'uploading') {
+      setVideoLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      const url = info.file.response?.data?.url;
+      setImageVideoUrl(url);
+      // // Get this url from response in real world.
+      // getBase64(info.file.originFileObj, (url) => {
+      //   setVideoLoading(false);
+      //   setImageVideoUrl(url);
+      // });
     }
   };
 
@@ -228,16 +286,36 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
     </button>
   );
 
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
   return (
-    <div className={`ad-sets__item${data.selected ? '--selected' : ''}`}>
+    <div
+      className={`ad-sets__item${selected[data.ad_set_id] ? '--selected' : ''}`}
+    >
       <div
         className='absolute right-0 top-0 cursor-pointer lexi-triangle'
         onClick={() => {
-          if (data.status === 0) {
+          if (status === 'RUNNING') {
             message.warning(
               'Current Ad Set is loading now, please select it after loading!'
             );
           } else {
+            const newSelected = { ...selected };
+            newSelected[data.ad_set_id] = !selected[data.ad_set_id];
+            setSelected(newSelected);
             data.setSelectedProposal(!data.selected);
           }
         }}
@@ -272,13 +350,13 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
             <div className='w-[115px]'>
               <div className='ad-sets__info__label text-bold'>Age</div>
               <div className='ad-sets__info__value'>
-                {curData.age_range?.min} - {curData.age_range?.max}
+                {data.age_range?.min} - {data.age_range?.max}
               </div>
             </div>
             <div className='w-[115px]'>
               <div className='ad-sets__info-label text-bold'>Gender</div>
               <div className='ad-sets__info-value'>
-                {(curData.gender || []).join(', ')}
+                {(data.genders || []).join(', ')}
               </div>
             </div>
             <div className='grow'>
@@ -314,20 +392,20 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
               btnClassName='absolute top-[40px] right-[38px]'
               onConfirm={(values) => {
                 handleUpdateSetItem({
-                  adset_id: data.adset_id,
-                  ad_copywriting_title: data.ad_copywriting_title,
-                  ad_copywriting_body: data.ad_copywriting_body,
+                  adset_id: data.ad_set_id,
+                  ad_copywriting_title: curData.ad_copywriting_title,
+                  ad_copywriting_body: curData.ad_copywriting_body,
                 });
               }}
               value={
                 <div>
                   <div className='my-[8px]'>Headline</div>
                   <div className='bg-[#9b62FE08] p-[12px] rounded-[12px] font-bold'>
-                    {data.ad_copywriting_title}
+                    {curData.ad_copywriting_title}
                   </div>
                   <div className='my-[8px]'>Primary text</div>
                   <div className='bg-[#9b62FE08] p-[12px] rounded-[12px]'>
-                    {data.ad_copywriting_body}
+                    {curData.ad_copywriting_body}
                   </div>
                 </div>
               }
@@ -360,50 +438,77 @@ function AdSetsItem({ data, active, handleUpdateSetItem }) {
           <div className='card-shadow'>
             <div className='text-bold'>Ad Creative</div>
             <div className='flex gap-3 mt-[5px]'>
-              {/* TODO kongming start */}
-              <Upload
-                name='avatar'
-                listType='picture-card'
-                className='avatar-uploader'
-                showUploadList={false}
-                action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt='avatar'
-                    style={{
-                      width: '100%',
+              <div>
+                <div className='mb-2'>9:16(Feed) Add Image</div>
+                <ImgCrop rotationSlider aspect={9 / 16}>
+                  <Upload
+                    name='meta_file'
+                    listType='picture-card'
+                    className='avatar-uploader'
+                    showUploadList={false}
+                    action={actionUrl}
+                    beforeUpload={beforeImageUpload}
+                    onChange={handleImageChange}
+                    data={{
+                      // 传递额外的参数
+                      file_type: 'images', // 例如：文件类型
+                      aspect: '9x16', // 例如：比例
+                      ad_set: curData.ad_set_id, // 例如：set_id
+                      project_id: projectID,
                     }}
-                  />
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
-              <Upload
-                name='avatar'
-                listType='picture-card'
-                className='avatar-uploader'
-                showUploadList={false}
-                action='https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload'
-                beforeUpload={beforeUpload}
-                onChange={handleChange}
-              >
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt='avatar'
-                    style={{
-                      width: '100%',
+                    headers={{
+                      Authorization: token.current,
                     }}
-                  />
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
-              {/* TODO kongming end */}
+                    // onPreview={onPreview}
+                  >
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt='avatar'
+                        style={{
+                          width: '100%',
+                        }}
+                      />
+                    ) : (
+                      uploadButton
+                    )}
+                  </Upload>
+                </ImgCrop>
+              </div>
+              <div>
+                <div className='mb-2'>9:16(Feed) Add Video</div>
+                <Upload
+                  name='meta_file'
+                  listType='picture-card'
+                  className='avatar-uploader'
+                  showUploadList={false}
+                  action={actionUrl}
+                  beforeUpload={beforeVideoUpload}
+                  onChange={handleVideoChange}
+                  data={{
+                    // 传递额外的参数
+                    file_type: 'videos', // 例如：文件类型
+                    ratio: '9x16', // 例如：比例
+                    set_id: curData.ad_set_id, // 例如：set_id
+                    project_id: projectID,
+                  }}
+                  headers={{
+                    Authorization: token.current,
+                  }}
+                >
+                  {imageVideoUrl ? (
+                    <img
+                      src={imageVideoUrl}
+                      alt='avatar'
+                      style={{
+                        width: '100%',
+                      }}
+                    />
+                  ) : (
+                    uploadButton
+                  )}
+                </Upload>
+              </div>
             </div>
           </div>
         </Col>

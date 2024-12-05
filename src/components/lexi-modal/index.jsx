@@ -4,6 +4,7 @@ import './index.scss';
 import LexiButton from '../lexi-button';
 
 function LexiModal({
+  className,
   open,
   confirmLoading,
   handleConfirm,
@@ -14,7 +15,7 @@ function LexiModal({
 }) {
   return (
     <Modal
-      className='lexi-modal'
+      className={`lexi-modal ${className}`}
       title={title}
       open={open}
       onOk={handleConfirm}
@@ -22,8 +23,16 @@ function LexiModal({
       onCancel={handleCancel}
       footer={
         footer || [
-          <LexiButton handleClick={handleConfirm} text='Cancel'></LexiButton>,
-          <LexiButton handleClick={handleConfirm} text='Confirm'></LexiButton>,
+          <LexiButton
+            handleClick={handleConfirm}
+            text='Cancel'
+            key='cancel'
+          ></LexiButton>,
+          <LexiButton
+            handleClick={handleConfirm}
+            text='Confirm'
+            key='confirm'
+          ></LexiButton>,
         ]
       }
     >

@@ -8,21 +8,30 @@ import { useStore } from '../../../../stores/routeStore.js';
 import AccountContention from '../../../../components/account-connection/account-connection.jsx';
 
 const Detail = observer((props) => {
-  const navigate = useNavigate();
   const { id, mode } = useParams();
-  const { brandList } = useStore();
-  const brandData = useRef({});
-  const [messageApi, contextHolder] = message.useMessage();
+  const {
+    brandList,
+    brandList: { list, currentBrand },
+  } = useStore();
 
-  const list = brandList.list.slice(0); // 显示访问list，触发mobx的依赖追踪
-  if (id) {
-    brandData.current = list.find((item) => item.id === +id) || {};
-  }
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const selectFbAc = useRef({});
+  const setSelectedRow = (row) => {
+    console.log('row is: ', row);
+    selectFbAc.current = {
+      ad_account_id: row.id,
+      account_name: row.name,
+      account_status: row.account_status,
+      time_zone: row.timezone_name,
+      page_id: row.page_id,
+    };
+  };
 
   // 第一次进入编辑页面，如果没有 projectList，那么init
   useEffect(() => {
-    if (!list.length) {
-      brandList.init();
+    if (mode === 'edit' && id) {
+      brandList.getCurrentBrand(id);
     }
   }, []);
 
@@ -37,153 +46,76 @@ const Detail = observer((props) => {
       type: 'textarea',
       label: 'Brand Introduction',
       name: 'description',
-      rows: 6,
+      rows: 10,
       withExamples: true,
       examples: [
         {
-          text: 'I am a <span class="text-bold">divorce lawyer1</span> based in ....',
+          text: 'I\'m <span class="text-bold">Claire</span>, an <span class="text-bold">indie musician</span> blending <span class="text-bold">soft rock, 70s soul, and lush R&B</span>. Starting at 13, my self-recorded songs led to the viral hit \'<span class="text-bold">Pretty Girl</span>\' and albums like Immunity and Sling. earning praise from <span class="text-bold">Rolling Stone and Pitchfork</span>, I\'ve <span class="text-bold">performed at Coachella and Newport Folk Festival</span>, sharing my sound with audiences worldwide.',
         },
         {
-          text: 'I am a <span class="text-bold">divorce lawyer2</span> based in ....',
+          text: 'We are <span class="text-bold">Airkey EnviroTech</span>. We provide <span class="text-bold">dust-free, sterile cleanroom solutions for high-tech industries worldwide</span>. With over <span class="text-bold">60 patents</span> and expertise in <span class="text-bold">medical, pharmaceutical, and semiconductor sectors</span>, we deliver high-quality products and services <span class="text-bold">trusted by Fortune 500 companies</span>. Guided by \'<span class="text-bold">Quality Changes the World</span>,\' we ensure top-tier clean environments for your needs',
         },
         {
-          text: 'I am a <span class="text-bold">divorce lawyer3</span> based in ....',
+          text: 'We are <span class="text-bold">doTERRA</span>. The brand was founded with a <span class="text-bold">mission to share the unique benefits of essential oils</span> with the world. Through the use of <span class="text-bold">certified pure therapeutic grade (CPTG) essential oils</span>, doTERRA offers products that <span class="text-bold">promote wellness, emotional health, and relaxation</span>. We are committed to helping individuals live better, healthier lives by <span class="text-bold">bringing the power of nature\'s oils into their everyday routines</span>',
         },
       ],
       rules: [{ required: true, message: 'Brand introduction is required' }],
     },
     {
       type: 'custom',
-      children: <AccountContention />,
+      children: (
+        <AccountContention
+          brand={currentBrand}
+          setSelectedRow={setSelectedRow}
+        />
+      ),
     },
   ];
 
   const buttons = [
     {
-      label: 'Cancel',
-      type: 'button',
-    },
-    {
-      label: 'Save Changes',
+      label: 'Save and create ads now',
       type: 'submit',
     },
   ];
 
-  const onSubmit = async () => {
+  const onSubmit = async (values) => {
     messageApi.open({
       type: 'loading',
       content: 'Action in progress..',
       duration: 0,
     });
+    if (mode === 'add') {
+      await brandList.addBrand({
+        ...values,
+        ...selectFbAc.current,
+        goal: '11',
+      });
+    } else {
+      await brandList.updateBrand(id, {
+        ...currentBrand,
+        ...values,
+        ...selectFbAc.current,
+      });
+    }
+    messageApi.destroy();
+    // 成功的话跳转到 project 添加页面
+    navigate('/lexi/projects/add');
   };
 
   return (
     <div>
       {contextHolder}
-      <LexiForm
-        config={formConfig}
-        buttonConfig={buttons}
-        onSubmit={onSubmit}
-        data={brandData.current}
-      ></LexiForm>
+      {(mode === 'add' || currentBrand) && (
+        <LexiForm
+          className='mt-[-32px]'
+          config={formConfig}
+          buttonConfig={buttons}
+          onSubmit={onSubmit}
+          data={currentBrand}
+        ></LexiForm>
+      )}
     </div>
-    // <div className='content'>
-    //   <div className='addtional__information'>
-    //     <div className='brand__container'>
-    //       <Form.Item
-    //         label='Brand Name'
-    //         name='brandname'
-    //         rules={[{ required: true, message: 'Please input brand name!' }]}
-    //         labelCol={{ span: 24 }}
-    //         wrapperCol={{ span: 24 }}
-    //       >
-    //         <Select
-    //           defaultValue='lucy'
-    //           style={{ width: 680, height: 50 }}
-    //           onChange={handleChange}
-    //           options={[
-    //             { value: 'jack', label: 'Jack' },
-    //             { value: 'lucy', label: 'Lucy' },
-    //             { value: 'Yiminghe', label: 'yiminghe' },
-    //             { value: 'disabled', label: 'Disabled', disabled: true },
-    //           ]}
-    //         />
-    //       </Form.Item>
-    //     </div>
-    //   </div>
-
-    //   <div className='content__bussiness'>
-    //     <Row>
-    //       <Col span={12}>
-    //         <Form.Item
-    //           label='Brand Introduction'
-    //           name='bussiness'
-    //           rules={[
-    //             { required: true, message: 'Please describe your bussiness!' },
-    //           ]}
-    //           labelCol={{ span: 24 }}
-    //           wrapperCol={{ span: 24 }}
-    //         >
-    //           <TextArea
-    //             showCount={renderCount}
-    //             maxLength={5000}
-    //             width={'60%'}
-    //             onChange={onChange}
-    //             placeholder='Examples: Sandwichlab is a lead AI company in social media marketing'
-    //             style={{ height: 301, resize: 'none' }}
-    //           />
-    //         </Form.Item>
-    //       </Col>
-
-    //       <Col span={8}>
-    //         <span>Examples</span>
-    //         <Examples examples={examples} />
-    //       </Col>
-    //     </Row>
-    //   </div>
-
-    //   <div className='content__profile--footer'>
-    //     <div className='content__btn--group'>
-    //       {/* <button className='content__btn'>cancel</button> */}
-    //       {/* <button className='content__btn'>save</button> */}
-    //       {props.mode == 'create' && (
-    //         <Button disabled={submitDisabled} width='412' height='56'>
-    //           Save and create ads now
-    //         </Button>
-    //       )}
-
-    //       {props.mode == 'edit' && (
-    //         <div className='edit__btn--group'>
-    //           <Button
-    //             disabled={false}
-    //             width='196'
-    //             height='56'
-    //             id='detail__cancel--btn'
-    //           >
-    //             Cancel
-    //           </Button>
-    //           <Button
-    //             disabled={false}
-    //             width='196'
-    //             height='56'
-    //             id='detail__submit--btn'
-    //           >
-    //             Update
-    //           </Button>
-    //         </div>
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   <Modal
-    //     title='Selected Ad Account'
-    //     open={isModalOpen}
-    //     onOk={handleOk}
-    //     onCancel={handleCancel}
-    //   >
-    //     <AccountContent accountData={data} />
-    //   </Modal>
-    // </div>
   );
 });
 

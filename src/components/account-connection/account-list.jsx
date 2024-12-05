@@ -1,67 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Table, Radio } from 'antd';
 
-const columns = [
-  // {
-  //     title: 'Select',
-  //     dataIndex: 'selectedIndex',
-  // },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Account Id',
-    dataIndex: 'accountId',
-  },
-  {
-    title: 'Account Status',
-    dataIndex: 'accountStatus',
-  },
-];
-
-export default function AccountList(props) {
-  const [addAccount, setAddAccount] = useState({});
+const AccountList = ({ accountData, brand, setSelectRecord, selectRecord }) => {
+  console.log('....selectRecord.....', selectRecord);
+  const columns = [
+    {
+      title: 'Select',
+      dataIndex: 'select',
+      align: 'center',
+      render: (_, record) => (
+        <Radio
+          checked={record.id === (selectRecord.id || brand?.ad_account_id)}
+          onChange={() => setSelectRecord(record)}
+        />
+      ),
+    },
+    {
+      title: 'Name',
+      align: 'center',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Account Id',
+      align: 'center',
+      dataIndex: 'id',
+    },
+    {
+      title: 'Account Status',
+      align: 'center',
+      dataIndex: 'account_status',
+      render: (_, record) => (
+        <span>{record.account_status === 'ACTIVE' ? 'Active' : 'Passive'}</span>
+      ),
+    },
+  ];
 
   useEffect(() => {});
-
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      );
-      setAddAccount(selectedRows[0]);
-    },
-    getCheckboxProps: (record) => ({
-      // disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
 
   return (
     <div className='profile__account--content'>
       <Table
-        rowSelection={{
-          type: 'radio',
-          ...rowSelection,
-        }}
+        className='lexi-table'
         columns={columns}
-        dataSource={props.accountData}
+        dataSource={accountData}
+        pagination={false}
       />
-
-      <div className='btn-wrapper'>
-        <button
-          onClick={() => {
-            props.setAccount(addAccount);
-          }}
-        >
-          OK
-        </button>
-      </div>
     </div>
   );
-}
+};
+export default AccountList;

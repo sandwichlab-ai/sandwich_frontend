@@ -1,84 +1,81 @@
 import React, { useEffect } from 'react';
 import HomePage from './pages/home';
-import Auth from './pages/auth';
-import LoginPage from './pages/login';
 import Brand from './pages/lexi/brand';
 import Lexi from './pages/lexi';
 import './App.css';
 import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
 import aws_exports from './aws-exports';
+import { Hub } from '@aws-amplify/core';
+import http from './utils/axiosInstance';
 import { Authenticator } from '@aws-amplify/ui-react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from 'react-router-dom';
-import { StoreProvider } from './stores/routeStore';
 import Project from './pages/lexi/project';
 import ProjectEdit from './pages/lexi/project/detail';
 import BrandCreate from './pages/lexi/brand/detail';
 import ProjectEffect from './pages/lexi/project/effect';
 import './mock'; // 引入 mock 数据
-import { useNavigate } from 'react-router-dom';
 
 Amplify.configure(aws_exports);
 
 function App() {
   const navigate = useNavigate();
-
   useEffect(() => {
-    const handleAuthEvents = (data) => {
-      const { event } = data.payload;
-
-      if (event === 'signIn') {
-        console.log('User signed in');
-        navigate('/lexi/brand'); // 登录成功后跳转到 dashboard
-      } else if (event === 'signUp') {
-        console.log('User created account');
-        navigate('/lexi/navigate'); // 注册成功后跳转到 welcome
+    const listener = async (data) => {
+      switch (data.payload.event) {
+        case 'signedIn':
+          console.log('User signed in');
+          await http.get('https://auth0.sandwichlab.ai/oauth2/callback');
+          // TODO 登录成功后发送给后端创建用户
+          navigate('/lexi/brands/add');
+          break;
+        case 'signOut':
+          console.log('User signed out');
+          // 在这里处理登出后的逻辑
+          break;
+        default:
+          break;
       }
     };
-    // // 监听 Auth 事件
-    // Hub.listen('auth', handleAuthEvents);
 
-    // return () => {
-    //   // Hub.remove('auth', handleAuthEvents);
-    // };
-  }, [navigate]);
-
+    Hub.listen('auth', listener);
+  }, []);
   return (
     <Routes>
-      <Route path='/auth' element={<Auth />} />
       <Route path='/' element={<HomePage />} />
       <Route
         path='/*'
         element={
-          <Authenticator socialProviders={['facebook', 'google']}>
+          <Authenticator socialProviders={['google']}>
             {({ signOut, user }) => (
-              <StoreProvider>
-                <div className='App'>
-                  {/* <button onClick={() => signOut()}>Sign Out</button> */}
-                  <Routes>
-                    <Route path='/login' element={<LoginPage />} />
-                    <Route path='/lexi' element={<Lexi />}>
-                      <Route
-                        index
-                        element={<Navigate to='/lexi/brands' replace />}
-                      />
-                      <Route path='brands' element={<Brand />}>
-                        <Route path=':mode/:id' element={<BrandCreate />} />
-                      </Route>
-                      <Route path='projects'>
-                        <Route index element={<Project />} />
-                        <Route path=':mode/:id?' element={<ProjectEdit />} />
-                        <Route path='effect/:id' element={<ProjectEffect />} />
-                      </Route>
+              <div className='App'>
+                <Routes>
+                  <Route
+                    path='/lexi'
+                    element={<Lexi signOut={signOut} user={user} />}
+                  >
+                    <Route
+                      index
+                      element={<Navigate to='/lexi/brands' replace />}
+                    />
+                    <Route path='brands'>
+                      <Route index element={<Brand />}></Route>
+                      <Route path=':mode/:id?' element={<BrandCreate />} />
                     </Route>
-                  </Routes>
-                </div>
-              </StoreProvider>
+                    <Route path='projects'>
+                      <Route index element={<Project />} />
+                      <Route path=':mode/:id?' element={<ProjectEdit />} />
+                      <Route path='effect/:id' element={<ProjectEffect />} />
+                    </Route>
+                  </Route>
+                </Routes>
+              </div>
             )}
           </Authenticator>
         }

@@ -1,21 +1,27 @@
 import axios from 'axios';
+import { getCurrentUser } from 'aws-amplify/auth';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 const axiosInstance = axios.create({
   baseURL: 'https://api-dev.sandwichlab.ai', // 'http://192.168.0.38:8080', // 替换为你的 API 基础地址
   timeout: 10000, // 请求超时时间
 });
 
+export const testUserStatus = async () => {
+  try {
+    // 当前用户会自动刷新token
+    const session = await fetchAuthSession();
+    return session.tokens.idToken.toString();
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+};
+
 axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    console.log(
-      'token is: ',
-      token,
-      'header is: ',
-      localStorage.getItem('token')
-    );
+  async (config) => {
+    const token = await testUserStatus();
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = token;
     }
     return config;
   },
