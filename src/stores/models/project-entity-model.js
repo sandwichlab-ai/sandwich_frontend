@@ -122,11 +122,15 @@ const ProjectEntity = types
       const select_ad_sets = (self.proposal || [])
         .filter((item) => item.selected)
         .map((item) => item.ad_set_id);
+      if (select_ad_sets?.length === 0) {
+        return { error: 'Please select at least one ad set' };
+      }
       yield http.post(`/meta/submit`, {
         select_ad_sets,
         brand_id: self.introduction.brand_id, // TODO 数据跟湛洋对一下，这里一个是数字，一个是字符串
         project_id: self.project_id,
       });
+      return { message: 'success' };
     }),
   }))
   .views((self) => ({

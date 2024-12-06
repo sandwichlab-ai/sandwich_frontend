@@ -264,7 +264,7 @@ function AdSetsItem({
     </button>
   );
 
-  return status === 'RUNNING' ? (
+  return !data?.ad_set_id ? (
     <div className='lx-sets__item flex items-center justify-center'>
       <Loading />
     </div>

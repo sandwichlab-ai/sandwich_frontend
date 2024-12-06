@@ -345,11 +345,14 @@ const ProjectEdit = observer(() => {
           content: 'Action in progress..',
           duration: 0,
         });
-        await currentProject.lauchDraft();
-        messageApi.destroy();
-        // 成功的话跳转到 effect 页面
-        navigate(`/lexi/projects/edit/${id}/effect`);
-        // }
+        const { message, error } = await currentProject.lauchDraft();
+        if (error) {
+          messageApi.destroy();
+          messageApi.error(error);
+        } else {
+          // 成功的话跳转到 effect 页面
+          navigate(`/lexi/projects/edit/${id}/effect`);
+        }
       },
     },
   ];
