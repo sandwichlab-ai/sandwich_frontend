@@ -58,12 +58,7 @@ const ProjectAdProposal = types
     ad_copywriting_body: types.string,
     creative_meta_data1x1: types.maybeNull(types.frozen()),
     creative_meta_data9x16: types.maybeNull(types.frozen()),
-    status: types.enumeration('Status', [
-      'RUNNING',
-      'PENDING',
-      'SUBMITTED',
-      'DELETE',
-    ]), // 0 表示
+    status: types.maybeNull(types.string), // 0 表示
     // types.string, // 0 表示
     selected: types.optional(types.boolean, false),
     // updateTime: types.string, // 更新时间（ISO 日期格式）

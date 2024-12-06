@@ -8,6 +8,8 @@ export default function EditFormItem({
   children,
   className,
   btnClassName,
+  editBtnClassName,
+  loadingClassName,
   label,
   value,
   onConfirm,
@@ -27,31 +29,35 @@ export default function EditFormItem({
       <Form className={className} form={form} onFinish={handleConfirm}>
         {label && <span className='mr-2'>{label}</span>}
         {loading ? (
-          <Loading />
+          <div className={loadingClassName}>
+            <Loading />
+          </div>
         ) : edit ? (
           <div className='flex items-center'>
             {children}
-            <span
-              key='2'
-              className={`cursor-pointer ${btnClassName} ml-2`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setEdit(false);
-              }}
-            >
-              <CloseOutlined />
-            </span>
-            <span
-              key='2'
-              className={`cursor-pointer ${btnClassName} ml-2`}
-              onClick={(e) => {
-                e.stopPropagation();
-                form.submit(); // 触发表单提交
-                setEdit(false);
-              }}
-            >
-              <CheckOutlined />
-            </span>
+            <div className={editBtnClassName || btnClassName}>
+              <span
+                key='2'
+                className='cursor-pointer ml-2'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEdit(false);
+                }}
+              >
+                <CloseOutlined />
+              </span>
+              <span
+                key='2'
+                className='cursor-pointer ml-2'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  form.submit(); // 触发表单提交
+                  setEdit(false);
+                }}
+              >
+                <CheckOutlined />
+              </span>
+            </div>
           </div>
         ) : (
           <span className='flex items-center'>

@@ -1,6 +1,5 @@
 import { types, flow } from 'mobx-state-tree';
 import http from '../../utils/axiosInstance';
-import { update } from 'lodash';
 
 const EffectEntity = types
   .model('EffectEntity', {

@@ -27,7 +27,7 @@ const { RangePicker } = DatePicker;
 function AdCard({ title, children }) {
   return (
     <div className='ad-card'>
-      <header className='text-bold'>{title}</header>
+      <header className='text-bold text-[#333333]'>{title}</header>
       {children}
     </div>
   );
@@ -195,7 +195,8 @@ function AdSetsItem({
 }) {
   const [curData, setCurData] = useState(data);
   const [loading, setLoading] = useState(false);
-  const [imageLoading, setImageLoading] = useState(false);
+  const [ad_copywriting_title, setAd_copywriting_title] = useState('');
+  const [ad_copywriting_body, setAd_copywriting_Body] = useState('');
   const [videoLoading, setVideoLoading] = useState(false);
   const token = useRef('');
   // TODO 改成类似selected那种，或者干脆放一起，不然会被替换掉
@@ -217,7 +218,7 @@ function AdSetsItem({
       [data.ad_set_id]:
         imageUrl[data.ad_set_id] || data.creative_meta_data9x16?.url,
     });
-  }, [data]);
+  }, [active]);
 
   const beforeImageUpload = (file) => {
     const isImage = file.type.startsWith('image/');
@@ -252,7 +253,7 @@ function AdSetsItem({
     if (info.file.status === 'done') {
       const url = info.file.response?.data?.url;
       setLoading(false);
-      setImageUrl({ ...imageUrl, [curData.ad_set_id]: url });
+      setImageUrl({ ...imageUrl, [data.ad_set_id]: url });
     }
   };
 
@@ -335,21 +336,29 @@ function AdSetsItem({
         />
       </div>
       <div className='ad-card__content__title'>
-        Ad Set {active + 1 || 1}: {data.adset_title}
+        Ad Set {active + 1 || 1}: {data.ad_set_title}
       </div>
       <Row gutter={29}>
         <Col span={16}>
-          <div className='card-shadow'>
+          <div className='card-shadow h-[166px]'>
             <ChatButton
               className='absolute top-[40px] right-[24px]'
               handleConfirm={(value) => {
                 handleUpdateSetItem({
-                  user_crowd_preference: value,
+                  ad_set_update: {
+                    user_crowd_preference: value,
+                    ad_set_proposal_id: data.ad_set_id,
+                  },
                 });
               }}
             ></ChatButton>
             <div className='font-bold'>Audience Description</div>
-            <div className='my-[8px]'>{curData.audience_description}</div>
+            <div
+              className='my-[8px] overflow-scroll'
+              style={{ height: 'calc(100% - 46px)' }}
+            >
+              {data.audience_description}
+            </div>
           </div>
           <div className='flex px-[24px]'>
             <div className='w-[115px]'>
@@ -367,14 +376,14 @@ function AdSetsItem({
             <div className='grow'>
               <div className='ad-sets__info-label text-bold'>Locations</div>
               <div className='ad-sets__info-value'>
-                {(curData.geo_locations || []).join(', ')}
+                {(data.geo_locations || []).join(', ')}
               </div>
             </div>
           </div>
           <div className='px-[24px]'>
             <div className='font-bold mt-[24px] mb-[10px]'>Audience Tags</div>
             <div className='ad-sets_audience-tags__content'>
-              {(curData.audience_tags || []).map((item) => (
+              {(data.audience_tags || []).map((item) => (
                 <div className='ad-sets_audience-tags__content__item'>
                   {item}
                 </div>
@@ -383,58 +392,64 @@ function AdSetsItem({
           </div>
         </Col>
         <Col span={8}>
-          <div className='card-shadow'>
+          <div className='card-shadow h-[364px]'>
             <div className='text-bold'>Ad Copy</div>
             <ChatButton
               className='absolute top-[40px] right-[48px]'
               handleConfirm={(value) => {
                 handleUpdateSetItem({
-                  user_copywriting_preference: value,
+                  ad_set_update: {
+                    user_copywriting_preference: value,
+                    ad_set_proposal_id: data.ad_set_id,
+                  },
                 });
               }}
             ></ChatButton>
             <EditFormItem
-              btnClassName='absolute top-[40px] right-[38px]'
+              btnClassName='absolute top-[40px] right-[38px] bg-white'
+              loadingClassName='h-[100%] flex items-center justify-center'
+              className='h-[100%] overflow-scroll'
+              rootClassName='h-[100%]'
               onConfirm={(values) => {
                 handleUpdateSetItem({
-                  adset_id: data.ad_set_id,
-                  ad_copywriting_title: curData.ad_copywriting_title,
-                  ad_copywriting_body: curData.ad_copywriting_body,
+                  ad_set_update: {
+                    ad_copywriting_title,
+                    ad_copywriting_body,
+                    ad_set_proposal_id: data.ad_set_id,
+                  },
                 });
               }}
               value={
-                <div>
+                <div className='text-[12px]'>
                   <div className='my-[8px]'>Headline</div>
                   <div className='bg-[#9b62FE08] p-[12px] rounded-[12px] font-bold'>
-                    {curData.ad_copywriting_title}
+                    <div className='text-bold h-[16px] overflow-scroll'>
+                      {data.ad_copywriting_title}
+                    </div>
                   </div>
                   <div className='my-[8px]'>Primary text</div>
                   <div className='bg-[#9b62FE08] p-[12px] rounded-[12px]'>
-                    {curData.ad_copywriting_body}
+                    <div className='overflow-scroll h-[176px]'>
+                      {data.ad_copywriting_body}
+                    </div>
                   </div>
                 </div>
               }
             >
-              <div>
+              <div className='text-[12px] w-[100%]'>
                 <div className='my-[8px]'>Headline</div>
                 <Input
-                  value={curData.ad_copywriting_title}
+                  value={ad_copywriting_title || data.ad_copywriting_title}
                   onChange={(e) => {
-                    setCurData({
-                      ...curData,
-                      ad_copywriting_title: e.target.value,
-                    });
+                    setAd_copywriting_title(e.target.value);
                   }}
                 />
                 <div className='my-[8px]'>Primary text</div>
                 <Input.TextArea
-                  rows={4}
-                  value={curData.ad_copywriting_body}
+                  rows={9}
+                  value={ad_copywriting_body || data.ad_copywriting_body}
                   onChange={(e) => {
-                    setCurData({
-                      ...curData,
-                      ad_copywriting_body: e.target.value,
-                    });
+                    setAd_copywriting_Body(e.target.value);
                   }}
                 />
               </div>
@@ -444,7 +459,7 @@ function AdSetsItem({
             <div className='text-bold'>Ad Creative</div>
             <div className='flex gap-3 mt-[5px]'>
               <div>
-                <div className='mb-2'>9:16(Feed)</div>
+                <div className='mb-2'>9:16(Feed) Image or Video</div>
                 {/* <ImgCrop rotationSlider aspect={9 / 16}> */}
                 <Upload
                   name='meta_file'
@@ -458,7 +473,7 @@ function AdSetsItem({
                     // 传递额外的参数
                     file_type: 'images', // 例如：文件类型
                     aspect: '9x16', // 例如：比例
-                    ad_set: curData.ad_set_id, // 例如：set_id
+                    ad_set: data.ad_set_id, // 例如：set_id
                     project_id: projectID,
                   }}
                   headers={{
@@ -466,11 +481,11 @@ function AdSetsItem({
                   }}
                   // onPreview={onPreview}
                 >
-                  {imageUrl?.[curData.ad_set_id] ? (
+                  {imageUrl?.[data.ad_set_id] ? (
                     <img
                       src={
-                        imageUrl[curData.ad_set_id] ||
-                        curData.creative_meta_data9x16?.url
+                        imageUrl[data.ad_set_id] ||
+                        data.creative_meta_data9x16?.url
                       }
                       alt='avatar'
                       style={{
@@ -526,17 +541,16 @@ function AdSetsItem({
         <div className='ad-sets__sub-title text-bold mb-[8px]'>
           Performance Estimation
         </div>
-        <Row>
-          <Col span={8}>
-            <div className='flex'>
-              <div className='mr-[16px]'>Audience size</div>
-              <div className='text-bold'>
-                {curData.audience_size_range?.min} -{' '}
-                {curData.audience_size_range?.max}
-              </div>
-            </div>
-          </Col>
-          <Col span={8}>
+        {/* <Row> */}
+        {/* <Col span={8}> */}
+        <div className='flex'>
+          <div className='mr-[16px]'>Audience size</div>
+          <div className='text-bold'>
+            {data.audience_size_range?.min} - {data.audience_size_range?.max}
+          </div>
+        </div>
+        {/* </Col> */}
+        {/* <Col span={8}>
             <div className='flex'>
               <div className='mr-[16px]'>Daily Reach</div>
               <div className='text-bold'>
@@ -553,8 +567,8 @@ function AdSetsItem({
                 {curData.daily_clicks_range?.max}
               </div>
             </div>
-          </Col>
-        </Row>
+          </Col> */}
+        {/* </Row> */}
       </div>
     </div>
   );
