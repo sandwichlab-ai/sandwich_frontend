@@ -141,7 +141,7 @@ const LexiForm = ({
           if (field.hidden) {
             return null;
           } else if (field.type === 'custom') {
-            return field.children;
+            return <div key={index}>{field.children}</div>;
           } else {
             return (
               <div className='lexi-form-item' key={index}>
@@ -152,9 +152,10 @@ const LexiForm = ({
         })}
         {!!buttonConfig.length && (
           <div className='lexi-form__buttons'>
-            {buttonConfig.map((button) =>
+            {buttonConfig.map((button, index) =>
               button.type !== 'submit' && button.onClick ? (
                 <LexiButton
+                  key={index}
                   text={button.label}
                   type={button.type}
                   handleClick={(e) => {
@@ -163,7 +164,11 @@ const LexiForm = ({
                   }}
                 ></LexiButton>
               ) : (
-                <LexiButton text={button.label} type={button.type}></LexiButton>
+                <LexiButton
+                  key={index}
+                  text={button.label}
+                  type={button.type}
+                ></LexiButton>
               )
             )}
           </div>

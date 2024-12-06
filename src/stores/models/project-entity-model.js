@@ -56,8 +56,8 @@ const ProjectAdProposal = types
     daily_clicks_range: types.optional(NumberType, { min: 0, max: 1 }),
     ad_copywriting_title: types.string,
     ad_copywriting_body: types.string,
-    creative_meta_data1x1: types.maybeNull(types.frozen()),
-    creative_meta_data9x16: types.maybeNull(types.frozen()),
+    creative_meta_data_1x1: types.maybeNull(types.frozen()),
+    creative_meta_data_9x16: types.maybeNull(types.frozen()),
     status: types.maybeNull(types.string), // 0 表示
     // types.string, // 0 表示
     selected: types.optional(types.boolean, false),

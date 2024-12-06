@@ -33,11 +33,11 @@ function AdCard({ title, children }) {
   );
 }
 
-export function AdCardItem({ children }) {
+export function AdCardItem({ children, title }) {
   return (
     <div className='ad-card__content'>
       <div className='ad-card__content__title text-[#333] font-medium'>
-        Sandwichlab-NewSongPromotion-1119
+        {title}
       </div>
       <div className='ad-card__content__lists'>{children}</div>
     </div>
@@ -51,7 +51,7 @@ export const AdCampaign = ({ project }) => {
     dayjs(campaign.end_date, 'X'),
   ]);
   return (
-    <AdCardItem>
+    <AdCardItem title={project?.introduction?.project_name}>
       <div className='flex justify-between mt-[20px]'>
         <EditFormItem
           className='flex text-[#333]'
@@ -99,14 +99,11 @@ export const AdCampaign = ({ project }) => {
   );
 };
 
-export const AdSets = ({ project }) => {
+export const AdSets = ({ project, handleUpdateSetItem }) => {
   const [selected, setSelected] = useState({});
   const [imageUrl, setImageUrl] = useState({});
   const [active, setActive] = useState(0); // 当前可见的卡片
   const { proposal = [], status } = project || {};
-  const handleUpdateSetItem = (data) => {
-    project.updateAdProposal(data);
-  };
   return (
     <div className='ad-sets'>
       <AdSetsStatus
@@ -168,6 +165,7 @@ function AdSetsStatus({ data, active, setActive, selected, status }) {
     <div className='ad-sets-status flex justify-center'>
       {data.map((item, index) => (
         <div
+          key={index}
           className='mx-[24px] mt-5 flex items-center cursor-pointer'
           onClick={() => {
             setActive(index);
@@ -193,30 +191,24 @@ function AdSetsItem({
   setImageUrl,
   handleUpdateSetItem,
 }) {
-  const [curData, setCurData] = useState(data);
   const [loading, setLoading] = useState(false);
+  const [fileType, setFileType] = useState('images');
   const [ad_copywriting_title, setAd_copywriting_title] = useState('');
   const [ad_copywriting_body, setAd_copywriting_Body] = useState('');
-  const [videoLoading, setVideoLoading] = useState(false);
   const token = useRef('');
   // TODO 改成类似selected那种，或者干脆放一起，不然会被替换掉
   // const [imageUrl, setImageUrl] = useState(data.creative_meta_data9x16?.url);
-  const [imageVideoUrl, setImageVideoUrl] = useState(
-    data.ad_creative_video_9x16_url
-  );
   const actionUrl = `https://api-dev.sandwichlab.ai/api/creative/${brandID}/upload`;
-  console.log('imageUrl is: ', imageUrl);
   useEffect(() => {
     testUserStatus().then((newToken) => {
       token.current = newToken;
     });
   }, []);
   useEffect(() => {
-    setCurData(data);
     setImageUrl({
       ...imageUrl,
       [data.ad_set_id]:
-        imageUrl[data.ad_set_id] || data.creative_meta_data9x16?.url,
+        imageUrl[data.ad_set_id] || data.creative_meta_data_9x16?.url,
     });
   }, [active]);
 
@@ -225,25 +217,16 @@ function AdSetsItem({
     const isVideo = file.type.startsWith('video/');
     if (!isImage && !isVideo) {
       message.error('only support image or video');
+      return false;
     }
     const isLt5M = file.size / 1024 / 1024 < 5;
     if (!isLt5M) {
       message.error('file must smaller than 5MB!');
+      return false;
     }
-    return isLt5M & (isImage || isVideo);
+    setFileType(isImage ? 'images' : 'videos');
+    return true;
   };
-
-  // const beforeVideoUpload = (file) => {
-  //   const isVideo = file.type.startsWith('video/');
-  //   if (!isVideo) {
-  //     message.error('only support image');
-  //   }
-  //   const isLt5M = file.size / 1024 / 1024 < 5;
-  //   if (!isLt5M) {
-  //     message.error('Image must smaller than 5MB!');
-  //   }
-  //   return isLt5M & isVideo;
-  // };
 
   const handleImageChange = (info) => {
     if (info.file.status === 'uploading') {
@@ -256,22 +239,6 @@ function AdSetsItem({
       setImageUrl({ ...imageUrl, [data.ad_set_id]: url });
     }
   };
-
-  // const handleVideoChange = (info) => {
-  //   if (info.file.status === 'uploading') {
-  //     setVideoLoading(true);
-  //     return;
-  //   }
-  //   if (info.file.status === 'done') {
-  //     const url = info.file.response?.data?.url;
-  //     setImageVideoUrl(url);
-  //     // // Get this url from response in real world.
-  //     // getBase64(info.file.originFileObj, (url) => {
-  //     //   setVideoLoading(false);
-  //     //   setImageVideoUrl(url);
-  //     // });
-  //   }
-  // };
 
   const uploadButton = (
     <button
@@ -291,21 +258,6 @@ function AdSetsItem({
       </div>
     </button>
   );
-
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
 
   return (
     <div
@@ -383,8 +335,11 @@ function AdSetsItem({
           <div className='px-[24px]'>
             <div className='font-bold mt-[24px] mb-[10px]'>Audience Tags</div>
             <div className='ad-sets_audience-tags__content'>
-              {(data.audience_tags || []).map((item) => (
-                <div className='ad-sets_audience-tags__content__item'>
+              {(data.audience_tags || []).map((item, index) => (
+                <div
+                  className='ad-sets_audience-tags__content__item'
+                  key={index}
+                >
                   {item}
                 </div>
               ))}
@@ -460,7 +415,6 @@ function AdSetsItem({
             <div className='flex gap-3 mt-[5px]'>
               <div>
                 <div className='mb-2'>9:16(Feed) Image or Video</div>
-                {/* <ImgCrop rotationSlider aspect={9 / 16}> */}
                 <Upload
                   name='meta_file'
                   listType='picture-card'
@@ -471,7 +425,7 @@ function AdSetsItem({
                   onChange={handleImageChange}
                   data={{
                     // 传递额外的参数
-                    file_type: 'images', // 例如：文件类型
+                    file_type: fileType, // 例如：文件类型
                     aspect: '9x16', // 例如：比例
                     ad_set: data.ad_set_id, // 例如：set_id
                     project_id: projectID,
@@ -479,13 +433,12 @@ function AdSetsItem({
                   headers={{
                     Authorization: token.current,
                   }}
-                  // onPreview={onPreview}
                 >
                   {imageUrl?.[data.ad_set_id] ? (
                     <img
                       src={
                         imageUrl[data.ad_set_id] ||
-                        data.creative_meta_data9x16?.url
+                        data.creative_meta_data_9x16?.url
                       }
                       alt='avatar'
                       style={{
@@ -497,42 +450,7 @@ function AdSetsItem({
                     uploadButton
                   )}
                 </Upload>
-                {/* </ImgCrop> */}
               </div>
-              {/* <div>
-                <div className='mb-2'>9:16(Feed) Add Video</div>
-                <Upload
-                  name='meta_file'
-                  listType='picture-card'
-                  className='avatar-uploader'
-                  showUploadList={false}
-                  action={actionUrl}
-                  beforeUpload={beforeVideoUpload}
-                  onChange={handleVideoChange}
-                  data={{
-                    // 传递额外的参数
-                    file_type: 'videos', // 例如：文件类型
-                    ratio: '9x16', // 例如：比例
-                    set_id: curData.ad_set_id, // 例如：set_id
-                    project_id: projectID,
-                  }}
-                  headers={{
-                    Authorization: token.current,
-                  }}
-                >
-                  {imageVideoUrl ? (
-                    <img
-                      src={imageVideoUrl}
-                      alt='avatar'
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  ) : (
-                    uploadButton
-                  )}
-                </Upload>
-              </div> */}
             </div>
           </div>
         </Col>
@@ -549,26 +467,6 @@ function AdSetsItem({
             {data.audience_size_range?.min} - {data.audience_size_range?.max}
           </div>
         </div>
-        {/* </Col> */}
-        {/* <Col span={8}>
-            <div className='flex'>
-              <div className='mr-[16px]'>Daily Reach</div>
-              <div className='text-bold'>
-                {curData.daily_reach_size_range?.min} -{' '}
-                {curData.daily_reach_size_range?.max}
-              </div>
-            </div>
-          </Col>
-          <Col span={8}>
-            <div className='flex'>
-              <div className='mr-[16px]'>Daily Clicks</div>
-              <div className='text-bold'>
-                {curData.daily_clicks_range?.min} -{' '}
-                {curData.daily_clicks_range?.max}
-              </div>
-            </div>
-          </Col> */}
-        {/* </Row> */}
       </div>
     </div>
   );

@@ -45,6 +45,13 @@ const ProjectEdit = observer(() => {
     }
   }, [current]);
 
+  const handleUpdateSetItem = async (data) => {
+    // 更改 ad sets 的值之后，触发轮询
+    console.log('......handleUpdateSetItem.......', data);
+    await currentProject.updateAdProposal(data);
+    getADProposal();
+  };
+
   const getADProposal = async () => {
     const status = await currentProject.getADProposal(id);
     if (status === 'RUNNING') {
@@ -288,7 +295,11 @@ const ProjectEdit = observer(() => {
           type: 'custom',
           children: (
             <AdCard title='Ad Sets Details'>
-              <AdSets key={forceUpdate} project={currentProject}></AdSets>
+              <AdSets
+                key={forceUpdate}
+                project={currentProject}
+                handleUpdateSetItem={handleUpdateSetItem}
+              ></AdSets>
             </AdCard>
           ),
         },
