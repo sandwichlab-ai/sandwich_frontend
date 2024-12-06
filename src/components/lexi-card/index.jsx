@@ -23,13 +23,15 @@ function CardList({
 }) {
   const navigate = useNavigate();
   const handleEdit = (e, item) => {
-    onEdit?.(item);
-    navigate(`${editUrl}/${_.get(item, map?.id || 'id')}`);
+    onEdit
+      ? onEdit(item)
+      : navigate(`${editUrl}/${_.get(item, map?.id || 'id')}`);
   };
   return (
     <div className='lexi-cards'>
       {list.map((item) => (
         <CardItem
+          key={item.id}
           data={item}
           operationOptions={operationOptions}
           map={map}

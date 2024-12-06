@@ -263,8 +263,8 @@ const ProjectEdit = observer(() => {
             project_goal: projectGoal.current,
             ...introduction,
             ...settings,
-            start_date: dayjs(settings.start_date).format('X'),
-            end_date: dayjs(settings.end_date).format('X'),
+            start_date: +dayjs(settings.start_date).format('X'),
+            end_date: +dayjs(settings.end_date).format('X'),
           });
         }
         messageApi.destroy();

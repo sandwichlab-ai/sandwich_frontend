@@ -8,7 +8,7 @@ import { ReactComponent as Setting } from '../../assets/images/setting.svg';
 import { ReactComponent as Expand } from '../../assets/images/expand.svg';
 
 import './index.scss';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const items = [
   {
@@ -21,22 +21,21 @@ const items = [
     icon: <Ads />,
     label: 'Ad Projects',
   },
-  {
-    key: 'settings',
-    icon: <Setting />,
-    label: 'Setting',
-  },
 ];
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
   const navigate = useNavigate(); // 获取 navigate 函数
+  const location = useLocation();
+  const [, , page] = location?.pathname?.split('/') || [];
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
   const handleMenuClick = ({ key }) => {
     console.log('key is: ', key);
     navigate(key); // 跳转到对应的路由
   };
+
   return (
     <div className='lexi__sidebar'>
       <div className='brand__logo'>
@@ -53,7 +52,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       </div>
 
       <Menu
-        defaultSelectedKeys={items[1].key}
+        defaultSelectedKeys={page}
         mode='inline'
         inlineCollapsed={collapsed}
         items={items}

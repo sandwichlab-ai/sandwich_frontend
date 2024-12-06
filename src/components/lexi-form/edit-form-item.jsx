@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { ReactComponent as EditIcon } from '../../assets/images/edit.svg';
 import { Form } from 'antd';
+import Loading from '../loading/loading';
 
 export default function EditFormItem({
   children,
@@ -10,19 +11,39 @@ export default function EditFormItem({
   label,
   value,
   onConfirm,
+  rootClassName,
 }) {
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const handleConfirm = async (values) => {
+    setLoading(true);
+    await onConfirm?.(values);
+    setLoading(false);
+  };
+
   return (
-    <div className='edit-form-item'>
-      <Form className={className} form={form} onFinish={onConfirm}>
+    <div className={`edit-form-item ${rootClassName}`}>
+      <Form className={className} form={form} onFinish={handleConfirm}>
         {label && <span className='mr-2'>{label}</span>}
-        {edit ? (
-          <>
+        {loading ? (
+          <Loading />
+        ) : edit ? (
+          <div className='flex items-center'>
             {children}
             <span
               key='2'
-              className={`cursor-pointer ${btnClassName}`}
+              className={`cursor-pointer ${btnClassName} ml-2`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setEdit(false);
+              }}
+            >
+              <CloseOutlined />
+            </span>
+            <span
+              key='2'
+              className={`cursor-pointer ${btnClassName} ml-2`}
               onClick={(e) => {
                 e.stopPropagation();
                 form.submit(); // 触发表单提交
@@ -31,9 +52,9 @@ export default function EditFormItem({
             >
               <CheckOutlined />
             </span>
-          </>
+          </div>
         ) : (
-          <span className='flex'>
+          <span className='flex items-center'>
             {value}
             <span
               className={`cursor-pointer ${btnClassName}`}

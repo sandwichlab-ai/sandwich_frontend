@@ -56,9 +56,14 @@ const ProjectAdProposal = types
     daily_clicks_range: types.optional(NumberType, { min: 0, max: 1 }),
     ad_copywriting_title: types.string,
     ad_copywriting_body: types.string,
-    ad_creative_image_square_url: types.string,
-    ad_creative_image_9x16_url: types.string,
-    status: types.optional(types.number, 0),
+    creative_meta_data1x1: types.maybeNull(types.frozen()),
+    creative_meta_data9x16: types.maybeNull(types.frozen()),
+    status: types.enumeration('Status', [
+      'RUNNING',
+      'PENDING',
+      'SUBMITTED',
+      'DELETE',
+    ]), // 0 表示
     // types.string, // 0 表示
     selected: types.optional(types.boolean, false),
     // updateTime: types.string, // 更新时间（ISO 日期格式）
@@ -91,7 +96,7 @@ const ProjectEntity = types
       'SUBMITTED',
       'DELETE',
     ]), // 0 表示
-    updated_at: types.maybeNull(types.string), // 更新时间（ISO 日期格式）
+    updated_at: types.maybeNull(types.frozen()), // 更新时间（ISO 日期格式）
     introduction: types.maybeNull(ProjectIntroduction),
     settings: types.maybeNull(ProjectAdSettings),
     proposal: types.maybeNull(types.array(ProjectAdProposal)),
@@ -99,9 +104,7 @@ const ProjectEntity = types
   })
   .actions((self) => ({
     getADProposal: flow(function* (id) {
-      const { data } = yield http.get(
-        `http://47.129.43.201:8080/api/project/${self.project_id}`
-      );
+      const { data } = yield http.get(`/api/project/${self.project_id}`);
       self.campaign = data?.campaign_proposal;
       self.proposal = data?.ad_set_proposals || [];
       return data.status;

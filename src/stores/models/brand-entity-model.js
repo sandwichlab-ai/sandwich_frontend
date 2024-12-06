@@ -12,13 +12,11 @@ const BrandEntity = types
     time_zone: types.maybeNull(types.string),
     page_id: types.maybeNull(types.string),
     account_status: types.string,
-    created: types.number,
-    deleted: types.number,
     description: types.string,
     goal: types.string,
     id: types.number,
     name: types.string,
-    updated: types.number,
+    updated_at: types.number,
   })
   .actions((self) => ({
     updateBrand: (updates) => {

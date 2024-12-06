@@ -70,8 +70,10 @@ function App() {
                     </Route>
                     <Route path='projects'>
                       <Route index element={<Project />} />
-                      <Route path=':mode/:id?' element={<ProjectEdit />} />
-                      <Route path='effect/:id' element={<ProjectEffect />} />
+                      <Route path=':mode/:id?'>
+                        <Route index element={<ProjectEdit />} />
+                        <Route path='effect' element={<ProjectEffect />} />
+                      </Route>
                     </Route>
                   </Route>
                 </Routes>

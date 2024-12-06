@@ -13,7 +13,7 @@ const ProjectList = types
   .actions((self) => ({
     init: flow(function* () {
       // const response = yield axios.get('/api/projects');
-      const response = yield http.get('http://47.129.43.201:8080/api/projects');
+      const response = yield http.get('/api/projects');
       const updateList = response.data.map((item) => {
         const { start_date, end_date } = item.settings || {};
         start_date && (item.settings.start_date = dayjs(start_date, 'X'));
@@ -50,12 +50,12 @@ const ProjectList = types
         project_goal,
         ...introduction,
         ...settings,
-        start_date: dayjs(settings.start_date).format('X'),
-        end_date: dayjs(settings.end_date).format('X'),
+        start_date: +dayjs(settings.start_date).format('X'),
+        end_date: +dayjs(settings.end_date).format('X'),
       };
       const {
         data: { project_id },
-      } = yield http.post('http://47.129.43.201:8080/api/project', reqData);
+      } = yield http.post('/api/project', reqData);
       projectData.project_id = project_id;
       projectData.updated_at = dayjs().format('YYYY-MM-DD HH:mm:ss');
       self.currentProject = projectData;
@@ -69,11 +69,9 @@ const ProjectList = types
       }
     }),
     updateProject: flow(function* (id, updates) {
+      console.log('updateProject....', updates);
       // yield axios.post(`/api/project/${id}`);
-      yield http.post(`http://47.129.43.201:8080/api/project/${id}`, {
-        ...self.currentProject,
-        updates,
-      });
+      yield http.post(`/api/project/${id}`, updates);
       const project = self.list.find((project) => project.id === id);
       if (project) {
         Object.assign(project, updates); // 更新项目属性
