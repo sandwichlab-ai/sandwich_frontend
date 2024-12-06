@@ -63,7 +63,7 @@ const ProjectList = types
     removeProject: flow(function* (id) {
       const {
         data: { message, error },
-      } = yield http.delete(`http://47.129.43.201:8080/api/project/${id}`);
+      } = yield http.delete(`/api/project/${id}`);
       if (message) {
         self.list = self.list.filter((project) => project.project_id !== id); // 删除项目
       }

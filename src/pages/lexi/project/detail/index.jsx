@@ -112,13 +112,13 @@ const ProjectEdit = observer(() => {
           withExamples: true,
           examples: [
             {
-              text: 'I am a <span class="text-bold">divorce lawyer1</span> based in ....',
+              text: 'I am a musician and I want to promote my music on Spotify and get more listeners.',
             },
             {
-              text: 'I am a <span class="text-bold">divorce lawyer2</span> based in ....',
+              text: 'We sell cleanning equipments and we seek more B2B collaborations, I want to gain more inquiry  messages on Meta.',
             },
             {
-              text: 'I am a <span class="text-bold">divorce lawyer3</span> based in ....',
+              text: 'I want to increase sales of my essential oil store.',
             },
           ],
           rules: [{ required: true, message: 'Budget is required' }],
@@ -131,13 +131,13 @@ const ProjectEdit = observer(() => {
           withExamples: true,
           examples: [
             {
-              text: 'I am a <span class="text-bold">divorce lawyer1</span> based in ....',
+              text: `The song I want to promote fuses <span class="text-bold">Hip-Hop with the futuristic vibe of electronic beats</span>, creating a sound that's both dynamic and immersive. <span class="text-bold">It is perfect for playlists that celebrate innovation and rhythm.</span>`,
             },
             {
-              text: 'I am a <span class="text-bold">divorce lawyer2</span> based in ....',
+              text: 'We seek partnerships with organizations such as <span class="text-bold">genetic engineering, medical devices, drug research, genomics, cell therapy, oncology drugs, vaccines,, clinical trials, biomaterials, and generic drugs.</span>',
             },
             {
-              text: 'I am a <span class="text-bold">divorce lawyer3</span> based in ....',
+              text: 'Our essential oils are <span class="text-bold">100% pure and natural</span>, made from <span class="text-bold">selected plant-based ingredients with no synthetic additives.</span> Known for their <span class="text-bold">therapeutic properties,</span> they are perfect for <span class="text-bold">aromatherapy, skincare, and DIY use, with an average order value of $50.</span>',
             },
           ],
           rules: [{ required: true, message: 'Budget is required' }],
@@ -165,10 +165,7 @@ const ProjectEdit = observer(() => {
         // 调用API，获得setiings的值，做一些操作，之后调用handleStepSubmitCommon进行到下一步
         const {
           data: { project_goal },
-        } = await http.post(
-          'http://47.129.43.201:8080/api/project/goal',
-          values.introduction
-        );
+        } = await http.post('/api/project/goal', values.introduction);
         projectList.updateCurrentProject({
           update_at: '',
           ...values,

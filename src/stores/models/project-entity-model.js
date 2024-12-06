@@ -116,7 +116,7 @@ const ProjectEntity = types
     },
     updateAdProposal: flow(function* (postData) {
       const { data } = yield http.post(
-        `http://47.129.43.201:8080/api/project/${self.project_id}`,
+        `/api/project/${self.project_id}`,
         postData
       );
       self.campaign = data?.campaign_proposal;
