@@ -48,7 +48,7 @@ const Project = observer(() => {
   const fetchBrandList = async () => {
     messageApi.open({
       type: 'loading',
-      content: 'Brand list in loading..',
+      content: 'Project list in loading..',
       duration: 0,
     });
     await projectList.init();

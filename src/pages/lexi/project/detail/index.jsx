@@ -163,15 +163,17 @@ const ProjectEdit = observer(() => {
           duration: 0,
         });
         // 调用API，获得setiings的值，做一些操作，之后调用handleStepSubmitCommon进行到下一步
-        const {
-          data: { project_goal },
-        } = await http.post('/api/project/goal', values.introduction);
+        // const {
+        //   data: { project_goal },
+        // } = await http.post('/api/project/goal', values.introduction);
         projectList.updateCurrentProject({
           update_at: '',
           ...values,
         });
-        projectGoal.current = project_goal;
-        setHidden(project_goal !== 'website');
+        // projectGoal.current = project_goal;
+        // setHidden(project_goal !== 'website');
+        projectGoal.current = 'website';
+        setHidden(false);
         messageApi.destroy();
         handleStepSubmitCommon();
       },
