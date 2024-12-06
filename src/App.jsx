@@ -15,6 +15,7 @@ import {
   Route,
   Navigate,
   useNavigate,
+  useLocation,
 } from 'react-router-dom';
 import Project from './pages/lexi/project';
 import ProjectEdit from './pages/lexi/project/detail';
@@ -26,14 +27,19 @@ Amplify.configure(aws_exports);
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     const listener = async (data) => {
       switch (data.payload.event) {
         case 'signedIn':
-          console.log('User signed in');
-          await http.get('https://auth0.sandwichlab.ai/oauth2/callback');
+          console.log('User signed in', location.state);
+          await http.get('https://api-dev.sandwichlab.ai/oauth2/callback');
           // TODO 登录成功后发送给后端创建用户
-          navigate('/lexi/brands/add');
+          if (location.state === 'register') {
+            navigate('/lexi/brands/add');
+          } else {
+            navigate('/lexi');
+          }
           break;
         case 'signOut':
           console.log('User signed out');

@@ -52,8 +52,8 @@ function Navigate(props) {
   };
   const sig = '->';
 
-  const onLogin = async (path) => {
-    navigate(path);
+  const onLogin = async (path, state) => {
+    navigate(path, { state });
   };
 
   return (
@@ -97,14 +97,14 @@ function Navigate(props) {
         <button
           className='header__right--login'
           style={LoginBtnStyle}
-          onClick={() => onLogin('/lexi')}
+          onClick={() => onLogin('/lexi', 'login')}
         >
           Login
         </button>
         <button
           className='header__right-tryfree'
           style={TryfreeBtnStyle}
-          onClick={() => onLogin('/lexi')}
+          onClick={() => onLogin('/lexi', 'register')}
         >
           <span>Try for free now</span>
           <img src={arrow} width='25.38px' height='18.88px' />

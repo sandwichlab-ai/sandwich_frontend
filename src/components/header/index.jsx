@@ -43,11 +43,11 @@ function Header({ signOut, user }) {
       <Dropdown
         menu={{
           items: [
-            {
-              key: 'logout',
-              label: 'Logout',
-              onClick: signOut,
-            },
+            // {
+            //   key: 'logout',
+            //   label: 'Logout',
+            //   onClick: signOut,
+            // },
           ],
         }}
         placement='bottomRight'
