@@ -14,8 +14,8 @@ const aws_sandwich = {
   oauth: {
     domain: 'sandwichlab.auth.ap-southeast-1.amazoncognito.com',
     scope: ['email', 'openid', 'phone'],
-    redirectSignIn: 'http://localhost:3000/lexi',
-    redirectSignOut: 'http://localhost:3000',
+    redirectSignIn: 'http://localhost:3000/lexi,https://test.sandwichlab.ai/lexi',
+    redirectSignOut: 'http://localhost:3000,https://test.sandwichlab.ai',
     responseType: 'code',
     socialProviders: ['facebook', 'google'],
   },
