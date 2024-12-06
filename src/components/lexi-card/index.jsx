@@ -68,9 +68,7 @@ function CardItem({ data, operationOptions, map, handleEdit }) {
   const [showModal, setShowModal] = useState(false);
   const [currentOpertion, setCurrentOpertion] = useState({});
 
-  useEffect(() => {
-    console.log('show model changed: ', showModal);
-  }, [showModal]);
+  useEffect(() => {}, [showModal]);
 
   const handleOk = () => {
     console.log('ok clicked', data);

@@ -67,21 +67,16 @@ function Effect(props) {
     );
   }, []);
 
-  console.log('currentEffect is: ', currentEffect.toJSON?.());
-
   const handlePublish = () => {
-    console.log('publish.......');
     setShowModal(true);
   };
 
   const handleOk = async () => {
-    console.log('ok');
     await currentEffect.switchDisable(id);
     setShowModal(false);
   };
 
   const handleCancel = () => {
-    console.log('cancel');
     setShowModal(false);
   };
 
@@ -191,8 +186,7 @@ function Effect(props) {
       <div className='effect-btn-container'>
         <button
           onClick={() => {
-            console.log('dash board click triggered');
-            navigate('/lexi/projects');
+            navigate(`/lexi/projects/edit/${id}`);
           }}
           className='effect-add-plan'
         >

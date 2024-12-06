@@ -18,7 +18,6 @@ const Detail = observer((props) => {
   const navigate = useNavigate();
   const selectFbAc = useRef({});
   const setSelectedRow = (row) => {
-    console.log('row is: ', row);
     selectFbAc.current = {
       ad_account_id: row.id,
       account_name: row.name,

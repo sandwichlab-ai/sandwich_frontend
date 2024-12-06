@@ -1,4 +1,4 @@
-.ad-card {
+.lx-card {
   font-size: 24px;
   font-family: Roboto;
 
@@ -23,19 +23,19 @@
   }
 }
 
-.ad-sets-status {
+.lx-sets-status {
   font-size: 12px;
   color: #333;
 }
 
-.ad-sets-cards {
+.lx-sets-cards {
   width: 100%;
   display: flex;
   font-family: Roboto;
   font-size: 12px;
   letter-spacing: 0.5px;
 
-  .ad-card__content {
+  .lx-card__content {
     position: relative;
     width: 100%;
 
@@ -47,7 +47,7 @@
   }
 }
 
-.ad-sets_audience-tags__content {
+.lx-sets_audience-tags__content {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -68,8 +68,10 @@
   font-weight: bold;
 }
 
-.ad-sets__item,
-.ad-sets__item--selected {
+.lx-sets__item,
+.lx-sets__item--selected {
+  height: 728px;
+
   .lexi-triangle {
     width: 0;
     height: 0;
@@ -80,7 +82,7 @@
   }
 }
 
-.ad-sets__item--selected .lexi-triangle {
+.lx-sets__item--selected .lexi-triangle {
   border-right-color: #8c68ff;
   border-top-color: #8c68ff;
 }

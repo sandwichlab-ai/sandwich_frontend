@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table, Radio } from 'antd';
 
 const AccountList = ({ accountData, brand, setSelectRecord, selectRecord }) => {
-  console.log('....selectRecord.....', selectRecord);
   const columns = [
     {
       title: 'Select',

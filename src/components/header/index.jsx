@@ -15,8 +15,6 @@ function Header({ signOut, user }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { brandList, projectList, currentEffect } = useStore();
-  console.log('currentBrand is: ', brandList.currentBrand?.toJSON());
-  console.log('currentEffect is: ', currentEffect?.project_name);
   const [, , page, mode, id, isEffect] = location?.pathname?.split('/') || [];
   const getEditName = () => {
     if (page === 'brands') {

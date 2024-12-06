@@ -102,11 +102,11 @@ const ProjectEntity = types
       const { data } = yield http.get(`/api/project/${self.project_id}`);
       self.campaign = data?.campaign_proposal;
       self.proposal = data?.ad_set_proposals || [];
+      self.status = data?.status || self.status;
       return data.status;
     }),
     // 还没到提交的时候，静态更新
     updateProject: (updated) => {
-      console.log('updateProject....', updated);
       self = { ...self, ...updated };
     },
     updateAdProposal: flow(function* (postData) {
@@ -116,6 +116,7 @@ const ProjectEntity = types
       );
       self.campaign = data?.campaign_proposal;
       self.proposal = data?.ad_set_proposals || [];
+      self.status = data?.status || self.status;
     }),
     lauchDraft: flow(function* () {
       const select_ad_sets = (self.proposal || [])

@@ -26,7 +26,7 @@ const { RangePicker } = DatePicker;
 
 function AdCard({ title, children }) {
   return (
-    <div className='ad-card'>
+    <div className='lx-card'>
       <header className='text-bold text-[#333333]'>{title}</header>
       {children}
     </div>
@@ -35,17 +35,18 @@ function AdCard({ title, children }) {
 
 export function AdCardItem({ children, title }) {
   return (
-    <div className='ad-card__content'>
-      <div className='ad-card__content__title text-[#333] font-medium'>
+    <div className='lx-card__content'>
+      <div className='lx-card__content__title text-[#333] font-medium'>
         {title}
       </div>
-      <div className='ad-card__content__lists'>{children}</div>
+      <div className='lx-card__content__lists'>{children}</div>
     </div>
   );
 }
 
 export const AdCampaign = ({ project }) => {
   const campaign = project?.campaign || {};
+  const isSubmitted = project?.status === 'SUBMITTED';
   const [date, setDate] = useState([
     dayjs(campaign.start_date, 'X'),
     dayjs(campaign.end_date, 'X'),
@@ -65,6 +66,7 @@ export const AdCampaign = ({ project }) => {
           value={`${dayjs(campaign.start_date, 'X').format(
             'YYYY-MM-DD'
           )}-${dayjs(campaign.end_date, 'X').format('YYYY-MM-DD')}`}
+          disabled={isSubmitted}
         >
           <Form.Item name='date'>
             <RangePicker
@@ -85,6 +87,7 @@ export const AdCampaign = ({ project }) => {
             });
           }}
           value={`$${campaign.daily_budget}`}
+          disabled={isSubmitted}
         >
           <Form.Item name='daily'>
             <InputNumber size='small' value={campaign.daily_budget} />
@@ -105,7 +108,7 @@ export const AdSets = ({ project, handleUpdateSetItem }) => {
   const [active, setActive] = useState(0); // 当前可见的卡片
   const { proposal = [], status } = project || {};
   return (
-    <div className='ad-sets'>
+    <div className='lx-sets'>
       <AdSetsStatus
         data={proposal || []}
         active={active}
@@ -113,8 +116,8 @@ export const AdSets = ({ project, handleUpdateSetItem }) => {
         selected={selected}
         setActive={setActive}
       />
-      <div className='ad-sets-cards'>
-        <div className='ad-card__content'>
+      <div className='lx-sets-cards'>
+        <div className='lx-card__content'>
           <AdSetsItem
             status={status}
             data={proposal?.[active] || {}}
@@ -135,6 +138,7 @@ export const AdSets = ({ project, handleUpdateSetItem }) => {
 
 function AdSetsStatus({ data, active, setActive, selected, status }) {
   const renderIcon = (item, index) => {
+    const curStatus = item.status || status;
     if (active === index) {
       if (selected[item.ad_set_id]) {
         return (
@@ -142,7 +146,7 @@ function AdSetsStatus({ data, active, setActive, selected, status }) {
             style={{ color: '#8c68ff', fontSize: '16px', lineHeight: '16px' }}
           />
         );
-      } else if (status === 'RUNNING') {
+      } else if (curStatus === 'RUNNING') {
         return <Loading type='primary' />;
       } else {
         return <div className='icon-rounded icon-rounded--active'></div>;
@@ -154,7 +158,7 @@ function AdSetsStatus({ data, active, setActive, selected, status }) {
             style={{ color: '#00000025', fontSize: '16px' }}
           />
         );
-      } else if (status === 'RUNNING') {
+      } else if (curStatus === 'RUNNING') {
         return <Loading />;
       } else {
         return <div className='icon-rounded'></div>;
@@ -162,7 +166,7 @@ function AdSetsStatus({ data, active, setActive, selected, status }) {
     }
   };
   return (
-    <div className='ad-sets-status flex justify-center'>
+    <div className='lx-sets-status flex justify-center'>
       {data.map((item, index) => (
         <div
           key={index}
@@ -196,6 +200,7 @@ function AdSetsItem({
   const [ad_copywriting_title, setAd_copywriting_title] = useState('');
   const [ad_copywriting_body, setAd_copywriting_Body] = useState('');
   const token = useRef('');
+  const isSubmitted = status === 'SUBMITTED';
   // TODO 改成类似selected那种，或者干脆放一起，不然会被替换掉
   // const [imageUrl, setImageUrl] = useState(data.creative_meta_data9x16?.url);
   const actionUrl = `https://api-dev.sandwichlab.ai/api/creative/${brandID}/upload`;
@@ -210,7 +215,7 @@ function AdSetsItem({
       [data.ad_set_id]:
         imageUrl[data.ad_set_id] || data.creative_meta_data_9x16?.url,
     });
-  }, [active]);
+  }, [active, data.creative_meta_data_9x16?.url]);
 
   const beforeImageUpload = (file) => {
     const isImage = file.type.startsWith('image/');
@@ -259,9 +264,13 @@ function AdSetsItem({
     </button>
   );
 
-  return (
+  return status === 'RUNNING' ? (
+    <div className='lx-sets__item flex items-center justify-center'>
+      <Loading />
+    </div>
+  ) : (
     <div
-      className={`ad-sets__item${selected[data.ad_set_id] ? '--selected' : ''}`}
+      className={`lx-sets__item${selected[data.ad_set_id] ? '--selected' : ''}`}
     >
       <div
         className='absolute right-0 top-0 cursor-pointer lexi-triangle'
@@ -287,23 +296,25 @@ function AdSetsItem({
           }}
         />
       </div>
-      <div className='ad-card__content__title'>
+      <div className='lx-card__content__title'>
         Ad Set {active + 1 || 1}: {data.ad_set_title}
       </div>
       <Row gutter={29}>
         <Col span={16}>
           <div className='card-shadow h-[166px]'>
-            <ChatButton
-              className='absolute top-[40px] right-[24px]'
-              handleConfirm={(value) => {
-                handleUpdateSetItem({
-                  ad_set_update: {
-                    user_crowd_preference: value,
-                    ad_set_proposal_id: data.ad_set_id,
-                  },
-                });
-              }}
-            ></ChatButton>
+            {isSubmitted ? null : (
+              <ChatButton
+                className='absolute top-[40px] right-[24px]'
+                handleConfirm={(value) => {
+                  handleUpdateSetItem({
+                    ad_set_update: {
+                      user_crowd_preference: value,
+                      ad_set_proposal_id: data.ad_set_id,
+                    },
+                  });
+                }}
+              ></ChatButton>
+            )}
             <div className='font-bold'>Audience Description</div>
             <div
               className='my-[8px] overflow-scroll'
@@ -314,30 +325,30 @@ function AdSetsItem({
           </div>
           <div className='flex px-[24px]'>
             <div className='w-[115px]'>
-              <div className='ad-sets__info__label text-bold'>Age</div>
-              <div className='ad-sets__info__value'>
+              <div className='lx-sets__info__label text-bold'>Age</div>
+              <div className='lx-sets__info__value'>
                 {data.age_range?.min} - {data.age_range?.max}
               </div>
             </div>
             <div className='w-[115px]'>
-              <div className='ad-sets__info-label text-bold'>Gender</div>
-              <div className='ad-sets__info-value'>
+              <div className='lx-sets__info-label text-bold'>Gender</div>
+              <div className='lx-sets__info-value'>
                 {(data.genders || []).join(', ')}
               </div>
             </div>
             <div className='grow'>
-              <div className='ad-sets__info-label text-bold'>Locations</div>
-              <div className='ad-sets__info-value'>
+              <div className='lx-sets__info-label text-bold'>Locations</div>
+              <div className='lx-sets__info-value'>
                 {(data.geo_locations || []).join(', ')}
               </div>
             </div>
           </div>
           <div className='px-[24px]'>
             <div className='font-bold mt-[24px] mb-[10px]'>Audience Tags</div>
-            <div className='ad-sets_audience-tags__content'>
+            <div className='lx-sets_audience-tags__content'>
               {(data.audience_tags || []).map((item, index) => (
                 <div
-                  className='ad-sets_audience-tags__content__item'
+                  className='lx-sets_audience-tags__content__item'
                   key={index}
                 >
                   {item}
@@ -349,17 +360,19 @@ function AdSetsItem({
         <Col span={8}>
           <div className='card-shadow h-[364px]'>
             <div className='text-bold'>Ad Copy</div>
-            <ChatButton
-              className='absolute top-[40px] right-[48px]'
-              handleConfirm={(value) => {
-                handleUpdateSetItem({
-                  ad_set_update: {
-                    user_copywriting_preference: value,
-                    ad_set_proposal_id: data.ad_set_id,
-                  },
-                });
-              }}
-            ></ChatButton>
+            {isSubmitted ? null : (
+              <ChatButton
+                className='absolute top-[40px] right-[48px]'
+                handleConfirm={(value) => {
+                  handleUpdateSetItem({
+                    ad_set_update: {
+                      user_copywriting_preference: value,
+                      ad_set_proposal_id: data.ad_set_id,
+                    },
+                  });
+                }}
+              ></ChatButton>
+            )}
             <EditFormItem
               btnClassName='absolute top-[40px] right-[38px] bg-white'
               loadingClassName='h-[100%] flex items-center justify-center'
@@ -390,6 +403,7 @@ function AdSetsItem({
                   </div>
                 </div>
               }
+              disabled={isSubmitted}
             >
               <div className='text-[12px] w-[100%]'>
                 <div className='my-[8px]'>Headline</div>
@@ -456,7 +470,7 @@ function AdSetsItem({
         </Col>
       </Row>
       <div className='border-t pt-[20px] border-[#8C68FF1A]'>
-        <div className='ad-sets__sub-title text-bold mb-[8px]'>
+        <div className='lx-sets__sub-title text-bold mb-[8px]'>
           Performance Estimation
         </div>
         {/* <Row> */}

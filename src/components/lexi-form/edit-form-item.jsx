@@ -12,6 +12,7 @@ export default function EditFormItem({
   loadingClassName,
   label,
   value,
+  disabled,
   onConfirm,
   rootClassName,
 }) {
@@ -62,15 +63,17 @@ export default function EditFormItem({
         ) : (
           <span className='flex items-center'>
             {value}
-            <span
-              className={`cursor-pointer ${btnClassName}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setEdit(true);
-              }}
-            >
-              <EditIcon />
-            </span>
+            {disabled ? null : (
+              <span
+                className={`cursor-pointer ${btnClassName}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEdit(true);
+                }}
+              >
+                <EditIcon />
+              </span>
+            )}
           </span>
         )}
       </Form>

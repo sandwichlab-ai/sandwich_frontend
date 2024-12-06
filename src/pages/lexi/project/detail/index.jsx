@@ -28,6 +28,7 @@ const ProjectEdit = observer(() => {
   const [brandList, setBrandList] = useState([]);
   const [hidden, setHidden] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const isSubmitted = currentProject?.status === 'SUBMITTED';
 
   // 第一次进入编辑页面，如果没有 projectList，那么init
   useEffect(() => {
@@ -252,7 +253,6 @@ const ProjectEdit = observer(() => {
           duration: 0,
         });
         const curProjectData = { ...currentProject, ...values };
-        console.log('....curProjectData.....', curProjectData);
         const { introduction, settings, project_name } = curProjectData;
         if (mode === 'add') {
           await projectList.addProject({
@@ -304,19 +304,29 @@ const ProjectEdit = observer(() => {
           ),
         },
       ],
-      buttons: [
-        {
-          label: 'Previous',
-          type: 'button',
-          onClick: () => {
-            setShowModal(true);
-          },
-        },
-        {
-          label: 'Launch Draft',
-          type: 'submit',
-        },
-      ],
+      buttons: isSubmitted
+        ? [
+            {
+              label: 'Check Performance',
+              type: 'button',
+              onClick: () => {
+                navigate(`/lexi/projects/edit/${id}/effect`);
+              },
+            },
+          ]
+        : [
+            {
+              label: 'Previous',
+              type: 'button',
+              onClick: () => {
+                setShowModal(true);
+              },
+            },
+            {
+              label: 'Launch Draft',
+              type: 'submit',
+            },
+          ],
       onSubmit: async (values) => {
         // TODO selectLen 需要和 Ad sets choices 数量对应，这个也需要判断下，超出或者没有选择不能提交？这个放到 lauchDraft action里判断吧，这里好像不一定是最新的。
         // TODO 选择的时候也需要判断下
@@ -338,7 +348,7 @@ const ProjectEdit = observer(() => {
         await currentProject.lauchDraft();
         messageApi.destroy();
         // 成功的话跳转到 effect 页面
-        navigate('/lexi/projects/effect/1');
+        navigate(`/lexi/projects/edit/${id}/effect`);
         // }
       },
     },

@@ -33,7 +33,6 @@ const EffectEntity = types
       self.disable = !self.disable;
     }),
     update: flow(function* (id, updates) {
-      console.log('.....update,,,,,,', updates);
       const { data } = yield http.post(`/api/insights/edit`, {
         project_id: id,
         ...updates,

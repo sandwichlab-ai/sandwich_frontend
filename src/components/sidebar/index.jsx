@@ -32,7 +32,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   };
 
   const handleMenuClick = ({ key }) => {
-    console.log('key is: ', key);
     navigate(key); // 跳转到对应的路由
   };
 
